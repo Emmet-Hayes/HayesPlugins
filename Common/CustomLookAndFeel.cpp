@@ -88,7 +88,20 @@ juce::Label* CustomLookAndFeel::createSliderTextBox(juce::Slider& slider)
         .withAlpha((slider.isMouseOverOrDragging() && slider.getSliderStyle() != juce::Slider::SliderStyle::LinearBar
                     && slider.getSliderStyle() != juce::Slider::SliderStyle::LinearBarVertical) ? 0.7f : 0.3f));
     l->setColour(juce::TextEditor::outlineColourId, slider.findColour(juce::Slider::textBoxOutlineColourId));
-    l->setFont(juce::Font("Lucida Console", 11.f * windowScale, juce::Font::bold));
+    float fontSize = 11.0f * windowScale; // base font size
+    float maxFontSize = fontSize; // maximum font size
+
+    // Dynamically adjust font size based on label bounds
+    juce::String testString = "0.000"; // change this to your worst case string
+    float width = l->getFont().getStringWidth(testString);
+    while (width > l->getBounds().getWidth() && fontSize > 1) {
+        fontSize -= 0.5f;
+        width = l->getFont().withHeight(fontSize).getStringWidth(testString);
+    }
+
+    // Don't exceed the maximum font size
+    fontSize = juce::jmin(fontSize, maxFontSize);
+    l->setFont(juce::Font("Lucida Console", fontSize, juce::Font::bold));
     l->setJustificationType(juce::Justification::centred);
 
     return l;
