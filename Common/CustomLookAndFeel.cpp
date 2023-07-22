@@ -68,7 +68,7 @@ void CustomLookAndFeel::drawLabel(juce::Graphics& g, juce::Label& label)
     {
         g.setColour (label.findColour (juce::Label::outlineColourId));
     }
-    
+
     g.drawRect (label.getLocalBounds());
 }
 
@@ -90,7 +90,7 @@ juce::Label* CustomLookAndFeel::createSliderTextBox(juce::Slider& slider)
     l->setColour(juce::TextEditor::outlineColourId, slider.findColour(juce::Slider::textBoxOutlineColourId));
     l->setFont(juce::Font("Lucida Console", 11.f * windowScale, juce::Font::bold));
     l->setJustificationType(juce::Justification::centred);
-    
+
     return l;
 }
 
@@ -109,15 +109,15 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int wi
     double ry = centreY - radius;
     double rw = radius * 2.0f;
     double angle = static_cast<double>(rotaryStartAngle) + sliderPos * static_cast<double>(rotaryEndAngle - rotaryStartAngle);
-    
+
     g.setColour(juce::Colours::whitesmoke);
     g.setOpacity(0.33f);
     g.fillEllipse(rx, ry, rw, rw);
-  
+
     g.setColour(juce::Colours::bisque);
     g.setOpacity(1.0f);
     g.drawEllipse(rx, ry, rw, rw, 2.0f);
-  
+
     juce::Path p;
     double pointerLength = radius * 0.5f;
     double pointerThickness = 5.0f;

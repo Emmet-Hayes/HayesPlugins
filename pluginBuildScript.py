@@ -9,7 +9,8 @@ os.chdir(plugin_dir)
 plugins = [d for d in os.listdir() if os.path.isdir(d)]
 
 for plugin in plugins:
-    if str(plugin) == "JUCE" or str(plugin) == "Common":
+    if str(plugin) == "JUCE" or str(plugin) == "Common" or 
+       str(plugin) == "HayesInstallers" or str(plugin) == "HayesPlugins":
         continue
     os.chdir(plugin)
 
