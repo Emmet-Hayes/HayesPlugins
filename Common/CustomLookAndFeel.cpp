@@ -54,14 +54,24 @@ void CustomLookAndFeel::drawLabel(juce::Graphics& g, juce::Label& label)
     if (! label.isBeingEdited())
     {
         auto alpha = label.isEnabled() ? 1.0f : 0.5f;
-        const juce::Font font (getLabelFont (label).withHeight(16.0f * windowScale));
+        auto font = getLabelFont (label);
         
+        // Dynamically adjust font size based on label bounds
+        juce::String labelText = label.getText();
+        float width = font.getStringWidth(labelText);
+        while (width > label.getWidth() && font.getHeight() > 1) {
+            font.setHeight(font.getHeight() - 1.0f);
+            width = font.getStringWidth(labelText);
+        }
+
         g.setColour (label.findColour (juce::Label::textColourId).withMultipliedAlpha (alpha));
         g.setFont (font);
         juce::Rectangle<int> textArea (label.getBorderSize().subtractedFrom (label.getLocalBounds()));
+        
         g.drawFittedText (label.getText(), textArea, label.getJustificationType(),
                           juce::jmax (1, (int) (textArea.getHeight() / font.getHeight())),
                           label.getMinimumHorizontalScale());
+        
         g.setColour (label.findColour (juce::Label::outlineColourId).withMultipliedAlpha (alpha));
     }
     else if (label.isEnabled())
@@ -71,6 +81,7 @@ void CustomLookAndFeel::drawLabel(juce::Graphics& g, juce::Label& label)
 
     g.drawRect (label.getLocalBounds());
 }
+
 
 juce::Label* CustomLookAndFeel::createSliderTextBox(juce::Slider& slider)
 {

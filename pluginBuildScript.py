@@ -18,17 +18,25 @@ for plugin in plugins:
     if platform.system() == 'Windows':
         os.chdir(plugin)
         subprocess.run(["msbuild", f"Builds/VisualStudio2019/{plugin}.sln", "/t:Build", "/p:Configuration=Release"])
+        
         os.chdir(inno_dir)
         subprocess.run(["ISCC.exe", f"{plugin}WindowsBuildScript.iss", f"/O{output_dir}"])
+        
         os.chdir("../../")
 
     elif platform.system() == 'Darwin':
         subprocess.run(["xcodebuild", "-project", f"Builds/MacOSX/{plugin}.xcodeproj", "-configuration", "Release", "-alltargets"])
+        
+        home_dir = os.path.expanduser("~")
+        plugin_path = os.path.join(home_dir, "Library/Audio/Plug-Ins/Components", f"{plugin}.component")
+        pkg_path = f"../{output_dir}/{plugin}.pkg"
         subprocess.run(["pkgbuild", 
-                        "--root", f"./Builds/MacOSX/build/Release/{plugin}.component", 
-                        "--identifier", f"com.yourcompany.{plugin}", 
-                        "--install-location", "/Library/Audio/Plug-Ins/Components", 
-                        f"../{output_dir}/{plugin}.pkg"])
+                "--root", plugin_path, 
+                "--identifier", f"com.yourcompany.{plugin}", 
+                "--install-location", "/Library/Audio/Plug-Ins/Components", 
+                #"--scripts", "scripts_directory", 
+                f"../{output_dir}/{plugin}.pkg"])
+
         os.chdir("../")
     elif platform.system() == 'Linux':
         subprocess.run(["make", f"Builds/LinuxMakefile/make"])
