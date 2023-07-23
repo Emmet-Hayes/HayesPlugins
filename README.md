@@ -12,7 +12,7 @@ It provides both input and output gain, a meter to visualize gain reduction, as 
 ### HayesDelay
 A free, open-source feedback delay audio plug-in. 
 It creates a circular delay buffer that is written to by the main buffer and then read back from at some time parameter in the past.
-With it, users can create longlasting echo chains with feedback, short slapback effects, as well as panned echos.
+With it, users can create longlasting echo chains with feedback, short slapback effects, and panned echos.
 
 ![alt text](https://github.com/Emmet-Hayes/HayesDelay/raw/master/Images/DelayGUI.png)
 
