@@ -1,6 +1,6 @@
 # HayesPlugins
 
-A free, open-source collection of 8 audio plug-ins covering most common use-cases for music and film sound production. Included are a frequency equalizer, a dynamic compressor, a distortion module, a pitch shifter, a simple feedback delay, a tape delay with flutter and wobble, a feedback delay network reverb, and a convolution reverb. Each plug-in is configured to build as VST3 and AU. All written with JUCE.
+A free, open-source collection of 8 audio plug-ins covering most common use-cases for music and film sound production. Included are a frequency equalizer, a dynamic compressor, a distortion module, a pitch shifter, a simple feedback delay, a tape delay with flutter and wobble, a feedback delay network reverb, and a convolution reverb. Each plug-in is configured to build in VST3 and AU formats and can be used in many popular Digital Audio Workstations such as Ableton, Logic, Cubase, Studio One, and Reaper.
 
 ### HayesCompressor
 A free, open-source Compressor audio plug-in.
