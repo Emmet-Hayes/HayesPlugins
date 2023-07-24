@@ -3,22 +3,24 @@ import subprocess
 import platform
 
 plugin_dir = "."
-output_dir = "HayesInstallers"
+output_dir = "../../HayesInstallers"
+inno_dir = "BuildScripts"
 os.chdir(plugin_dir)
 
 plugins = [d for d in os.listdir() if os.path.isdir(d)]
 
 for plugin in plugins:
-    if str(plugin) == "JUCE" or str(plugin) == "Common" or str(plugin) == "HayesInstallers":
+    if str(plugin) == "JUCE" or str(plugin) == "Common" or str(plugin) == "HayesInstallers" or str(plugin) == ".git":
         continue
+
     os.chdir(plugin)
 
     subprocess.run(["projucer", "--resave", f"{plugin}.jucer"])
 
     if platform.system() == 'Windows':
-        os.chdir(plugin)
         subprocess.run(["msbuild", f"Builds/VisualStudio2019/{plugin}.sln", "/t:Build", "/p:Configuration=Release"])
         
+        print(os.getcwd())
         os.chdir(inno_dir)
         subprocess.run(["ISCC.exe", f"{plugin}WindowsBuildScript.iss", f"/O{output_dir}"])
         
