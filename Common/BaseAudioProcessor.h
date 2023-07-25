@@ -17,6 +17,10 @@ public:
     const juce::String getProgramName(int /*index*/) override { return {}; }
     void changeProgramName(int /*index*/, const juce::String& /*newName*/) override {}
     bool hasEditor() const override { return true; }
+    
+   #ifndef JucePlugin_PreferredChannelConfigurations
+    bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
+   #endif
 
     virtual void prepareToPlay(double sampleRate, int samplesPerBlock) override;
     virtual void processBlock(juce::AudioBuffer<float>&, juce::MidiBuffer&) override;

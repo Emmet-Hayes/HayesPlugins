@@ -5,7 +5,7 @@ import shutil
 root_dir = '.'
 
 # Directories to skip
-skip_dirs = {"Common", "JUCE", "HayesInstallers"}
+skip_dirs = { "Common", "JUCE", "HayesInstallers", "Scripts", ".git" }
 
 for dir_name, sub_dirs, files in os.walk(root_dir):
     # Get the parent directory name
