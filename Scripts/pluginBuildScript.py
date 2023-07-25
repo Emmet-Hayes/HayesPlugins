@@ -15,7 +15,7 @@ scripts_dir = "BuildScripts"
 plugins = [d for d in os.listdir() if os.path.isdir(d)]
 
 for plugin in plugins:
-    if str(plugin) == "JUCE" or str(plugin) == "Common" or str(plugin) == "HayesInstallers" or str(plugin) == ".git" or str(plugin) == "Scripts":
+    if str(plugin) == "JUCE" or str(plugin) == "Common" or str(plugin) == "HayesInstallers" or str(plugin) == ".git" or str(plugin) == "Scripts" or str(plugin) == "HayesBundle":
         continue
 
     os.chdir(plugin)

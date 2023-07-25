@@ -140,7 +140,7 @@ private:
 	{
 		auto w = rect.getWidth();
 		auto h = rect.getHeight();
-		auto right = rect.getRight();
+		//auto right = rect.getRight();
 		auto center = rect.getBottom() - offset;
 		auto gain = h * scale;
 		auto left = rect.getX();
