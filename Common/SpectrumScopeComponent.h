@@ -1,5 +1,6 @@
 #pragma once
 #include <cmath>
+#include "CustomLookAndFeel.h"
 
 constexpr int NUM_PREV_FRAMES = 2;
 
@@ -43,8 +44,9 @@ class SpectrumScopeComponent : public juce::Component
 		             , private Timer
 {
 public:
-	SpectrumScopeComponent(AudioBufferQueue<SampleType>& queueToUse)
-	:   audioBufferQueue(queueToUse) 
+	SpectrumScopeComponent(AudioBufferQueue<SampleType>& queueToUse, CustomLookAndFeel& laf)
+	:   audioBufferQueue(queueToUse)
+    ,   lookAndFeel(laf)
 	{
 		buffer.fill(SampleType(0));
 		setFramesPerSecond(60);
@@ -62,28 +64,33 @@ public:
 		auto h = (SampleType)area.getHeight();
 		auto w = (SampleType)area.getWidth();
 
-		auto spectrumRect = juce::Rectangle<SampleType>{ SampleType(0), SampleType(0), w, h };
+		auto spectrumRect = juce::Rectangle<SampleType>{ SampleType(20), SampleType(0), w, h - 20};
 
 		// draw grid
 		g.setColour(juce::Colours::darkturquoise);
+		g.setFont(lookAndFeel.getCommonMenuFont(scaleH));
 		int numVerticalLines = 10;
 		int numHorizontalLines = 8;
 
 		for (int i = 1; i < numVerticalLines; ++i)
 		{
 			float x = jmap<float>(i, 0, numVerticalLines, spectrumRect.getX(), spectrumRect.getRight());
-			g.drawLine(x, spectrumRect.getY() + 10, x, spectrumRect.getBottom() - 15);
-			g.drawText(xLabels[i - 1], x - 5, spectrumRect.getBottom() - 25, 25, 25, juce::Justification::left);
+			g.drawLine(x, spectrumRect.getY(), x, spectrumRect.getBottom());
+			g.drawText(xLabels[i - 1], x - (5 * scaleW), spectrumRect.getBottom() - (5 * scaleH), 30 * scaleW, 20 * scaleH, juce::Justification::left);
 		}
 
 		for (int i = 1; i < numHorizontalLines; ++i)
 		{
 			float y = jmap<float>(i, 0, numHorizontalLines, spectrumRect.getY(), spectrumRect.getBottom());
-			g.drawLine(spectrumRect.getX() + 20, y, spectrumRect.getRight() - 20, y);
-			g.drawText(ampLabels[i - 1], spectrumRect.getX(), y - 10, 20, 20, juce::Justification::left);
+			g.drawLine(spectrumRect.getX(), y, spectrumRect.getRight(), y);
+			g.drawText(ampLabels[i - 1], 0, y - (10 * scaleH), 30 * scaleW, 20 * scaleH, juce::Justification::left);
 		}
 
-		g.setColour(juce::Colours::hotpink);
+		g.setColour (juce::Colours::aquamarine);
+
+        juce::ColourGradient grad (juce::Colours::pink.withAlpha(0.8f), 0, 0, juce::Colours::blue.withAlpha(0.8f), 0, getLocalBounds().getHeight(), false);
+
+        g.setGradientFill(grad);
 
 		// 8 probes for changes in amplitude
 		for (int i = 0; i < 8; ++i)
@@ -94,7 +101,11 @@ public:
 				for (size_t i = 0; i < prevFrames.size(); ++i)
 				{
 					float opacity = 0.1f + 0.9f * (i / (float)prevFrames.size());
+					
 					g.setColour(juce::Colours::hotpink.withAlpha(opacity));
+					juce::ColourGradient grad (juce::Colours::pink.withAlpha(opacity), 0, 0, juce::Colours::blue.withAlpha(opacity), 0, getLocalBounds().getHeight(), false);
+                    g.setGradientFill(grad);
+
 
 					plot(prevFrames[i].data(), prevFrames[i].size() / 4, g, spectrumRect);
 				}
@@ -102,9 +113,12 @@ public:
 		}
 	}
 
+	void setScale(float newScaleW, float newScaleH) { scaleW = newScaleW; scaleH = newScaleH; }
+
 	void resized() override {}
 
 private:
+	CustomLookAndFeel& lookAndFeel;
 	AudioBufferQueue<SampleType>& audioBufferQueue;
 	std::array<SampleType, AudioBufferQueue<SampleType>::bufferSize> buffer;
 	std::array<std::array<SampleType, 2 * AudioBufferQueue<SampleType>::bufferSize>, NUM_PREV_FRAMES> prevFrames;
@@ -113,8 +127,10 @@ private:
 	juce::dsp::WindowingFunction<SampleType> windowFun{ (size_t)fft.getSize(),
 		                             juce::dsp::WindowingFunction<SampleType>::hann };
 	std::array<SampleType, 2 * AudioBufferQueue<SampleType>::bufferSize> spectrumData;
-	const char* xLabels[9] { "64", "128", "256", "512", "1k", "2k", "4k", "8k", "16k"};
+	const char* xLabels[9] { "50", "100", "200", "400", "800", "1.6k", "3.2k", "6.4k", "13k"};
 	const char* ampLabels[7] { " 18", " 12", "  6", "  0", " -6", "-12", "-18" };
+	float scaleW = 1.0f;
+	float scaleH = 1.0f;
 
 	void timerCallback() override 
 	{
@@ -150,6 +166,14 @@ private:
 
 		SampleType logScaleFactor = w / (log10(maxFreq) - log10(minFreq));
 
+		// create a Path to represent the plot
+		Path plotPath;
+
+		// add the first point to the Path
+		SampleType firstFreq = jmap(SampleType(0), SampleType(0), SampleType(numSamples), minFreq, maxFreq);
+		SampleType firstXPos = (log10(firstFreq) - log10(minFreq)) * logScaleFactor;
+		plotPath.startNewSubPath(left + firstXPos, center - gain * data[0]);
+
 		for (size_t i = 1; i < numSamples; ++i)
 		{
 			SampleType freq = jmap(SampleType(i), SampleType(0), SampleType(numSamples), minFreq, maxFreq);
@@ -158,9 +182,20 @@ private:
 			SampleType xPos = (log10(freq) - log10(minFreq)) * logScaleFactor;
 			SampleType prevXPos = (log10(prevFreq) - log10(minFreq)) * logScaleFactor;
 
-			g.drawLine({ left + prevXPos, center - gain * data[i - 1], left + xPos, center - gain * data[i] });
+			// add each point to the Path
+			plotPath.lineTo(left + xPos, center - gain * data[i]);
 		}
+
+		// close the Path at the bottom
+		plotPath.lineTo(left + w, center);
+		plotPath.lineTo(left, center);
+		plotPath.closeSubPath();
+
+		// fill the Path
+		g.setOpacity(0.33f);
+		g.fillPath(plotPath);
 	}
+
 };
 
 template <typename SampleType>

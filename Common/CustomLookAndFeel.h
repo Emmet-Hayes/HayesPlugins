@@ -21,10 +21,9 @@ public:
     void drawRotarySlider(juce::Graphics&, int, int, int, int, float, const float,
 		                  const float, juce::Slider&) override;
     void setWindowScale(const float& newScale) { windowScale = newScale; }
+    juce::Font getCommonMenuFont(float);
 
 private:
-	juce::Font getCommonMenuFont(float);
-	
     float windowScale = 1.0f;
     float rotaryOutlineBrightness = 1.0f;
 };
