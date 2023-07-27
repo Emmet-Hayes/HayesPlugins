@@ -1,19 +1,10 @@
-/*
- ==============================================================================
- 
- Delay.h
- Created: 18 Jul 2020 7:51:15pm
- Author:  羽翼深蓝Wings
- 
- ==============================================================================
- */
-
 #pragma once
 
 class Delay
 {
 public:
-    Delay(int delayTime_) : delayTime(delayTime_)
+    Delay(int delayTime_) 
+    :   delayTime(delayTime_)
     {
         delayBuffer.setSize(2, size);
         delayBuffer.clear();

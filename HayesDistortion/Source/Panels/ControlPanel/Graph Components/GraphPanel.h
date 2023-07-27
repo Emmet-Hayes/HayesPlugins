@@ -1,17 +1,18 @@
 #pragma once
 
+#include <JuceHeader.h>
+
 #include "../../../HayesDistortionAudioProcessor.h"
 #include "DistortionGraph.h"
 #include "Oscilloscope.h"
 #include "VUPanel.h"
 #include "WidthGraph.h"
-#include <JuceHeader.h>
+
 
 class GraphPanel : public juce::Component
 {
 public:
     GraphPanel (HayesDistortionAudioProcessor&);
-    ~GraphPanel() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
@@ -26,17 +27,10 @@ public:
 private:
     HayesDistortionAudioProcessor& processor;
 
-    // Oscilloscope
     Oscilloscope oscilloscope { processor };
-
-    // VU Meters
     VUPanel vuPanel { processor };
-
-    // Distortion Graph
     DistortionGraph distortionGraph { processor };
-
-    // Width Graph
     WidthGraph widthGraph { processor };
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GraphPanel)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GraphPanel)
 };

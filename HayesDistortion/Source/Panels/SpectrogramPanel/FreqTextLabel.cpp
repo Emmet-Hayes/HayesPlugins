@@ -1,5 +1,5 @@
-#include <JuceHeader.h>
 #include "FreqTextLabel.h"
+
 
 FreqTextLabel::FreqTextLabel (VerticalLine& v) : verticalLine (v)
 {

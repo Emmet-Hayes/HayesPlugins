@@ -1,32 +1,11 @@
-/*
-  ==============================================================================
-
-    VerticalLine.cpp
-    Created: 25 Oct 2020 7:54:46am
-    Author:  羽翼深蓝Wings
-
-  ==============================================================================
-*/
-
-#include <JuceHeader.h>
 #include "VerticalLine.h"
 #include "Multiband.h"
 
-//==============================================================================
-VerticalLine::VerticalLine()
-{
-    //    boundsConstrainer.setMinimumHeight(0);
-}
-
-VerticalLine::~VerticalLine()
-{
-}
 
 void VerticalLine::paint (juce::Graphics& g)
 {
     // draw line that will be added next
     g.setColour (COLOUR1);
-
     g.fillRect (getWidth() / 10.f * 4.f, 0.f, getWidth() / 10.f * 2.f, static_cast<float> (getHeight()));
 
     if (isMouseOverOrDragging())
@@ -34,48 +13,39 @@ void VerticalLine::paint (juce::Graphics& g)
         g.setColour (COLOUR1.withAlpha (0.2f));
         g.fillAll();
     }
-
-    if (isEntered)
-    {
-        //g.setColour(COLOUR1.withAlpha(0.2f));
-        //g.fillAll();
-    }
 }
 
 void VerticalLine::resized()
 {
 }
 
-void VerticalLine::mouseUp (const juce::MouseEvent& e)
+void VerticalLine::mouseUp (const juce::MouseEvent& /*e*/)
 {
     //    move = false;
 }
 
-void VerticalLine::mouseDoubleClick (const juce::MouseEvent& e)
+void VerticalLine::mouseDoubleClick (const juce::MouseEvent& /*e*/)
 {
     // do nothing, override the silder function, which will reset value.
 }
 
-void VerticalLine::mouseEnter (const juce::MouseEvent& e)
+void VerticalLine::mouseEnter (const juce::MouseEvent& /*e*/)
 {
     isEntered = true;
 }
 
-void VerticalLine::mouseExit (const juce::MouseEvent& e)
+void VerticalLine::mouseExit (const juce::MouseEvent& /*e*/)
 {
     isEntered = false;
 }
 
-void VerticalLine::mouseDrag (const juce::MouseEvent& e)
+void VerticalLine::mouseDrag (const juce::MouseEvent& /*e*/)
 {
     // this will call multiband mouseDrag
 }
 
-void VerticalLine::mouseDown (const juce::MouseEvent& e)
+void VerticalLine::mouseDown (const juce::MouseEvent& /*e*/)
 {
-    // call parent mousedown(FreqDividerGroup)
-    //    getParentComponent()->mouseDown(e.getEventRelativeTo(getParentComponent()));
-    //    dragger.startDraggingComponent (this, e);
 }
 
 void VerticalLine::setDeleteState (bool deleteState)
@@ -93,9 +63,9 @@ float VerticalLine::getXPercent()
     return xPercent;
 }
 
-void VerticalLine::setIndex (int index)
+void VerticalLine::setIndex (int pindex)
 {
-    this->index = index;
+    index = pindex;
 }
 
 int VerticalLine::getIndex()

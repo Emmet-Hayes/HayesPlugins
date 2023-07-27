@@ -1,14 +1,15 @@
 #pragma once
 
+#include <JuceHeader.h>
+
 #include "../../../HayesDistortionAudioProcessor.h"
 #include "GraphTemplate.h"
-#include <JuceHeader.h>
+
 
 class WidthGraph : public GraphTemplate, juce::Timer
 {
 public:
     WidthGraph (HayesDistortionAudioProcessor&);
-    ~WidthGraph() override;
 
     void paint (juce::Graphics&) override;
     void timerCallback() override;

@@ -1,13 +1,13 @@
 #include "DistortionGraph.h"
-#include <JuceHeader.h>
 
-DistortionGraph::DistortionGraph (HayesDistortionAudioProcessor& p) : processor (p)
+
+DistortionGraph::DistortionGraph (HayesDistortionAudioProcessor& p) 
+:   processor (p)
 {
     const auto& params = processor.getParameters();
     for (auto param : params)
-    {
         param->addListener (this);
-    }
+
     startTimerHz (60);
 }
 
@@ -15,15 +15,11 @@ DistortionGraph::~DistortionGraph()
 {
     const auto& params = processor.getParameters();
     for (auto param : params)
-    {
         param->removeListener (this);
-    }
 }
 
 void DistortionGraph::paint (juce::Graphics& g)
 {
-    // paint distortion function
-
     auto frameRight = getLocalBounds();
 
     // draw outline
@@ -42,16 +38,15 @@ void DistortionGraph::paint (juce::Graphics& g)
         float maxValue = 2.0f * driveScale * mix + 2.0f * (1.0f - mix);
         float value = -maxValue; // minimum (leftmost)  value for your graph
         float valInc = (maxValue - value) / numPix;
-        float xPos = frameRight.getX();
-        const float posInc = frameRight.getWidth() / numPix;
+        float xPos = static_cast<float>(frameRight.getX());
+        const float posInc = static_cast<float>(frameRight.getWidth() / numPix);
 
         juce::Path p;
 
         bool edgePointL = false;
         bool edgePointR = false;
 
-        // step = 0.5f, maybe high cpu but more accurate graph
-        float step = 0.5f;
+        float step = 0.5f; // step = 0.5f, maybe high cpu but more accurate graph
 
         for (float i = 1; i < numPix; i += step)
         {
@@ -62,50 +57,24 @@ void DistortionGraph::paint (juce::Graphics& g)
 
             // downsample
             if (rateDivide > 1.0f)
-            {
                 valueAfterDrive = ceilf (valueAfterDrive / (rateDivide / 256.0f)) * (rateDivide / 256.0f);
-            }
 
             valueAfterDrive = valueAfterDrive * drive + bias;
 
             switch (mode)
             {
-                case 0:
-                    functionValue = waveshaping::arctanSoftClipping (valueAfterDrive);
-                    break;
-                case 1:
-                    functionValue = waveshaping::expSoftClipping (valueAfterDrive);
-                    break;
-                case 2:
-                    functionValue = waveshaping::tanhSoftClipping (valueAfterDrive);
-                    break;
-                case 3:
-                    functionValue = waveshaping::cubicSoftClipping (valueAfterDrive);
-                    break;
-                case 4:
-                    functionValue = waveshaping::hardClipping (valueAfterDrive);
-                    break;
-                case 5:
-                    functionValue = waveshaping::sausageFattener (valueAfterDrive);
-                    break;
-                case 6:
-                    functionValue = waveshaping::sinFoldback (valueAfterDrive);
-                    break;
-                case 7:
-                    functionValue = waveshaping::linFoldback (valueAfterDrive);
-                    break;
-                case 8:
-                    functionValue = waveshaping::limitClip (valueAfterDrive);
-                    break;
-                case 9:
-                    functionValue = waveshaping::singleSinClip (valueAfterDrive);
-                    break;
-                case 10:
-                    functionValue = waveshaping::logicClip (valueAfterDrive);
-                    break;
-                case 11:
-                    functionValue = waveshaping::tanclip (valueAfterDrive);
-                    break;
+                case 0:  functionValue = waveshaping::arctanSoftClipping (valueAfterDrive); break;
+                case 1:  functionValue = waveshaping::expSoftClipping    (valueAfterDrive); break;
+                case 2:  functionValue = waveshaping::tanhSoftClipping   (valueAfterDrive); break;
+                case 3:  functionValue = waveshaping::cubicSoftClipping  (valueAfterDrive); break;
+                case 4:  functionValue = waveshaping::hardClipping       (valueAfterDrive); break;
+                case 5:  functionValue = waveshaping::sausageFattener    (valueAfterDrive); break;
+                case 6:  functionValue = waveshaping::sinFoldback        (valueAfterDrive); break;
+                case 7:  functionValue = waveshaping::linFoldback        (valueAfterDrive); break;
+                case 8:  functionValue = waveshaping::limitClip          (valueAfterDrive); break;
+                case 9:  functionValue = waveshaping::singleSinClip      (valueAfterDrive); break;
+                case 10: functionValue = waveshaping::logicClip          (valueAfterDrive); break;
+                case 11: functionValue = waveshaping::tanclip            (valueAfterDrive); break;
             }
 
             // retification
@@ -121,43 +90,36 @@ void DistortionGraph::paint (juce::Graphics& g)
             {
                 if (edgePointR == false)
                 {
-                    yPos = frameRight.getY();
+                    yPos = static_cast<float>(frameRight.getY());
                     edgePointR = true;
                 }
                 else
-                {
                     continue;
-                }
             }
 
             if (yPos > frameRight.getBottom())
             {
                 if (edgePointL == false)
-                {
                     continue;
-                }
                 else
-                {
-                    yPos = frameRight.getBottom();
-                }
+                    yPos = static_cast<float>(frameRight.getBottom());
             }
             else if (edgePointL == false)
             {
                 if (mode == 0)
                 {
-                    p.startNewSubPath (xPos, frameRight.getBottom());
+                    p.startNewSubPath (xPos, static_cast<float>(frameRight.getBottom()));
                     p.lineTo (xPos, yPos);
                 }
                 else
-                {
                     p.startNewSubPath (xPos, yPos);
-                }
+
                 edgePointL = true;
             }
             p.lineTo (xPos, yPos);
         }
 
-        juce::ColourGradient grad (juce::Colours::violet.withBrightness (0.9), frameRight.getX() + frameRight.getWidth() / 2, frameRight.getY() + frameRight.getHeight() / 2, juce::Colours::red.withBrightness (0.9).withAlpha (0.0f), frameRight.getX(), frameRight.getY() + frameRight.getHeight() / 2, true);
+        juce::ColourGradient grad (juce::Colours::violet.withBrightness (0.9f), frameRight.getX() + frameRight.getWidth() / 2, frameRight.getY() + frameRight.getHeight() / 2, juce::Colours::red.withBrightness (0.9f).withAlpha (0.0f), frameRight.getX(), static_cast<float>(frameRight.getY() + frameRight.getHeight() / 2), true);
         g.setGradientFill (grad);
         g.strokePath (p, juce::PathStrokeType (2.0f));
     }
@@ -169,26 +131,23 @@ void DistortionGraph::paint (juce::Graphics& g)
     }
 }
 
-void DistortionGraph::setState (int mode, float rec, float mix, float bias, float drive, float rateDivide)
+void DistortionGraph::setState (int pmode, float prec, float pmix, float pbias, float pdrive, float prateDivide)
 {
-    this->mode = mode;
-    this->rec = rec;
-    this->mix = mix;
-    this->bias = bias;
-    this->drive = drive;
-    this->rateDivide = rateDivide;
+    mode = pmode;
+    rec = prec;
+    mix = pmix;
+    bias = pbias;
+    drive = pdrive;
+    rateDivide = prateDivide;
 }
 
-void DistortionGraph::parameterValueChanged (int parameterIndex, float newValue)
+void DistortionGraph::parameterValueChanged (int /*parameterIndex*/, float /*newValue*/)
 {
     parametersChanged.set (true);
 }
 
 void DistortionGraph::timerCallback()
 {
-    if (parametersChanged.compareAndSetBool (false, true))
-    {
-    }
-
+    if (parametersChanged.compareAndSetBool (false, true)) {}
     repaint();
 }

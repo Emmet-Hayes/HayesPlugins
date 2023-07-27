@@ -1,18 +1,20 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "GUI/CustomLookAndFeel.h"
+
 #include "../../Common/BaseAudioProcessorEditor.h"
-#include "Panels/ControlPanel/Graph Components/Oscilloscope.h"
+#include "GUI/CustomLookAndFeel.h"
+#include "GUI/InterfaceDefines.h"
 #include "Panels/ControlPanel/Graph Components/DistortionGraph.h"
-#include "Panels/ControlPanel/Graph Components/WidthGraph.h"
+#include "Panels/ControlPanel/Graph Components/Oscilloscope.h"
 #include "Panels/ControlPanel/Graph Components/VUPanel.h"
+#include "Panels/ControlPanel/Graph Components/WidthGraph.h"
 #include "Panels/ControlPanel/Graph Components/GraphPanel.h"
 #include "Panels/ControlPanel/BandPanel.h"
 #include "Panels/ControlPanel/GlobalPanel.h"
-#include "Panels/SpectrogramPanel/Multiband.h"
 #include "Panels/SpectrogramPanel/FilterControl.h"
-#include "GUI/InterfaceDefines.h"
+#include "Panels/SpectrogramPanel/Multiband.h"
+
 
 class HayesDistortionAudioProcessorEditor : public BaseAudioProcessorEditor
                                           , public juce::Slider::Listener

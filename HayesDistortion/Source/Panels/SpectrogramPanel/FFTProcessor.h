@@ -1,14 +1,7 @@
-/*
-  ==============================================================================
-
-    FFTProcessor.h
-    Created: 12 Nov 2018 2:16:02pm
-    Author:  lenovo
-
-  ==============================================================================
-*/
-#include <JuceHeader.h>
 #pragma once
+
+#include <JuceHeader.h>
+
 
 class SpectrumProcessor
 {
@@ -55,5 +48,5 @@ private:
     float fifo[fftSize];
     juce::dsp::FFT forwardFFT;
     juce::dsp::WindowingFunction<float> window;
-    int fifoIndex = 0;
+    int fifoIndex { 0 };
 };

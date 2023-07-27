@@ -1,27 +1,14 @@
-/*
-  ==============================================================================
-
-    FilterControl.cpp
-    Created: 18 Sep 2021 9:54:04pm
-    Author:  羽翼深蓝Wings
-
-  ==============================================================================
-*/
-
-#include <JuceHeader.h>
-#include "FilterControl.h"
 #include "../../GUI/InterfaceDefines.h"
+#include "FilterControl.h"
 
-//==============================================================================
+
 FilterControl::FilterControl (HayesDistortionAudioProcessor& p, GlobalPanel& panel) 
 :   processor (p)
 ,   globalPanel (panel)
 {
     const auto& params = processor.getParameters();
     for (auto param : params)
-    {
         param->addListener (this);
-    }
     
     updateChain();
     startTimerHz (60);
@@ -35,9 +22,7 @@ FilterControl::~FilterControl()
 {
     const auto& params = processor.getParameters();
     for (auto param : params)
-    {
         param->removeListener (this);
-    }
 }
 
 void FilterControl::paint (juce::Graphics& g)
@@ -71,18 +56,18 @@ void FilterControl::paint (juce::Graphics& g)
         g.fillPath (responseCurve);
     }
     
-    float size = getWidth() / 1000.0f * 15;
+    int size = static_cast<int>(getWidth() / 1000.0f * 15);
     
-    float buttonX = getMouseXYRelative().getX() - size / 2.0f;
-    float buttonY = getMouseXYRelative().getY() - size / 2.0f;
+    int buttonX = static_cast<int>(getMouseXYRelative().getX() - size / 2.0f);
+    int buttonY = static_cast<int>(getMouseXYRelative().getY() - size / 2.0f);
     if (buttonX < 0)
         buttonX = 0;
     if (buttonX > getWidth())
         buttonX = getWidth() - size;
     if (buttonY < getHeight() / 48.0f * (24 - 15) - size / 2.0f)
-        buttonY = getHeight() / 48.0f * (24 - 15) - size / 2.0f;
+        buttonY = static_cast<int>(getHeight() / 48.0f * (24 - 15) - size / 2.0f);
     if (buttonY > getHeight() / 48.0f * (24 + 15) - size / 2.0f)
-        buttonY = getHeight() / 48.0f * (24 + 15) - size / 2.0f;
+        buttonY = static_cast<int>(getHeight() / 48.0f * (24 + 15) - size / 2.0f);
     
     if (draggableLowButton.isMouseButtonDown() && isFilterEnabled)
     {
@@ -115,58 +100,46 @@ void FilterControl::resized()
 
 void FilterControl::setDraggableButtonBounds()
 {
-    float size = getWidth() / 1000.0f * 15;
-    float lowcutX = getWidth() * juce::mapFromLog10 (static_cast<double> (*processor.apvts.getRawParameterValue (LOWCUT_FREQ_ID)), 20.0, 20000.0);
-    float peakX = getWidth() * juce::mapFromLog10 (static_cast<double> (*processor.apvts.getRawParameterValue (PEAK_FREQ_ID)), 20.0, 20000.0);
-    float highcutX = getWidth() * juce::mapFromLog10 (static_cast<double> (*processor.apvts.getRawParameterValue (HIGHCUT_FREQ_ID)), 20.0, 20000.0);
+    int size = static_cast<int>(getWidth() / 1000.0f * 15);
+    int lowcutX = static_cast<int>(getWidth() * juce::mapFromLog10(static_cast<double>(*processor.apvts.getRawParameterValue (LOWCUT_FREQ_ID)), 20.0, 20000.0));
+    int peakX = static_cast<int>(getWidth() * juce::mapFromLog10(static_cast<double>(*processor.apvts.getRawParameterValue (PEAK_FREQ_ID)), 20.0, 20000.0));
+    int highcutX = static_cast<int>(getWidth() * juce::mapFromLog10(static_cast<double>(*processor.apvts.getRawParameterValue (HIGHCUT_FREQ_ID)), 20.0, 20000.0));
     
-    float lowcutY = getHeight() / 2.0f * *processor.apvts.getRawParameterValue (LOWCUT_GAIN_ID) / 24.0f;
-    float peakY = getHeight() / 2.0f * *processor.apvts.getRawParameterValue (PEAK_GAIN_ID) / 24.0f;
-    float highcutY = getHeight() / 2.0f * *processor.apvts.getRawParameterValue (HIGHCUT_GAIN_ID) / 24.0f;
+    int lowcutY = static_cast<int>(getHeight() / 2.0f * *processor.apvts.getRawParameterValue(LOWCUT_GAIN_ID) / 24.0f);
+    int peakY = static_cast<int>(getHeight() / 2.0f * *processor.apvts.getRawParameterValue(PEAK_GAIN_ID) / 24.0f);
+    int highcutY = static_cast<int>(getHeight() / 2.0f * *processor.apvts.getRawParameterValue(HIGHCUT_GAIN_ID) / 24.0f);
     
-    draggableLowButton.setBounds (lowcutX - size / 2.0f, getHeight() / 2.0f - lowcutY - size / 2.0f, size, size);
-    draggablePeakButton.setBounds (peakX - size / 2.0f, getHeight() / 2.0f - peakY - size / 2.0f, size, size);
-    draggableHighButton.setBounds (highcutX - size / 2.0f, getHeight() / 2.0f - highcutY - size / 2.0f, size, size);
+    draggableLowButton.setBounds(lowcutX - size / 2, getHeight() / 2 - lowcutY - size / 2, size, size);
+    draggablePeakButton.setBounds(peakX - size / 2, getHeight() / 2 - peakY - size / 2, size, size);
+    draggableHighButton.setBounds(highcutX - size / 2, getHeight() / 2 - highcutY - size / 2, size, size);
 }
-//void FilterControl::setParams(float lowCut,
-//                              float highCut,
-//                              float cutRes,
-//                              float peak,
-//                              float peakRes)
-//{
-//    mLowCut = lowCut;
-//    mHighCut = highCut;
-//    mCutRes = cutRes;
-//    mPeak = peak;
-//    mPeakRes = peakRes;
-//}
 
 void FilterControl::updateChain()
 {
     auto chainSettings = getChainSettings (processor.apvts);
     
-    monoChain.setBypassed<ChainPositions::LowCut> (chainSettings.lowCutBypassed);
-    monoChain.setBypassed<ChainPositions::Peak> (chainSettings.peakBypassed);
-    monoChain.setBypassed<ChainPositions::HighCut> (chainSettings.highCutBypassed);
-    monoChain.setBypassed<ChainPositions::LowCutQ> (chainSettings.lowCutBypassed);
-    monoChain.setBypassed<ChainPositions::HighCutQ> (chainSettings.highCutBypassed);
+    monoChain.setBypassed<ChainPositions::LowCut>(chainSettings.lowCutBypassed);
+    monoChain.setBypassed<ChainPositions::Peak>(chainSettings.peakBypassed);
+    monoChain.setBypassed<ChainPositions::HighCut>(chainSettings.highCutBypassed);
+    monoChain.setBypassed<ChainPositions::LowCutQ>(chainSettings.lowCutBypassed);
+    monoChain.setBypassed<ChainPositions::HighCutQ>(chainSettings.highCutBypassed);
     
-    auto peakCoefficients = makePeakFilter (chainSettings, processor.getSampleRate());
-    updateCoefficients (monoChain.get<ChainPositions::Peak>().coefficients, peakCoefficients);
+    auto peakCoefficients = makePeakFilter(chainSettings, processor.getSampleRate());
+    updateCoefficients(monoChain.get<ChainPositions::Peak>().coefficients, peakCoefficients);
     
-    auto lowCutCoefficients = makeLowCutFilter (chainSettings, processor.getSampleRate());
-    auto highCutCoefficients = makeHighCutFilter (chainSettings, processor.getSampleRate());
+    auto lowCutCoefficients = makeLowCutFilter(chainSettings, processor.getSampleRate());
+    auto highCutCoefficients = makeHighCutFilter(chainSettings, processor.getSampleRate());
     
-    auto lowCutQCoefficients = makeLowcutQFilter (chainSettings, processor.getSampleRate());
-    updateCoefficients (monoChain.get<ChainPositions::LowCutQ>().coefficients, lowCutQCoefficients);
-    auto highCutQCoefficients = makeHighcutQFilter (chainSettings, processor.getSampleRate());
-    updateCoefficients (monoChain.get<ChainPositions::HighCutQ>().coefficients, highCutQCoefficients);
+    auto lowCutQCoefficients = makeLowcutQFilter(chainSettings, processor.getSampleRate());
+    updateCoefficients(monoChain.get<ChainPositions::LowCutQ>().coefficients, lowCutQCoefficients);
+    auto highCutQCoefficients = makeHighcutQFilter(chainSettings, processor.getSampleRate());
+    updateCoefficients(monoChain.get<ChainPositions::HighCutQ>().coefficients, highCutQCoefficients);
     
-    updateCutFilter (monoChain.get<ChainPositions::LowCut>(),
+    updateCutFilter(monoChain.get<ChainPositions::LowCut>(),
                      lowCutCoefficients,
                      chainSettings.lowCutSlope);
     
-    updateCutFilter (monoChain.get<ChainPositions::HighCut>(),
+    updateCutFilter(monoChain.get<ChainPositions::HighCut>(),
                      highCutCoefficients,
                      chainSettings.highCutSlope);
 }
@@ -220,7 +193,7 @@ void FilterControl::updateResponseCurve()
             mag *= highcutQ.coefficients->getMagnitudeForFrequency (freq, sampleRate);
         }
         
-        mags[i] = juce::Decibels::gainToDecibels (mag);
+        mags[i] = juce::Decibels::gainToDecibels(mag);
     }
     
     responseCurve.clear();
@@ -232,22 +205,20 @@ void FilterControl::updateResponseCurve()
         return juce::jmap (input, -24.0, 24.0, outputMin, outputMax);
     };
     
-    juce::Point<float> startPoint (-3, getHeight() + 2);
-    juce::Point<float> endPoint (getWidth() + 3, getHeight() + 2);
+    juce::Point<float> startPoint (-3.f, static_cast<float>(getHeight() + 2));
+    juce::Point<float> endPoint (static_cast<float>(getWidth() + 3), static_cast<float>(getHeight() + 2));
     
     responseCurve.startNewSubPath (startPoint);
     
     for (size_t i = 0; i < mags.size(); ++i)
-    {
         responseCurve.lineTo (0 + i, map (mags[i]));
-    }
     
     responseCurve.lineTo (endPoint);
     
     responseCurve.closeSubPath();
 }
 
-void FilterControl::parameterValueChanged (int parameterIndex, float newValue)
+void FilterControl::parameterValueChanged (int /*parameterIndex*/, float /*newValue*/)
 {
     parametersChanged.set (true);
 }

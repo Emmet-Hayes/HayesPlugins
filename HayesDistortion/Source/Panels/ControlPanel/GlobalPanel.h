@@ -1,7 +1,9 @@
 #pragma once
 
 #include <JuceHeader.h>
+
 #include "../../GUI/CustomLookAndFeel.h"
+
 
 class GlobalPanel : public juce::Component,
                     public juce::Slider::Listener,
@@ -28,8 +30,6 @@ public:
     void setToggleButtonState (juce::String toggleButton);
 
 private:
-    float scale = 1.0f;
-
     void sliderValueChanged (juce::Slider* slider) override;
     void comboBoxChanged (juce::ComboBox* combobox) override;
     void buttonClicked (juce::Button* clickedButton) override;
@@ -40,13 +40,13 @@ private:
 
     enum RadioButtonIds
     {
-        // filter state: off, pre, post
-        filterStateButtons = 1001,
-        // filter mode: low, band, high
-        filterModeButtons = 1002,
-        // switches global
-        switchButtonsGlobal = 1005
+        
+        filterStateButtons  = 1001, // filter state: off, pre, post
+        filterModeButtons   = 1002, // filter mode: low, band, high
+        switchButtonsGlobal = 1005  // switches global
     };
+
+    float scale { 1.0f };
 
     juce::Rectangle<int> globalEffectArea;
     juce::Rectangle<int> outputKnobArea;
@@ -95,9 +95,6 @@ private:
 
     // Buttons
     juce::TextButton
-//        filterOffButton,
-//        filterPreButton,
-//        filterPostButton,
         filterLowPassButton,
         filterPeakButton,
         filterHighPassButton;

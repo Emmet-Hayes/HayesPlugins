@@ -1,24 +1,5 @@
-/*
-  ==============================================================================
-
-    GraphTemplate.cpp
-    Created: 5 Oct 2021 11:42:57am
-    Author:  羽翼深蓝Wings
-
-  ==============================================================================
-*/
-
 #include "GraphTemplate.h"
-#include <JuceHeader.h>
 
-//==============================================================================
-GraphTemplate::GraphTemplate()
-{
-}
-
-GraphTemplate::~GraphTemplate()
-{
-}
 
 void GraphTemplate::paint (juce::Graphics& g)
 {
@@ -31,9 +12,9 @@ void GraphTemplate::resized()
 {
 }
 
-void GraphTemplate::setScale (float scale)
+void GraphTemplate::setScale (float pscale)
 {
-    this->scale = scale;
+    scale = pscale;
 }
 
 float GraphTemplate::getScale()
@@ -51,7 +32,7 @@ void GraphTemplate::setZoomState (bool zoomState)
     mZoomState = zoomState;
 }
 
-void GraphTemplate::mouseDown (const juce::MouseEvent& e)
+void GraphTemplate::mouseDown (const juce::MouseEvent& /*e*/)
 {
     if (mZoomState)
     {
@@ -65,12 +46,12 @@ void GraphTemplate::mouseDown (const juce::MouseEvent& e)
     }
 }
 
-void GraphTemplate::mouseEnter (const juce::MouseEvent& e)
+void GraphTemplate::mouseEnter (const juce::MouseEvent& /*e*/)
 {
     isMouseOn = true;
 }
 
-void GraphTemplate::mouseExit (const juce::MouseEvent& e)
+void GraphTemplate::mouseExit (const juce::MouseEvent& /*e*/)
 {
     isMouseOn = false;
 }

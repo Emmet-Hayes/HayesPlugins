@@ -1,18 +1,16 @@
-#include <JuceHeader.h>
 #include "SpectrumComponent.h"
+
 
 const int SpectrumComponent::frequenciesForLines[] = { 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000, 20000 };
 const int SpectrumComponent::numberOfLines = 28;
 
-SpectrumComponent::SpectrumComponent() : numberOfBins (1024), mBinWidth (44100 / (float) 2048)
+SpectrumComponent::SpectrumComponent() 
+:   numberOfBins { 1024 }
+,   mBinWidth { 44100 / (float)2048 }
 {
 }
 
-SpectrumComponent::~SpectrumComponent()
-{
-}
-
-void SpectrumComponent::paint (juce::Graphics& g)
+void SpectrumComponent::paint(juce::Graphics& g)
 {
     // paint background
     g.setColour (juce::Colours::darkmagenta.withBrightness(0.2f));
@@ -20,13 +18,13 @@ void SpectrumComponent::paint (juce::Graphics& g)
 
     // paint horizontal lines and frequency numbers
     g.setColour (juce::Colours::lightgrey.withAlpha (0.2f));
-    g.drawLine (0, getHeight() / 5, getWidth(), getHeight() / 5, 1);
+    g.drawLine (0.f, static_cast<float>(getHeight() / 5), static_cast<float>(getWidth()), static_cast<float>(getHeight()) / 5, 1.f);
 
     for (int i = 0; i < numberOfLines; ++i)
     {
         const double proportion = frequenciesForLines[i] / 20000.0;
-        int xPos = transformToLog (proportion * 20000) * (getWidth());
-        g.drawVerticalLine (xPos, getHeight() / 5, getHeight());
+        int xPos = static_cast<int>(transformToLog (proportion * 20000) * (getWidth()));
+        g.drawVerticalLine (xPos, static_cast<float>(getHeight() / 5), static_cast<float>(getHeight()));
         if (frequenciesForLines[i] == 10 || frequenciesForLines[i] == 100 || frequenciesForLines[i] == 200)
             g.drawFittedText (static_cast<juce::String> (frequenciesForLines[i]), xPos - 30, 0, 60, getHeight() / 5, juce::Justification::centred, 2);
         else if (frequenciesForLines[i] == 1000 || frequenciesForLines[i] == 10000 || frequenciesForLines[i] == 2000)
@@ -40,7 +38,7 @@ void SpectrumComponent::paint (juce::Graphics& g)
     // paint current spectrum
     g.setColour (juce::Colours::white);
     paintSpectrum();
-    currentSpectrumImage.multiplyAllAlphas (0.9);
+    currentSpectrumImage.multiplyAllAlphas (0.9f);
     currentSpectrumImage.moveImageSection (0, 10, 0, 0, currentSpectrumImage.getWidth(), currentSpectrumImage.getHeight());
     g.drawImageAt (currentSpectrumImage, 0, 0);
 
@@ -49,25 +47,25 @@ void SpectrumComponent::paint (juce::Graphics& g)
     g.drawImageAt (maxSpectrumImage, 0, 0);
 
     // paint peak text
-    float mouseX = getMouseXYRelative().getX();
-    float mouseY = getMouseXYRelative().getY();
+    float mouseX = static_cast<float>(getMouseXYRelative().getX());
+    float mouseY = static_cast<float>(getMouseXYRelative().getY());
 
     if (mouseX > 0 && mouseX < getWidth()
         && mouseY > 0 && mouseY < getHeight())
-    {
         mouseOver = true;
-    }
     else
-    {
         mouseOver = false;
-    }
 
     if (maxDecibelValue >= -99.9f && mouseOver)
     {
-        float boxWidth = 100.0f;
+        int boxWidth = 100;
+        int mdpx = static_cast<int>(maxDecibelPoint.getX());
+        int mdpy = static_cast<int>(maxDecibelPoint.getY());
         g.setColour (juce::Colours::lightgrey);
-        g.drawText (juce::String (maxDecibelValue, 1) + " db", maxDecibelPoint.getX() - boxWidth / 2.0f, maxDecibelPoint.getY() - boxWidth / 4.0f, boxWidth, boxWidth, juce::Justification::centred);
-        g.drawText (juce::String (static_cast<int> (maxFreq)) + " Hz", maxDecibelPoint.getX() - boxWidth / 2.0f, maxDecibelPoint.getY(), boxWidth, boxWidth, juce::Justification::centred);
+        g.drawText(juce::String (maxDecibelValue, 1) + " db", mdpx - boxWidth / 2, 
+                   mdpy - boxWidth / 4, boxWidth, boxWidth, juce::Justification::centred);
+        g.drawText (juce::String (static_cast<int> (maxFreq)) + " Hz", mdpx - boxWidth / 2, 
+                                  mdpy, boxWidth, boxWidth, juce::Justification::centred);
     }
     else
     {
@@ -75,9 +73,7 @@ void SpectrumComponent::paint (juce::Graphics& g)
         maxFreq = 0.0f;
         maxDecibelPoint.setXY (-10.0f, -10.0f);
         for (int i = 0; i < 1024; i++)
-        {
             maxData[i] = 0;
-        }
     }
 }
 
@@ -103,53 +99,35 @@ void SpectrumComponent::paintSpectrum()
     auto maxdB = 0.0f;
 
     juce::Path currentSpecPath;
-    currentSpecPath.startNewSubPath (0, height);
+    currentSpecPath.startNewSubPath (0.f, static_cast<float>(height));
 
     juce::Path maxSpecPath;
-    maxSpecPath.startNewSubPath (0, height + 1);
+    maxSpecPath.startNewSubPath (0.f, static_cast<float>(height + 1));
     int resolution = 2;
     for (int i = 1; i < numberOfBins; i += resolution)
     {
         // sample range [0, 1] to decibel range[-∞, 0] to [0, 1]
-        auto fftSize = 1 << 11;
         float currentDecibel = juce::Decibels::gainToDecibels (spectrumData[i] / static_cast<float> (numberOfBins));
-        float maxDecibel = juce::Decibels::gainToDecibels (maxData[i])
-                           - juce::Decibels::gainToDecibels (static_cast<float> (fftSize));
         float yPercent = juce::jmap (juce::jlimit (mindB, maxdB, currentDecibel),
                                      mindB,
                                      maxdB,
                                      0.0f,
                                      1.0f);
-        float yMaxPercent = juce::jmap (juce::jlimit (mindB, maxdB, maxDecibel),
-                                        mindB,
-                                        maxdB,
-                                        0.0f,
-                                        1.0f);
-        // skip some points to save cpu
-        //        if (i > numberOfBins / 8 && i % 2 != 0) continue;
-        //        if (i > numberOfBins / 4 && i % 3 != 0) continue;
-        //        if (i > numberOfBins / 2 && i % 4 != 0) continue;
-        //        if (i > numberOfBins / 4 * 3 && i % 10 != 0) continue;
 
         // connect points
-        double currentFreq = i * mBinWidth;
+        double currentFreq = i * static_cast<double>(mBinWidth);
         float currentX = transformToLog (currentFreq) * width;
         float currentY = juce::jmap (yPercent, 0.0f, 1.0f, (float) height, 0.0f);
-        float maxY = juce::jmap (yMaxPercent, 0.0f, 1.0f, (float) height, 0.0f);
         currentSpecPath.lineTo (currentX, currentY);
-
-        //maxSpecPath.lineTo (currentX, maxY);
 
         if (currentDecibel > maxDecibelValue)
         {
             maxDecibelValue = currentDecibel;
-            maxFreq = currentFreq;
+            maxFreq = static_cast<float>(currentFreq);
             maxDecibelPoint.setXY (currentX, currentY);
         }
         if (spectrumData[i] > maxData[i])
-        {
             maxData[i] = spectrumData[i];
-        }
 
         // reference: https://docs.juce.com/master/tutorial_spectrum_analyser.html
     }
@@ -158,18 +136,18 @@ void SpectrumComponent::paintSpectrum()
     juce::Path roundedCurrentPath = currentSpecPath.createPathWithRoundedCorners (10.0f);
 
     // draw the outline of the path
-    roundedCurrentPath.lineTo (width, height);
-    roundedCurrentPath.lineTo (0, height);
+    roundedCurrentPath.lineTo (static_cast<float>(width), static_cast<float>(height));
+    roundedCurrentPath.lineTo (0.f, static_cast<float>(height));
     roundedCurrentPath.closeSubPath();
 
     juce::Path roundedMaxPath = maxSpecPath.createPathWithRoundedCorners (10.0f);
-    roundedMaxPath.lineTo (width, height + 1);
+    roundedMaxPath.lineTo (static_cast<float>(width), static_cast<float>(height + 1));
     //    roundedMaxPath.lineTo(0, height);
     //    roundedMaxPath.closeSubPath();
 
     gCurrent.setColour (juce::Colours::aquamarine);
 
-    juce::ColourGradient grad (juce::Colours::pink.withAlpha(0.8f), 0, 0, juce::Colours::red.withAlpha(0.8f), 0, getLocalBounds().getHeight(), false);
+    juce::ColourGradient grad (juce::Colours::pink.withAlpha(0.8f), 0, 0, juce::Colours::red.withAlpha(0.8f), 0, static_cast<float>(getLocalBounds().getHeight()), false);
 
     gCurrent.setGradientFill (grad);
     gCurrent.fillPath (roundedCurrentPath);
@@ -202,7 +180,6 @@ float SpectrumComponent::transformFromLog (double between0and1) // x to freq
 {
     // input: 0.1-0.9 x pos
     // output: freq
-
     auto value = juce::mapToLog10 (between0and1, 20.0, 20000.0);
     return static_cast<float> (value);
 }

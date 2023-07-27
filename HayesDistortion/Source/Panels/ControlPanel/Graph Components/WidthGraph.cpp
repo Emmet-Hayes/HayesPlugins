@@ -1,14 +1,10 @@
 #include "../../../GUI/InterfaceDefines.h"
 #include "WidthGraph.h"
-#include <JuceHeader.h>
+
 
 WidthGraph::WidthGraph (HayesDistortionAudioProcessor& p) : processor (p)
 {
     startTimerHz (60);
-}
-
-WidthGraph::~WidthGraph()
-{
 }
 
 void WidthGraph::paint (juce::Graphics& g)
@@ -79,5 +75,4 @@ void WidthGraph::timerCallback()
 
 void WidthGraph::resized()
 {
-    // TODO: resize
 }

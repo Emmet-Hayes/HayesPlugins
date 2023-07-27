@@ -1,11 +1,14 @@
 #pragma once
 
 #include <JuceHeader.h>
+
 #include "../../GUI/CustomLookAndFeel.h"
 #include "VerticalLine.h"
 #include "SpectrumComponent.h"
 
-class FreqTextLabel : public juce::Component, juce::Timer
+
+class FreqTextLabel : public juce::Component
+                    , juce::Timer
 {
 public:
     FreqTextLabel (VerticalLine& v);

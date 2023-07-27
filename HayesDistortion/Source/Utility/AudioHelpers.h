@@ -1,14 +1,5 @@
-/*
-  ==============================================================================
-
-    AudioHelpers.h
-    Created: 11 Apr 2021 1:07:30pm
-    Author:  羽翼深蓝Wings
-
-  ==============================================================================
-*/
-
 #pragma once
+#include <JuceHeader.h>
 
 static inline float dBToNormalizedGain(float inValue)
 {
@@ -21,13 +12,9 @@ inline float helper_denormalize(float inValue)
 {
     float absValue = fabs(inValue);
     if (absValue < 1e-15)
-    {
         return 0.0f;
-    }
     else
-    {
         return inValue;
-    }
 }
 
 // filter
@@ -41,9 +28,9 @@ enum Slope
 
 struct ChainSettings
 {
-    float peakFreq { 0 }, peakGainInDecibels{ 0 }, peakQuality {1.0f};
-    float lowCutFreq { 0 }, highCutFreq { 0 }, lowCutQuality {1.0f}, highCutQuality {1.0f},
-    lowCutGainInDecibels{ 0 }, highCutGainInDecibels{ 0 };
+    float peakFreq { 0 }, peakGainInDecibels { 0 }, peakQuality { 1.0f };
+    float lowCutFreq { 0 }, highCutFreq { 0 }, lowCutQuality {1.0f}, highCutQuality { 1.0f },
+    lowCutGainInDecibels { 0 }, highCutGainInDecibels { 0 };
     
     Slope lowCutSlope { Slope::Slope_12 }, highCutSlope { Slope::Slope_12 };
     
@@ -109,21 +96,9 @@ void updateCutFilter(ChainType& chain,
 
     switch( slope )
     {
-        case Slope_48:
-        {
-            update<3>(chain, coefficients);
-        }
-        case Slope_36:
-        {
-            update<2>(chain, coefficients);
-        }
-        case Slope_24:
-        {
-            update<1>(chain, coefficients);
-        }
-        case Slope_12:
-        {
-            update<0>(chain, coefficients);
-        }
+        case Slope_48: update<3>(chain, coefficients);
+        case Slope_36: update<2>(chain, coefficients);
+        case Slope_24: update<1>(chain, coefficients);
+        case Slope_12: update<0>(chain, coefficients);
     }
 }

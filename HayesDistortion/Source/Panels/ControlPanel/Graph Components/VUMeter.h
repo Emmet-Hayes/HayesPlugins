@@ -1,7 +1,9 @@
 #pragma once
 
-#include "../../../HayesDistortionAudioProcessor.h"
 #include <JuceHeader.h>
+
+#include "../../../HayesDistortionAudioProcessor.h"
+
 
 class VUMeter : public juce::Component, juce::Timer
 {

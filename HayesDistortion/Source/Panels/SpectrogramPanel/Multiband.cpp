@@ -1,6 +1,7 @@
-#include <JuceHeader.h>
-#include "Multiband.h"
 #include <algorithm>
+
+#include "Multiband.h"
+
 
 Multiband::Multiband(HayesDistortionAudioProcessor& p) 
 :   processor (p)
@@ -26,7 +27,7 @@ Multiband::Multiband(HayesDistortionAudioProcessor& p)
         addAndMakeVisible (*freqDividerGroup[i]);
         (freqDividerGroup[i]->getVerticalLine()).addListener (this);
         (freqDividerGroup[i]->getVerticalLine()).addMouseListener (this, true);
-        float freqValue = freqDividerGroup[i]->getVerticalLine().getValue();
+        float freqValue = static_cast<float>(freqDividerGroup[i]->getVerticalLine().getValue());
         float xPercent = static_cast<float> (SpectrumComponent::transformToLog (freqValue));
         freqDividerGroup[i]->getVerticalLine().setXPercent (xPercent);
 
@@ -58,10 +59,6 @@ Multiband::Multiband(HayesDistortionAudioProcessor& p)
     freqDividerGroupAttachment3 = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment> (processor.apvts, LINE_STATE_ID3, *freqDividerGroup[2]);
 }
 
-Multiband::~Multiband()
-{
-}
-
 void Multiband::paint (juce::Graphics& g)
 {
     // send band buffer to graphs
@@ -70,10 +67,10 @@ void Multiband::paint (juce::Graphics& g)
 
     // draw line that will be added next
     float startY = 0;
-    float endY = getHeight();
+    float endY = static_cast<float>(getHeight());
     auto mousePos = getMouseXYRelative();
-    float xPos = mousePos.getX();
-    float yPos = mousePos.getY();
+    float xPos = static_cast<float>(mousePos.getX());
+    float yPos = static_cast<float>(mousePos.getY());
 
     if (yPos >= startY && yPos <= startY + getHeight() / 5 && lineNum < 3)
     {
@@ -377,7 +374,7 @@ int Multiband::sortLines()
 
     for (int i = 0; i < freqVector.size(); i++)
     {
-        freqDividerGroup[i]->setFreq (freqVector[i]);
+        freqDividerGroup[i]->setFreq (static_cast<float>(freqVector[i]));
         freqDividerGroup[i]->setToggleState (true, juce::sendNotificationSync);
     }
     for (auto i = freqVector.size(); i < 3; i++)
@@ -398,7 +395,7 @@ void Multiband::setLineIndex()
     }
 }
 
-void Multiband::mouseUp (const juce::MouseEvent& e)
+void Multiband::mouseUp (const juce::MouseEvent& /*e*/)
 {
 }
 
@@ -444,13 +441,13 @@ void Multiband::mouseDown (const juce::MouseEvent& e)
                     // create lines and close buttons and then set state
                     if (! freqDividerGroup[i]->getToggleState())
                     {
-                        freqDividerGroup[i]->getVerticalLine().setXPercent (xPercent);
-                        int freq = static_cast<int> (SpectrumComponent::transformFromLog (xPercent));
-                        freqDividerGroup[i]->setFreq (freq);
-                        freqDividerGroup[i]->setToggleState (true, juce::sendNotificationSync);
+                        freqDividerGroup[i]->getVerticalLine().setXPercent(xPercent);
+                        float freq = static_cast<float>(SpectrumComponent::transformFromLog (xPercent));
+                        freqDividerGroup[i]->setFreq(freq);
+                        freqDividerGroup[i]->setToggleState(true, juce::sendNotificationSync);
                         int changeIndex = sortLines();
                         processor.setLineNum();
-                        setStatesWhenAdd (changeIndex);
+                        setStatesWhenAdd(changeIndex);
                         break;
                     }
                 }
@@ -508,7 +505,8 @@ void Multiband::setLineRelatedBoundsByX()
         if (freqDividerGroup[i]->getToggleState())
         {
             float xPercent = freqDividerGroup[i]->getVerticalLine().getXPercent();
-            freqDividerGroup[i]->setBounds (xPercent * getWidth() - getWidth() / 200, 0, getWidth() / 10.0f, getHeight());
+            freqDividerGroup[i]->setBounds (static_cast<int>(xPercent * getWidth() - getWidth() / 200), 0, 
+                                            static_cast<int>(getWidth() / 10.0f), getHeight());
         }
     }
 }
@@ -531,25 +529,27 @@ void Multiband::setSoloRelatedBounds()
         }
     }
     // setBounds of soloButtons and enableButtons
+    int isize = static_cast<int>(size);
+    int imargin = static_cast<int>(margin);
     if (lineNum >= 1)
     {
-        enableButton[0]->setBounds (freqDividerGroup[0]->getX() / 2 - size, margin, size, size);
-        soloButton[0]->setBounds (freqDividerGroup[0]->getX() / 2 + size, margin, size, size);
-        closeButton[0]->setBounds (freqDividerGroup[0]->getX() / 2, getHeight() - size * 2, size, size);
+        enableButton[0]->setBounds(freqDividerGroup[0]->getX() / 2 - isize, imargin, isize, isize);
+        soloButton[0]->setBounds(freqDividerGroup[0]->getX() / 2 + isize, imargin, isize, isize);
+        closeButton[0]->setBounds (freqDividerGroup[0]->getX() / 2, getHeight() - isize * 2, isize, isize);
         for (int i = 1; i < lineNum; i++)
         {
-            enableButton[i]->setBounds ((freqDividerGroup[i]->getX() + freqDividerGroup[i - 1]->getX()) / 2 - size, margin, size, size);
-            soloButton[i]->setBounds ((freqDividerGroup[i]->getX() + freqDividerGroup[i - 1]->getX()) / 2 + size, margin, size, size);
-            closeButton[i]->setBounds ((freqDividerGroup[i]->getX() + freqDividerGroup[i - 1]->getX()) / 2, getHeight() - size * 2, size, size);
+            enableButton[i]->setBounds ((freqDividerGroup[i]->getX() + freqDividerGroup[i - 1]->getX()) / 2 - isize, imargin, isize, isize);
+            soloButton[i]->setBounds ((freqDividerGroup[i]->getX() + freqDividerGroup[i - 1]->getX()) / 2 + isize, imargin, isize, isize);
+            closeButton[i]->setBounds ((freqDividerGroup[i]->getX() + freqDividerGroup[i - 1]->getX()) / 2, getHeight() - isize * 2, isize, isize);
         }
-        enableButton[lineNum]->setBounds ((freqDividerGroup[lineNum - 1]->getX() + getWidth()) / 2 - size, margin, size, size);
-        soloButton[lineNum]->setBounds ((freqDividerGroup[lineNum - 1]->getX() + getWidth()) / 2 + size, margin, size, size);
-        closeButton[lineNum]->setBounds ((freqDividerGroup[lineNum - 1]->getX() + getWidth()) / 2, getHeight() - size * 2, size, size);
+        enableButton[lineNum]->setBounds ((freqDividerGroup[lineNum - 1]->getX() + getWidth()) / 2 - isize, imargin, isize, isize);
+        soloButton[lineNum]->setBounds ((freqDividerGroup[lineNum - 1]->getX() + getWidth()) / 2 + isize, imargin, isize, isize);
+        closeButton[lineNum]->setBounds ((freqDividerGroup[lineNum - 1]->getX() + getWidth()) / 2, getHeight() - isize * 2, isize, isize);
     }
     else if (lineNum == 0)
     {
-        enableButton[0]->setBounds (getWidth() / 2 - size, margin, size, size);
-        soloButton[0]->setBounds (getWidth() / 2 + size, margin, size, size);
+        enableButton[0]->setBounds (getWidth() / 2 - isize, imargin, isize, isize);
+        soloButton[0]->setBounds (getWidth() / 2 + isize, imargin, isize, isize);
         closeButton[0]->setVisible (false);
     }
 }
@@ -572,9 +572,9 @@ void Multiband::sliderValueChanged (juce::Slider* slider)
     {
         if (slider == &freqDividerGroup[i]->getVerticalLine())
         {
-            int freq = slider->getValue();
-            freqDividerGroup[i]->setFreq (freq);
-            freqDividerGroup[i]->moveToX (lineNum, freqDividerGroup[i]->getVerticalLine().getXPercent(), limitLeft, freqDividerGroup);
+            float freq = static_cast<float>(slider->getValue());
+            freqDividerGroup[i]->setFreq(freq);
+            freqDividerGroup[i]->moveToX(lineNum, freqDividerGroup[i]->getVerticalLine().getXPercent(), limitLeft, freqDividerGroup);
         }
     }
     // set focus index if focus is larger than max line num
@@ -620,23 +620,23 @@ void Multiband::setBandBypassStates (int index, bool state)
     enableButton[index]->setToggleState (state, juce::NotificationType::dontSendNotification);
 }
 
-void Multiband::setMasks (juce::Graphics& g, int index, int lineNumLimit, int x, int y, int width, int height, int mouseX, int mouseY)
+void Multiband::setMasks (juce::Graphics& g, int index, int lineNumLimit, int px, int py, int pwidth, int pheight, int mouseX, int mouseY)
 {
     // set focus mask
     if (lineNum > lineNumLimit && focusIndex == index)
     {
         juce::ColourGradient grad (COLOUR5.withAlpha (0.2f), 0, 0, COLOUR1.withAlpha (0.2f), getLocalBounds().getWidth(), 0, false);
         g.setGradientFill (grad);
-        g.fillRect (x, y, width, height);
+        g.fillRect (px, py, pwidth, pheight);
     }
 
     // set mouse enter white mask
-    if (! isDragging && lineNum > lineNumLimit && mouseX > x && mouseX < x + width && mouseY > y && mouseY < height)
+    if (! isDragging && lineNum > lineNumLimit && mouseX > px && mouseX < px + pwidth && mouseY > py && mouseY < pheight)
     {
         if (focusIndex != index)
         {
             g.setColour (COLOUR_MASK_WHITE);
-            g.fillRect (x, y, width, height);
+            g.fillRect (px, py, pwidth, pheight);
         }
         closeButton[index]->setVisible (true);
     }
@@ -645,6 +645,6 @@ void Multiband::setMasks (juce::Graphics& g, int index, int lineNumLimit, int x,
     if (lineNum > lineNumLimit && shouldSetBlackMask (index))
     {
         g.setColour (COLOUR_MASK_BLACK);
-        g.fillRect (x, y, width, height);
+        g.fillRect (px, py, pwidth, pheight);
     }
 }

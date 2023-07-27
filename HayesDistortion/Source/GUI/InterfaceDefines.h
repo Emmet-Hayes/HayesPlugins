@@ -3,9 +3,7 @@
 #include "../../JuceLibraryCode/JucePluginDefines.h"
 
 #define VERSION             JucePlugin_VersionString
-#define GITHUB_LINK         "https://github.com/jerryuhoo/Fire"
-#define GITHUB_TAG_LINK     "https://github.com/jerryuhoo/Fire/releases/tag/"
-#define PRESET_EXETENSION   ".fire"
+#define GITHUB_LINK         "https://github.com/Emmet-Hayes/HayesDistortion"
 
 // paramID paramName
 #define DRIVE_ID1           "drive1"
@@ -336,11 +334,11 @@
 
 // Define Color
 #define COLOUR0             juce::Colour(244, 244, 210)
-#define COLOUR1             juce::Colour(244, 208, 63)
-#define COLOUR2             juce::Colour(243, 156, 18)
-#define COLOUR3             juce::Colour(230, 126, 34)
-#define COLOUR4             juce::Colour(211, 84, 0)
-#define COLOUR5             juce::Colour(192, 57, 43)
+#define COLOUR1             juce::Colour(244, 63, 208)
+#define COLOUR2             juce::Colour(243, 18, 156)
+#define COLOUR3             juce::Colour(230, 34, 126)
+#define COLOUR4             juce::Colour(211, 0, 84)
+#define COLOUR5             juce::Colour(192, 43, 57)
 #define COLOUR6             juce::Colour(40, 40, 40)
 #define COLOUR7             juce::Colour(15, 15, 15)
 #define COLOUR8             juce::Colour(10, 10, 10)
@@ -350,9 +348,9 @@
 #define COLOUR_MASK_WHITE   juce::Colours::white.withAlpha(0.05f)
 #define COLOUR_GROUP        juce::Colour(50, 50, 50)
 #define DRIVE_COLOUR        juce::Colours::red
-#define SHAPE_COLOUR        juce::Colours::yellow
+#define SHAPE_COLOUR        juce::Colours::magenta
 #define WIDTH_COLOUR        juce::Colours::skyblue
-#define COMP_COLOUR         juce::Colours::yellowgreen
+#define COMP_COLOUR         juce::Colours::aquamarine
 #define FILTER_COLOUR       juce::Colours::hotpink
 #define DOWNSAMPLE_COLOUR   juce::Colours::violet
 #define LIMITER_COLOUR      juce::Colours::mediumpurple

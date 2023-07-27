@@ -1,9 +1,8 @@
-//==============================================================================
-#ifndef __DIODE_H_4BF269BF__
-#define __DIODE_H_4BF269BF__
-//==============================================================================
+
+#pragma once
+
 #include "WDF.h"
-//==============================================================================
+
 /**
  *  reference from https://forum.juce.com/t/wave-digital-filter-wdf-with-juce/11227
 	The main simulation based on the DAFX-11 matlab example.
@@ -63,23 +62,9 @@
 
 */
 //==============================================================================
-static inline float diodeClipper(juce::Array<float> &input, float Fs,
+static inline float diodeClipper(juce::Array<float> &input, float /*Fs*/,
 								 float Vdiode, VoltageSource &Vin, Serie &root, Resistor &R1)
 {
-	/*
-    // 1 ohm is the Ri voltage source resistor
-    float Ri = 1; 
-
-    // Internal circuit parameters 
-    VoltageSource Vin (0.0, Ri); // initialize voltage at 0V
-    Resistor R1 (80.0); 
-    Capacitor C1 (3.5e-5, Fs); // Capacitor & Inductor need sampling rate (Fs) in constructor
-    
-    // create WDF circuit
-	Serie RC (&R1, &C1);
-    Serie root (&Vin, &RC); 
-	*/
-
 	// Resistor R1(80.0);
 
 	// accurate simulation of GZ34 valve diode.
@@ -113,6 +98,3 @@ static inline float diodeClipper(juce::Array<float> &input, float Fs,
 	input = output;
 	return Vdiode;
 }
-
-#endif // __DIODE_H_4BF269BF__
-//==============================================================================

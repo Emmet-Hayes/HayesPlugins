@@ -1,18 +1,10 @@
-/*
-  ==============================================================================
-
-    VUPanel.cpp
-    Created: 29 Aug 2021 6:21:02pm
-    Author:  羽翼深蓝Wings
-
-  ==============================================================================
-*/
-
-#include <JuceHeader.h>
 #include "VUPanel.h"
 
-//==============================================================================
-VUPanel::VUPanel(HayesDistortionAudioProcessor &p) : processor(p), focusBandNum(0), vuMeterIn(&p), vuMeterOut(&p)
+VUPanel::VUPanel(HayesDistortionAudioProcessor &p) 
+:   processor(p)
+,   focusBandNum(0)
+,   vuMeterIn(&p)
+,   vuMeterOut(&p)
 {
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
@@ -24,10 +16,6 @@ VUPanel::VUPanel(HayesDistortionAudioProcessor &p) : processor(p), focusBandNum(
     addAndMakeVisible(vuMeterOut);
     
     startTimerHz(60);
-}
-
-VUPanel::~VUPanel()
-{
 }
 
 void VUPanel::paint (juce::Graphics& g)
@@ -95,19 +83,19 @@ void VUPanel::paint (juce::Graphics& g)
     if (mZoomState)
     {
         // show db meter scale text
-        float textX = (VU_METER_X_1 + VU_METER_X_2 - VU_METER_WIDTH) / 2.0f;
-        float text20Y = VU_METER_Y + 20.0f / 96.0f * VU_METER_HEIGHT;
-        float text40Y = VU_METER_Y + 40.0f / 96.0f * VU_METER_HEIGHT;
-        float text60Y = VU_METER_Y + 60.0f / 96.0f * VU_METER_HEIGHT;
-        float text80Y = VU_METER_Y + 80.0f / 96.0f * VU_METER_HEIGHT;
-        float textWidth = getWidth() / 5;
-        float textHeight = getHeight() / 10;
+        int textX = static_cast<int>((VU_METER_X_1 + VU_METER_X_2 - VU_METER_WIDTH) / 2.0f);
+        int text20Y = static_cast<int>(VU_METER_Y + 20.0f / 96.0f * VU_METER_HEIGHT);
+        int text40Y = static_cast<int>(VU_METER_Y + 40.0f / 96.0f * VU_METER_HEIGHT);
+        int text60Y = static_cast<int>(VU_METER_Y + 60.0f / 96.0f * VU_METER_HEIGHT);
+        int text80Y = static_cast<int>(VU_METER_Y + 80.0f / 96.0f * VU_METER_HEIGHT);
+        int textWidth = static_cast<int>(getWidth() / 5);
+        int textHeight = static_cast<int>(getHeight() / 10);
 //        g.drawText("  0", textX, VU_METER_Y - textHeight / 2.0f, textWidth, textHeight, juce::Justification::centred);
         g.setFont(juce::Font(KNOB_FONT, 14.0f * getHeight() / 150.0f, juce::Font::plain));
-        g.drawText("-20", textX, text20Y - textHeight / 2.0f, textWidth, textHeight, juce::Justification::centred);
-        g.drawText("-40", textX, text40Y - textHeight / 2.0f, textWidth, textHeight, juce::Justification::centred);
-        g.drawText("-60", textX, text60Y - textHeight / 2.0f, textWidth, textHeight, juce::Justification::centred);
-        g.drawText("-80", textX, text80Y - textHeight / 2.0f, textWidth, textHeight, juce::Justification::centred);
+        g.drawText("-20", textX, text20Y - textHeight / 2, textWidth, textHeight, juce::Justification::centred);
+        g.drawText("-40", textX, text40Y - textHeight / 2, textWidth, textHeight, juce::Justification::centred);
+        g.drawText("-60", textX, text60Y - textHeight / 2, textWidth, textHeight, juce::Justification::centred);
+        g.drawText("-80", textX, text80Y - textHeight / 2, textWidth, textHeight, juce::Justification::centred);
         
         // show input/output db
         g.setColour(juce::Colours::magenta);
@@ -135,10 +123,13 @@ void VUPanel::paint (juce::Graphics& g)
 
 void VUPanel::resized()
 {
-    // This method is where you should set the bounds of any child
-    // components that your component contains..
-    vuMeterIn.setBounds(VU_METER_X_1, VU_METER_Y, VU_METER_WIDTH, VU_METER_HEIGHT);
-    vuMeterOut.setBounds(VU_METER_X_2, VU_METER_Y, VU_METER_WIDTH, VU_METER_HEIGHT);
+    int vuMeterX1 = static_cast<int>(VU_METER_X_1);
+    int vuMeterX2 = static_cast<int>(VU_METER_X_2);
+    int vuMeterY = static_cast<int>(VU_METER_Y);
+    int vuMeterWidth = static_cast<int>(VU_METER_WIDTH);
+    int vuMeterHeight = static_cast<int>(VU_METER_HEIGHT);
+    vuMeterIn.setBounds(vuMeterX1, vuMeterY, vuMeterWidth, vuMeterWidth);
+    vuMeterOut.setBounds(vuMeterX2, vuMeterY, vuMeterWidth, vuMeterWidth);
 }
 
 void VUPanel::setFocusBandNum(int num)

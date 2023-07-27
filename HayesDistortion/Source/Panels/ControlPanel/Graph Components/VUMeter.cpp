@@ -1,19 +1,8 @@
-/*
-  ==============================================================================
-
-    VUMeter.cpp
-    Created: 25 Jan 2021 2:55:04pm
-    Author:  羽翼深蓝Wings
-
-  ==============================================================================
-*/
-
-#include <JuceHeader.h>
-#include "VUMeter.h"
 #include "../../../GUI/InterfaceDefines.h"
 #include "../../../Utility/AudioHelpers.h"
+#include "VUMeter.h"
 
-//==============================================================================
+
 VUMeter::VUMeter(HayesDistortionAudioProcessor* inProcessor)
 :   mProcessor(inProcessor),
     mIsInput(true),
@@ -45,15 +34,15 @@ void VUMeter::paint (juce::Graphics& g)
         g.fillRect(meterWidth, 0, meterWidth, getHeight());
     }
     
-    int ch0fill = getHeight() - (getHeight() * mCh0Level);
-    int ch1fill = getHeight() - (getHeight() * mCh1Level);
+    int ch0fill = static_cast<int>(getHeight() - (getHeight() * mCh0Level));
+    int ch1fill = static_cast<int>(getHeight() - (getHeight() * mCh1Level));
     
     if (ch0fill < 0)
         ch0fill = 0;
     if (ch1fill < 0)
         ch1fill = 0;
     
-    g.setColour(juce::Colours::magenta.withBrightness(0.9));
+    g.setColour(juce::Colours::magenta.withBrightness(0.9f));
     
     if (mProcessor->getTotalNumInputChannels() == 2)
     {
@@ -100,7 +89,7 @@ void VUMeter::timerCallback()
     }
     else
     {
-        mCh0Level = SMOOTH_COEFF * (mCh0Level - updatedCh0Level) + updatedCh0Level;
+        mCh0Level = static_cast<float>(SMOOTH_COEFF * (mCh0Level - updatedCh0Level) + updatedCh0Level);
     }
     
     if (updatedCh1Level > mCh1Level)
@@ -109,7 +98,7 @@ void VUMeter::timerCallback()
     }
     else
     {
-        mCh1Level = SMOOTH_COEFF * (mCh1Level - updatedCh1Level) + updatedCh1Level;
+        mCh1Level = static_cast<float>(SMOOTH_COEFF * (mCh1Level - updatedCh1Level) + updatedCh1Level);
     }
     
     mCh0Level = helper_denormalize(mCh0Level);

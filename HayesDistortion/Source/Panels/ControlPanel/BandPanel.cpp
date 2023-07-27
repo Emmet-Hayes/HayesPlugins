@@ -1,5 +1,5 @@
-#include <JuceHeader.h>
 #include "BandPanel.h"
+
 
 BandPanel::BandPanel(HayesDistortionAudioProcessor& p) 
 :   processor { p }

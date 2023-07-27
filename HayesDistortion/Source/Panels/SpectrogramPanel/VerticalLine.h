@@ -1,32 +1,18 @@
-/*
-  ==============================================================================
-
-    VerticalLine.h
-    Created: 25 Oct 2020 7:54:46am
-    Author:  羽翼深蓝Wings
-
-  ==============================================================================
-*/
-
 #pragma once
 
 #include <JuceHeader.h>
+
 #include "../../GUI/CustomLookAndFeel.h"
 
-//==============================================================================
-/*
-*/
+
 class VerticalLine : public juce::Slider
 {
 public:
-    VerticalLine();
-    ~VerticalLine() override;
+    VerticalLine() {}
 
     void paint (juce::Graphics&) override;
     void resized() override;
 
-    bool getState();
-    void setState (bool state);
     void setDeleteState (bool deleteState);
     void setXPercent (float x);
     float getXPercent();
@@ -47,10 +33,10 @@ private:
     void mouseDrag (const juce::MouseEvent& e) override;
 
     bool mDeleteState = false;
-    float xPercent = 0.0f;
-    int leftIndex = -1; // left index
-    int rightIndex = -1; // right index
-    int index = -1;
+    float xPercent {  0.0f };
+    int leftIndex  { -1 }; // left index
+    int rightIndex { -1 }; // right index
+    int index      { -1 };
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VerticalLine)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(VerticalLine)
 };

@@ -1,17 +1,6 @@
-/*
-  ==============================================================================
-
-    GlobalPanel.cpp
-    Created: 21 Sep 2021 8:53:20am
-    Author:  羽翼深蓝Wings
-
-  ==============================================================================
-*/
-
-#include <JuceHeader.h>
 #include "GlobalPanel.h"
 
-//==============================================================================
+
 GlobalPanel::GlobalPanel (juce::AudioProcessorValueTreeState& apvts)
 {
     // init vec
@@ -366,15 +355,12 @@ GlobalPanel::GlobalPanel (juce::AudioProcessorValueTreeState& apvts)
 
 GlobalPanel::~GlobalPanel()
 {
-//    filterOffButton.setLookAndFeel (nullptr);
-//    filterPreButton.setLookAndFeel (nullptr);
-//    filterPostButton.setLookAndFeel (nullptr);
-    filterLowPassButton.setLookAndFeel (nullptr);
-    filterPeakButton.setLookAndFeel (nullptr);
-    filterHighPassButton.setLookAndFeel (nullptr);
-    filterSwitch.setLookAndFeel (nullptr);
-    downsampleSwitch.setLookAndFeel (nullptr);
-    limiterSwitch.setLookAndFeel (nullptr);
+    filterLowPassButton.setLookAndFeel(nullptr);
+    filterPeakButton.setLookAndFeel(nullptr);
+    filterHighPassButton.setLookAndFeel(nullptr);
+    filterSwitch.setLookAndFeel(nullptr);
+    downsampleSwitch.setLookAndFeel(nullptr);
+    limiterSwitch.setLookAndFeel(nullptr);
     postFilterPanelLabel.setLookAndFeel(nullptr);
     downSamplePanelLabel.setLookAndFeel(nullptr);
     limiterPanelLabel.setLookAndFeel(nullptr);
@@ -382,84 +368,84 @@ GlobalPanel::~GlobalPanel()
 
 void GlobalPanel::paint (juce::Graphics& g)
 {
-    g.setColour (COLOUR6);
-    g.drawRect (globalEffectArea);
-    g.drawRect (outputKnobArea);
+    g.setColour(COLOUR6);
+    g.drawRect(globalEffectArea);
+    g.drawRect(outputKnobArea);
 }
 
 void GlobalPanel::resized()
 {
     juce::Rectangle<int> controlArea = getLocalBounds();
 
-    globalEffectArea = controlArea.removeFromLeft (getWidth() / 5 * 3);
+    globalEffectArea = controlArea.removeFromLeft(getWidth() / 5 * 3);
     outputKnobArea = controlArea;
 
     juce::Rectangle<int> switchArea = globalEffectArea.removeFromLeft (getWidth() / 20);
-    filterSwitch.setBounds (switchArea.removeFromTop (globalEffectArea.getHeight() / 3));
-    downsampleSwitch.setBounds (switchArea.removeFromTop (globalEffectArea.getHeight() / 3));
-    limiterSwitch.setBounds (switchArea.removeFromTop (globalEffectArea.getHeight() / 3));
+    filterSwitch.setBounds(switchArea.removeFromTop(globalEffectArea.getHeight() / 3));
+    downsampleSwitch.setBounds(switchArea.removeFromTop(globalEffectArea.getHeight() / 3));
+    limiterSwitch.setBounds(switchArea.removeFromTop(globalEffectArea.getHeight() / 3));
 
     juce::Rectangle<int> filterKnobArea = globalEffectArea;
-    juce::Rectangle<int> filterTypeArea = filterKnobArea.removeFromLeft (globalEffectArea.getWidth() / 4);
+    juce::Rectangle<int> filterTypeArea = filterKnobArea.removeFromLeft(globalEffectArea.getWidth() / 4);
 
-    juce::Rectangle<int> filterTypeAreaReduced = filterTypeArea.reduced (0, getHeight() / 6);
+    juce::Rectangle<int> filterTypeAreaReduced = filterTypeArea.reduced(0, getHeight() / 6);
     juce::Rectangle<int> filterTypeAreaReducedRest = filterTypeAreaReduced;
 
-    juce::Rectangle<int> filterTypeAreaTop = filterTypeAreaReducedRest.removeFromTop (filterTypeAreaReduced.getHeight() / 3).reduced (globalEffectArea.getWidth() / 20, getHeight() / 30);
-    juce::Rectangle<int> filterTypeAreaMid = filterTypeAreaReducedRest.removeFromTop (filterTypeAreaReduced.getHeight() / 3).reduced (globalEffectArea.getWidth() / 20, getHeight() / 30);
-    juce::Rectangle<int> filterTypeAreaButtom = filterTypeAreaReducedRest.removeFromTop (filterTypeAreaReduced.getHeight() / 3).reduced (globalEffectArea.getWidth() / 20, getHeight() / 30);
+    juce::Rectangle<int> filterTypeAreaTop = filterTypeAreaReducedRest.removeFromTop(filterTypeAreaReduced.getHeight() / 3).reduced (globalEffectArea.getWidth() / 20, getHeight() / 30);
+    juce::Rectangle<int> filterTypeAreaMid = filterTypeAreaReducedRest.removeFromTop(filterTypeAreaReduced.getHeight() / 3).reduced (globalEffectArea.getWidth() / 20, getHeight() / 30);
+    juce::Rectangle<int> filterTypeAreaButtom = filterTypeAreaReducedRest.removeFromTop(filterTypeAreaReduced.getHeight() / 3).reduced (globalEffectArea.getWidth() / 20, getHeight() / 30);
 
     juce::Rectangle<int> bypassButtonArea = globalEffectArea;
-    bypassButtonArea = bypassButtonArea.removeFromBottom (globalEffectArea.getHeight() / 5).reduced (globalEffectArea.getWidth() / 2 - globalEffectArea.getHeight() / 10, 0);
-    filterBypassButton->setBounds (bypassButtonArea);
-    downsampleBypassButton->setBounds (bypassButtonArea);
-    limiterBypassButton->setBounds (bypassButtonArea);
+    bypassButtonArea = bypassButtonArea.removeFromBottom(globalEffectArea.getHeight() / 5).reduced(globalEffectArea.getWidth() / 2 - globalEffectArea.getHeight() / 10, 0);
+    filterBypassButton->setBounds(bypassButtonArea);
+    downsampleBypassButton->setBounds(bypassButtonArea);
+    limiterBypassButton->setBounds(bypassButtonArea);
 
-    juce::Rectangle<int> filterKnobAreaLeft = filterKnobArea.removeFromLeft (filterKnobArea.getWidth() / 3);
-    juce::Rectangle<int> filterKnobAreaMid = filterKnobArea.removeFromLeft (filterKnobArea.getWidth() / 2);
+    juce::Rectangle<int> filterKnobAreaLeft = filterKnobArea.removeFromLeft(filterKnobArea.getWidth() / 3);
+    juce::Rectangle<int> filterKnobAreaMid = filterKnobArea.removeFromLeft(filterKnobArea.getWidth() / 2);
     juce::Rectangle<int> filterKnobAreaRight = filterKnobArea;
     juce::Rectangle<int> filterMenuArea = filterKnobAreaMid;
-    filterKnobAreaLeft = filterKnobAreaLeft.reduced (0, getHeight() / 5);
-    filterKnobAreaMid = filterKnobAreaMid.reduced (0, getHeight() / 5);
-    filterKnobAreaRight = filterKnobAreaRight.reduced (0, getHeight() / 5);
+    filterKnobAreaLeft = filterKnobAreaLeft.reduced(0, getHeight() / 5);
+    filterKnobAreaMid = filterKnobAreaMid.reduced(0, getHeight() / 5);
+    filterKnobAreaRight = filterKnobAreaRight.reduced(0, getHeight() / 5);
 
     juce::Rectangle<int> knobAreaLeft = globalEffectArea;
     juce::Rectangle<int> knobAreaRight = knobAreaLeft.removeFromRight (globalEffectArea.getWidth() / 2);
-    knobAreaLeft = knobAreaLeft.reduced (0, knobAreaLeft.getHeight() / 5);
-    knobAreaRight = knobAreaRight.reduced (0, knobAreaRight.getHeight() / 5);
+    knobAreaLeft = knobAreaLeft.reduced(0, knobAreaLeft.getHeight() / 5);
+    knobAreaRight = knobAreaRight.reduced(0, knobAreaRight.getHeight() / 5);
     limiterThreshKnob.setBounds(knobAreaLeft);
     limiterReleaseKnob.setBounds(knobAreaRight);
     
     juce::Rectangle<int> panelLabelArea = globalEffectArea;
-    panelLabelArea = panelLabelArea.removeFromLeft (globalEffectArea.getWidth() / 4);
-    panelLabelArea = panelLabelArea.removeFromBottom (globalEffectArea.getHeight() / 5);
+    panelLabelArea = panelLabelArea.removeFromLeft(globalEffectArea.getWidth() / 4);
+    panelLabelArea = panelLabelArea.removeFromBottom(globalEffectArea.getHeight() / 5);
     postFilterPanelLabel.setBounds(panelLabelArea);
     downSamplePanelLabel.setBounds(panelLabelArea);
     limiterPanelLabel.setBounds(panelLabelArea);
     
-    downSampleKnob.setBounds (globalEffectArea.reduced (getHeight() / 15, getHeight() / 5));
+    downSampleKnob.setBounds(globalEffectArea.reduced (getHeight() / 15, getHeight() / 5));
     
-    lowcutFreqKnob.setBounds (filterKnobAreaLeft);
-    lowcutGainKnob.setBounds (filterKnobAreaMid);
-    lowcutQKnob.setBounds (filterKnobAreaRight);
-    highcutFreqKnob.setBounds (filterKnobAreaLeft);
-    highcutGainKnob.setBounds (filterKnobAreaMid);
-    highcutQKnob.setBounds (filterKnobAreaRight);
-    peakFreqKnob.setBounds (filterKnobAreaLeft);
-    peakQKnob.setBounds (filterKnobAreaRight);
-    peakGainKnob.setBounds (filterKnobAreaMid);
+    lowcutFreqKnob.setBounds(filterKnobAreaLeft);
+    lowcutGainKnob.setBounds(filterKnobAreaMid);
+    lowcutQKnob.setBounds(filterKnobAreaRight);
+    highcutFreqKnob.setBounds(filterKnobAreaLeft);
+    highcutGainKnob.setBounds(filterKnobAreaMid);
+    highcutQKnob.setBounds(filterKnobAreaRight);
+    peakFreqKnob.setBounds(filterKnobAreaLeft);
+    peakQKnob.setBounds(filterKnobAreaRight);
+    peakGainKnob.setBounds(filterKnobAreaMid);
 
     juce::Rectangle<int> filterModeArea = filterMenuArea.removeFromBottom (getHeight() / 4); //filterKnobAreaMid.removeFromTop(getHeight() / 4);
     filterModeArea.removeFromBottom (getHeight() / 15);
 
-    filterModeArea.setX (filterModeArea.getX() + filterModeArea.getWidth() / 1.3);
+    filterModeArea.setX(static_cast<int>(filterModeArea.getX() + filterModeArea.getWidth() / 1.3));
 
-    lowcutSlopeMode.setBounds (filterModeArea);
-    highcutSlopeMode.setBounds (filterModeArea);
+    lowcutSlopeMode.setBounds(filterModeArea);
+    highcutSlopeMode.setBounds(filterModeArea);
 
-    filterHighPassButton.setBounds (filterTypeAreaTop);
-    filterPeakButton.setBounds (filterTypeAreaMid);
-    filterLowPassButton.setBounds (filterTypeAreaButtom);
+    filterHighPassButton.setBounds(filterTypeAreaTop);
+    filterPeakButton.setBounds(filterTypeAreaMid);
+    filterLowPassButton.setBounds(filterTypeAreaButtom);
 
     juce::Rectangle<int> outputKnobAreaLeft = outputKnobArea;
     juce::Rectangle<int> outputKnobAreaRight = outputKnobAreaLeft.removeFromRight (outputKnobArea.getWidth() / 2);
@@ -469,16 +455,16 @@ void GlobalPanel::resized()
     outputKnob.setBounds (outputKnobAreaLeft);
     mixKnob.setBounds (outputKnobAreaRight);
 
-    lowPassButtonLnf.scale - scale;
-    bandPassButtonLnf.scale = scale;
-    highPassButtonLnf.scale = scale;
+    lowPassButtonLnf.setWindowScale(scale);
+    bandPassButtonLnf.setWindowScale(scale);
+    highPassButtonLnf.setWindowScale(scale);
 }
 
-void GlobalPanel::sliderValueChanged (juce::Slider* slider)
+void GlobalPanel::sliderValueChanged (juce::Slider* /*slider*/)
 {
 }
 
-void GlobalPanel::comboBoxChanged (juce::ComboBox* combobox)
+void GlobalPanel::comboBoxChanged (juce::ComboBox* /*combobox*/)
 {
 }
 
@@ -486,7 +472,7 @@ void GlobalPanel::timerCallback()
 {
 }
 
-void GlobalPanel::buttonClicked (juce::Button* clickedButton)
+void GlobalPanel::buttonClicked(juce::Button* /*clickedButton*/)
 {
     if (filterSwitch.getToggleState())
     {
@@ -505,7 +491,6 @@ void GlobalPanel::buttonClicked (juce::Button* clickedButton)
         }
         if (filterHighPassButton.getToggleState())
         {
-
             highcutFreqKnob.setVisible (false);
             highcutQKnob.setVisible (false);
             highcutGainKnob.setVisible (false);
@@ -550,7 +535,7 @@ void GlobalPanel::buttonClicked (juce::Button* clickedButton)
     }
 }
 
-void GlobalPanel::setVisibility (juce::Array<juce::Component*>& array, bool isVisible)
+void GlobalPanel::setVisibility(juce::Array<juce::Component*>& array, bool isVisible)
 {
     for (int i = 0; i < array.size(); ++i)
     {
@@ -599,9 +584,9 @@ void GlobalPanel::setRoundButton (juce::TextButton& button, juce::String paramId
     button.addListener(this);
 }
 
-void GlobalPanel::setScale (float scale)
+void GlobalPanel::setScale (float pscale)
 {
-    this->scale = scale;
+    scale = pscale;
 }
 
 juce::Slider& GlobalPanel::getLowcutFreqKnob()
@@ -646,7 +631,7 @@ void GlobalPanel::setToggleButtonState (juce::String toggleButton)
 
 void GlobalPanel::setBypassState (int index, bool state)
 {
-    juce::Array<juce::Component*>* componentArray;
+    juce::Array<juce::Component*>* componentArray = nullptr;
     if (index == 0)
         componentArray = &filterVector;
     if (index == 1)
@@ -654,18 +639,21 @@ void GlobalPanel::setBypassState (int index, bool state)
     if (index == 2)
         componentArray = &limiterVector;
 
-    if (state)
+    if (componentArray != nullptr)
     {
-        for (int i = 0; i < componentArray->size(); i++)
+        if (state)
         {
-            componentArray->data()[i]->setEnabled (true);
+            for (int i = 0; i < componentArray->size(); i++)
+            {
+                componentArray->data()[i]->setEnabled(true);
+            }
         }
-    }
-    else
-    {
-        for (int i = 0; i < componentArray->size(); i++)
+        else
         {
-            componentArray->data()[i]->setEnabled (false);
+            for (int i = 0; i < componentArray->size(); i++)
+            {
+                componentArray->data()[i]->setEnabled(false);
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 #include "HayesDistortionAudioProcessor.h"
 #include "HayesDistortionAudioProcessorEditor.h"
 
+
 HayesDistortionAudioProcessor::HayesDistortionAudioProcessor()
 :   BaseAudioProcessor { createParameterLayout() }
 ,   VinL               { 500.f, 0.f } // VinL(0.f, 500.f)
@@ -172,14 +173,14 @@ void HayesDistortionAudioProcessor::releaseResources()
     reset();
 }
 
-void HayesDistortionAudioProcessor::processBlockBypassed (juce::AudioBuffer<float>& buffer,
-                                               juce::MidiBuffer& midiMessages)
+void HayesDistortionAudioProcessor::processBlockBypassed (juce::AudioBuffer<float>& /*buffer*/,
+                                               juce::MidiBuffer& /*midiMessages*/)
 {
     // set bypass to true
     isBypassed = true;
 }
 
-void HayesDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void HayesDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& /*midiMessages*/)
 {
     // set bypass to false
     if (isBypassed)
@@ -263,7 +264,7 @@ void HayesDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
 
         if (lineNum > 0)
         {
-            lowpasses[0].setCutoffFrequency (freqValue1);
+            lowpasses[0].setCutoffFrequency (static_cast<float>(freqValue1));
             lowpasses[0].process (context1);
         }
 
@@ -283,12 +284,12 @@ void HayesDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
     {
         auto multibandBlock2 = juce::dsp::AudioBlock<float> (mBuffers[1]);
         auto context2 = juce::dsp::ProcessContextReplacing<float> (multibandBlock2);
-        highpasses[0].setCutoffFrequency (freqValue1);
+        highpasses[0].setCutoffFrequency (static_cast<float>(freqValue1));
         highpasses[0].process (context2);
 
         if (lineNum > 1)
         {
-            lowpasses[1].setCutoffFrequency (freqValue2);
+            lowpasses[1].setCutoffFrequency (static_cast<float>(freqValue2));
             lowpasses[1].process (context2);
         }
 
@@ -309,12 +310,12 @@ void HayesDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
     {
         auto multibandBlock3 = juce::dsp::AudioBlock<float> (mBuffers[2]);
         auto context3 = juce::dsp::ProcessContextReplacing<float> (multibandBlock3);
-        highpasses[1].setCutoffFrequency (freqValue2);
+        highpasses[1].setCutoffFrequency (static_cast<float>(freqValue2));
         highpasses[1].process (context3);
 
         if (lineNum > 2)
         {
-            lowpasses[2].setCutoffFrequency (freqValue3);
+            lowpasses[2].setCutoffFrequency (static_cast<float>(freqValue3));
             lowpasses[2].process (context3);
         }
 
@@ -335,7 +336,7 @@ void HayesDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
     {
         auto multibandBlock4 = juce::dsp::AudioBlock<float> (mBuffers[3]);
         auto context4 = juce::dsp::ProcessContextReplacing<float> (multibandBlock4);
-        highpasses[2].setCutoffFrequency (freqValue3);
+        highpasses[2].setCutoffFrequency (static_cast<float>(freqValue3));
         highpasses[2].process (context4);
 
         setLeftRightMeterRMSValues (mBuffers[3], mInputLeftSmoothedBands[3], mInputRightSmoothedBands[3]);
@@ -355,22 +356,22 @@ void HayesDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
     if (lineNum == 0 && ! multibandEnables[0])
     {
         mLatency = 0;
-        setLatencySamples (mLatency);
+        setLatencySamples (static_cast<int>(mLatency));
     }
     if (lineNum == 1 && ! multibandEnables[0] && ! multibandEnables[1])
     {
         mLatency = 0;
-        setLatencySamples (mLatency);
+        setLatencySamples (static_cast<int>(mLatency));
     }
     if (lineNum == 2 && ! multibandEnables[0] && ! multibandEnables[1] && ! multibandEnables[2])
     {
         mLatency = 0;
-        setLatencySamples (mLatency);
+        setLatencySamples (static_cast<int>(mLatency));
     }
     if (lineNum == 3 && ! multibandEnables[0] && ! multibandEnables[1] && ! multibandEnables[2] && ! multibandEnables[3])
     {
         mLatency = 0;
-        setLatencySamples (mLatency);
+        setLatencySamples (static_cast<int>(mLatency));
     }
 
     buffer.clear();
@@ -681,7 +682,7 @@ float HayesDistortionAudioProcessor::safeMode (float drive, juce::AudioBuffer<fl
     float newDrive = 0.0f;
     if (isSafeModeOn && sampleMaxValue * powerDrive > 2.0f)
     {
-        newDrive = 2.0f / sampleMaxValue + 0.1 * std::log2f (powerDrive);
+        newDrive = 2.0f / sampleMaxValue + 0.1f * std::log2f (powerDrive);
         //newDrive = 2.0f / sampleMaxValue + 0.1 * drive;
     }
     else
@@ -735,7 +736,7 @@ bool HayesDistortionAudioProcessor::getSoloStateFromIndex (int index)
     return false;
 }
 
-void HayesDistortionAudioProcessor::processOneBand (juce::AudioBuffer<float>& bandBuffer, juce::dsp::ProcessContextReplacing<float> context, juce::String modeID, juce::String driveID, juce::String safeID, juce::String extremeID, juce::String biasID, juce::String recID, juce::dsp::ProcessorChain<GainProcessor, BiasProcessor, DriveProcessor, juce::dsp::WaveShaper<float, std::function<float (float)>>, BiasProcessor>& overdrive, juce::String outputID, GainProcessor& gainProcessor, juce::String threshID, juce::String ratioID, CompressorProcessor& compressorProcessor, int totalNumInputChannels, juce::SmoothedValue<float>& recSmoother, juce::SmoothedValue<float>& outputSmoother, juce::String mixID, juce::dsp::DryWetMixer<float>& dryWetMixer, juce::String widthID, WidthProcessor widthProcessor, DCFilter& dcFilter, juce::String widthBypassID, juce::String compBypassID)
+void HayesDistortionAudioProcessor::processOneBand (juce::AudioBuffer<float>& bandBuffer, juce::dsp::ProcessContextReplacing<float> context, juce::String modeID, juce::String driveID, juce::String safeID, juce::String extremeID, juce::String biasID, juce::String recID, juce::dsp::ProcessorChain<GainProcessor, BiasProcessor, DriveProcessor, juce::dsp::WaveShaper<float, std::function<float (float)>>, BiasProcessor>& overdrive, juce::String outputID, GainProcessor& gainProcessor, juce::String threshID, juce::String ratioID, CompressorProcessor& compressorProcessor, int totalNumInputChannels, juce::SmoothedValue<float>& recSmoother, juce::SmoothedValue<float>& /*outputSmoother*/, juce::String mixID, juce::dsp::DryWetMixer<float>& dryWetMixer, juce::String widthID, WidthProcessor widthProcessor, DCFilter& dcFilter, juce::String widthBypassID, juce::String compBypassID)
 {
     juce::AudioBuffer<float> dryBuffer;
     dryBuffer.makeCopyOf (bandBuffer);
@@ -1024,8 +1025,8 @@ void HayesDistortionAudioProcessor::setLeftRightMeterRMSValues (juce::AudioBuffe
         absInputRightValue = absInputLeftValue;
     }
     // smooth value
-    leftOutValue = SMOOTH_COEFF * (leftOutValue - absInputLeftValue) + absInputLeftValue;
-    rightOutValue = SMOOTH_COEFF * (rightOutValue - absInputRightValue) + absInputRightValue;
+    leftOutValue = static_cast<float>(SMOOTH_COEFF) * (leftOutValue - absInputLeftValue) + absInputLeftValue;
+    rightOutValue = static_cast<float>(SMOOTH_COEFF) * (rightOutValue - absInputRightValue) + absInputRightValue;
 }
 
 float HayesDistortionAudioProcessor::getInputMeterRMSLevel (int channel, juce::String bandName)

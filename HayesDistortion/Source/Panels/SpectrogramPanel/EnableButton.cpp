@@ -1,29 +1,10 @@
-/*
-  ==============================================================================
-
-    EnableButton.cpp
-    Created: 3 Dec 2020 8:18:45pm
-    Author:  羽翼深蓝Wings
-
-  ==============================================================================
-*/
-
-#include <JuceHeader.h>
 #include "EnableButton.h"
 
-//==============================================================================
-EnableButton::EnableButton()
-{
-}
-
-EnableButton::~EnableButton()
-{
-}
 
 void EnableButton::paint (juce::Graphics& g)
 {
     g.setColour (getColour().darker().darker());
-    g.fillEllipse (0.0f, 0.0f, getWidth(), getHeight());
+    g.fillEllipse (0.0f, 0.0f, static_cast<float>(getWidth()), static_cast<float>(getHeight()));
 
     g.setColour (getColour());
     auto bounds = juce::Rectangle<int> (getLocalBounds()).toFloat();
@@ -37,8 +18,8 @@ void EnableButton::paint (juce::Graphics& g)
                                  arcRadius,
                                  arcRadius,
                                  0.0f,
-                                 2 * M_PI * 0.1f,
-                                 2 * M_PI * 0.9f,
+                                 2 * static_cast<float>(M_PI) * 0.1f,
+                                 2 * static_cast<float>(M_PI) * 0.9f,
                                  true);
 
     g.strokePath (backgroundArc, juce::PathStrokeType (lineW, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
@@ -49,12 +30,12 @@ void EnableButton::resized()
 {
 }
 
-void EnableButton::mouseEnter (const juce::MouseEvent& e)
+void EnableButton::mouseEnter (const juce::MouseEvent& /*e*/)
 {
     isEntered = true;
 }
 
-void EnableButton::mouseExit (const juce::MouseEvent& e)
+void EnableButton::mouseExit (const juce::MouseEvent& /*e*/)
 {
     isEntered = false;
 }
@@ -64,23 +45,15 @@ juce::Colour EnableButton::getColour()
     if (isEntered)
     {
         if (! getToggleState())
-        {
             return juce::Colours::grey.withAlpha (0.8f);
-        }
         else
-        {
             return COLOUR1.withAlpha (0.8f);
-        }
     }
     else
     {
         if (! getToggleState())
-        {
             return juce::Colours::grey;
-        }
         else
-        {
             return COLOUR1;
-        }
     }
 }

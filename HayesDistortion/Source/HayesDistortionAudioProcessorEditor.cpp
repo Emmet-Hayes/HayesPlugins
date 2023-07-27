@@ -2,7 +2,7 @@
 #include "HayesDistortionAudioProcessorEditor.h"
 #include "Panels/ControlPanel/Graph Components/VUMeter.h"
 
-//==============================================================================
+
 HayesDistortionAudioProcessorEditor::HayesDistortionAudioProcessorEditor(HayesDistortionAudioProcessor& p)
 :   BaseAudioProcessorEditor (p)
 ,   presetBar    { p }
@@ -13,7 +13,7 @@ HayesDistortionAudioProcessorEditor::HayesDistortionAudioProcessorEditor(HayesDi
 ,   graphPanel   { p }
 {
     // timer
-    juce::Timer::startTimerHz (60.0f);
+    juce::Timer::startTimerHz (60);
 
     // Graph
     addAndMakeVisible (graphPanel);
@@ -37,7 +37,7 @@ HayesDistortionAudioProcessorEditor::HayesDistortionAudioProcessorEditor(HayesDi
     }
 
     spectrum.setInterceptsMouseClicks (false, false);
-    spectrum.prepareToPaintSpectrum (processor.getNumBins(), processor.getFFTData(), processor.getSampleRate() / (float) processor.getFFTSize());
+    spectrum.prepareToPaintSpectrum (processor.getNumBins(), processor.getFFTData(), static_cast<float>(processor.getSampleRate() / processor.getFFTSize()));
 
     setLookAndFeel (&otherLookAndFeel);
 
@@ -127,7 +127,7 @@ HayesDistortionAudioProcessorEditor::HayesDistortionAudioProcessorEditor(HayesDi
     setResizable (true, true);
     setSize (processor.getSavedWidth(), processor.getSavedHeight());
     // resize limit
-    setResizeLimits (INIT_WIDTH, INIT_HEIGHT, 2000, 1000); // set resize limits
+    setResizeLimits (static_cast<int>(INIT_WIDTH), static_cast<int>(INIT_HEIGHT), 2000, 1000); // set resize limits
     getConstrainer()->setFixedAspectRatio (2); // set fixed resize rate
 
     setMultiband();
@@ -155,35 +155,35 @@ void HayesDistortionAudioProcessorEditor::paint (juce::Graphics& g)
     auto frame = getLocalBounds();
     frame.setBounds (0, part1, getWidth(), part2);
 
-    int focusIndex = 0;
-    focusIndex = multiband.getFocusIndex();
+    int tfocusIndex = 0;
+    tfocusIndex = multiband.getFocusIndex();
 
-    if (focusIndex == 0)
+    if (tfocusIndex == 0)
     {
         setDistortionGraph (MODE_ID1, DRIVE_ID1, REC_ID1, MIX_ID1, BIAS_ID1, SAFE_ID1);
     }
-    else if (focusIndex == 1)
+    else if (tfocusIndex == 1)
     {
         setDistortionGraph (MODE_ID2, DRIVE_ID2, REC_ID2, MIX_ID2, BIAS_ID2, SAFE_ID2);
     }
-    else if (focusIndex == 2)
+    else if (tfocusIndex == 2)
     {
         setDistortionGraph (MODE_ID3, DRIVE_ID3, REC_ID3, MIX_ID3, BIAS_ID3, SAFE_ID3);
     }
-    else if (focusIndex == 3)
+    else if (tfocusIndex == 3)
     {
         setDistortionGraph (MODE_ID4, DRIVE_ID4, REC_ID4, MIX_ID4, BIAS_ID4, SAFE_ID4);
     }
 
-    setFourComponentsVisibility (distortionMode1, distortionMode2, distortionMode3, distortionMode4, focusIndex);
+    setFourComponentsVisibility (distortionMode1, distortionMode2, distortionMode3, distortionMode4, tfocusIndex);
 
     bool left = windowLeftButton.getToggleState();
     bool right = windowRightButton.getToggleState();
 
     if (left)
     { // if you select the left window, you will see audio wave and distortion function graphs.
-        bandPanel.setFocusBandNum (focusIndex);
-        graphPanel.setFocusBandNum (focusIndex);
+        bandPanel.setFocusBandNum(tfocusIndex);
+        graphPanel.setFocusBandNum(tfocusIndex);
     }
     else if (right)
     {
@@ -198,11 +198,11 @@ void HayesDistortionAudioProcessorEditor::resized()
 
     // knobs
     float scale = juce::jmin (getHeight() / INIT_HEIGHT, getWidth() / INIT_WIDTH);
-    float scaleMax = juce::jmax (getHeight() / INIT_HEIGHT, getWidth() / INIT_WIDTH);
+    //float scaleMax = juce::jmax (getHeight() / INIT_HEIGHT, getWidth() / INIT_WIDTH);
 
     // top bar
     juce::Rectangle<int> area (getLocalBounds());
-    juce::Rectangle<int> topBar = area.removeFromTop (50 * getHeight() / INIT_HEIGHT);
+    juce::Rectangle<int> topBar = area.removeFromTop(static_cast<int>(50 * getHeight() / INIT_HEIGHT));
     presetBar.setBounds (topBar);
 
     // spectrum and filter
@@ -215,13 +215,13 @@ void HayesDistortionAudioProcessorEditor::resized()
     }
     else
     {
-        juce::Rectangle<int> spectrumArea = area.removeFromBottom (SPEC_HEIGHT);
+        juce::Rectangle<int> spectrumArea = area.removeFromBottom(static_cast<int>(SPEC_HEIGHT));
         spectrum.setBounds (spectrumArea);
         multiband.setBounds (spectrumArea);
         filterControl.setBounds (spectrumArea);
 
         // left and right window buttons
-        float windowHeight = getHeight() / 20;
+        int windowHeight = getHeight() / 20;
         juce::Rectangle<int> leftWindowButtonArea = area.removeFromTop (windowHeight);
         juce::Rectangle<int> rightWindowButtonArea = leftWindowButtonArea.removeFromRight (getWidth() / 2);
         windowLeftButton.setBounds (leftWindowButtonArea);
@@ -235,7 +235,7 @@ void HayesDistortionAudioProcessorEditor::resized()
         juce::Rectangle<int> controlAreaMid = area.removeFromTop (area.getHeight() / 4 * 3); // 3/4
 
         // distortion menu
-        juce::Rectangle<int> distortionModeArea = controlAreaTop.removeFromLeft (OSC_WIDTH); // width
+        juce::Rectangle<int> distortionModeArea = controlAreaTop.removeFromLeft (static_cast<int>(OSC_WIDTH)); // width
         distortionModeArea.removeFromTop (controlAreaTop.getHeight() / 4);
         distortionModeArea.removeFromBottom (controlAreaTop.getHeight() / 4);
         distortionMode1.setBounds (distortionModeArea);
@@ -290,7 +290,7 @@ void HayesDistortionAudioProcessorEditor::timerCallback()
         // doing process, fifo data to fft data
         processor.processFFT (tempFFTData);
         // prepare to paint the spectrum
-        spectrum.prepareToPaintSpectrum (processor.getNumBins(), tempFFTData, processor.getSampleRate() / (float) processor.getFFTSize());
+        spectrum.prepareToPaintSpectrum (processor.getNumBins(), tempFFTData, static_cast<float>(processor.getSampleRate() / processor.getFFTSize()));
 
         graphPanel.repaint();
         spectrum.repaint();
@@ -301,7 +301,7 @@ void HayesDistortionAudioProcessorEditor::timerCallback()
     }
 }
 
-void HayesDistortionAudioProcessorEditor::sliderValueChanged (juce::Slider* slider)
+void HayesDistortionAudioProcessorEditor::sliderValueChanged (juce::Slider* /*slider*/)
 {
 }
 
@@ -382,7 +382,7 @@ void HayesDistortionAudioProcessorEditor::buttonClicked (juce::Button* clickedBu
     }
 }
 
-void HayesDistortionAudioProcessorEditor::comboBoxChanged (juce::ComboBox* combobox)
+void HayesDistortionAudioProcessorEditor::comboBoxChanged (juce::ComboBox* /*combobox*/)
 {
 }
 
@@ -431,7 +431,7 @@ void HayesDistortionAudioProcessorEditor::setDistortionGraph (juce::String modeI
     int mode = static_cast<int> (*processor.apvts.getRawParameterValue (modeId));
 
     // protection
-    float drive = static_cast<int> (*processor.apvts.getRawParameterValue (driveId));
+    float drive = *processor.apvts.getRawParameterValue (driveId);
     drive = drive * 6.5f / 100.0f;
     float powerDrive = powf (2, drive);
 
@@ -440,7 +440,7 @@ void HayesDistortionAudioProcessorEditor::setDistortionGraph (juce::String modeI
 
     if (isSafeModeOn && sampleMaxValue * powerDrive > 2.0f)
     {
-        drive = 2.0f / sampleMaxValue + 0.1 * std::log2f (powerDrive);
+        drive = 2.0f / sampleMaxValue + 0.1f * std::log2f (powerDrive);
     }
     else
     {

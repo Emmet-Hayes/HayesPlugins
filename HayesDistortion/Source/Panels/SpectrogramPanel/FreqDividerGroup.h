@@ -1,12 +1,15 @@
 #pragma once
 
 #include <JuceHeader.h>
+
+#include "../../HayesDistortionAudioProcessor.h"
 #include "FreqTextLabel.h"
 #include "VerticalLine.h"
 
-#include "../../HayesDistortionAudioProcessor.h"
 
-class FreqDividerGroup : public juce::ToggleButton, juce::Slider::Listener, juce::Button::Listener
+class FreqDividerGroup : public juce::ToggleButton
+                       , juce::Slider::Listener
+                       , juce::Button::Listener
 {
 public:
     FreqDividerGroup (HayesDistortionAudioProcessor&, int index);

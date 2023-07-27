@@ -1,28 +1,30 @@
 #pragma once
 
 #include <JuceHeader.h>
+
+#include "../../HayesDistortionAudioProcessor.h"
+#include "../../Common/PresetBar.h"
 #include "SpectrumComponent.h"
 #include "SoloButton.h"
 #include "EnableButton.h"
 #include "CloseButton.h"
 #include <vector>
 #include "FreqDividerGroup.h"
-#include "../../HayesDistortionAudioProcessor.h"
-#include "../../Common/PresetBar.h"
 
-class Multiband : public juce::Component, juce::Timer, juce::Slider::Listener, juce::Button::Listener
+
+class Multiband : public juce::Component
+                , juce::Timer
+                , juce::Slider::Listener
+                , juce::Button::Listener
 {
 public:
     Multiband (HayesDistortionAudioProcessor&);
-    ~Multiband() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
     void timerCallback() override;
 
-    void setCloseButtonState();
     void dragLines (float xPercent, int index);
-
     int getFocusIndex();
     void setSoloRelatedBounds();
     EnableButton& getEnableButton (int index);

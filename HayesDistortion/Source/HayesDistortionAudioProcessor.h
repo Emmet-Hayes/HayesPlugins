@@ -1,15 +1,18 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "DSP/Delay.h"
-#include "DSP/WidthProcessor.h"
+
 #include "../../Common/BaseAudioProcessor.h"
 #include "../../Common/PresetBar.h"
-#include "Panels/SpectrogramPanel/FFTProcessor.h"
-#include "GUI/InterfaceDefines.h"
-#include "Utility/AudioHelpers.h"
+
 #include "DSP/ClippingFunctions.h"
+#include "DSP/Delay.h"
 #include "DSP/DiodeWDF.h"
+#include "DSP/WidthProcessor.h"
+#include "GUI/InterfaceDefines.h"
+#include "Panels/SpectrogramPanel/FFTProcessor.h"
+#include "Utility/AudioHelpers.h"
+
 
 constexpr int MAX_NUM_BANDS = 4;
 
@@ -194,8 +197,8 @@ private:
     float mLatency { 0.0f };
 
     // Save size
-    int editorWidth = INIT_WIDTH;
-    int editorHeight = INIT_HEIGHT;
+    int editorWidth = static_cast<int>(INIT_WIDTH);
+    int editorHeight = static_cast<int>(INIT_HEIGHT);
 
     // bypass state
     bool isBypassed = false;

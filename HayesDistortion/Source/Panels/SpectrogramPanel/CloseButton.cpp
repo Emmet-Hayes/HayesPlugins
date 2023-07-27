@@ -1,24 +1,5 @@
-/*
-  ==============================================================================
-
-    CloseButton.cpp
-    Created: 8 Nov 2020 7:57:32pm
-    Author:  羽翼深蓝Wings
-
- ==============================================================================
-*/
-
-#include <JuceHeader.h>
 #include "CloseButton.h"
 
-//==============================================================================
-CloseButton::CloseButton ()
-{
-}
-
-CloseButton::~CloseButton()
-{
-}
 
 void CloseButton::paint (juce::Graphics& g)
 {
@@ -40,17 +21,17 @@ void CloseButton::resized()
 {
 }
 
-void CloseButton::mouseDown (const juce::MouseEvent& e)
+void CloseButton::mouseDown (const juce::MouseEvent& /*e*/)
 {
     setToggleState (false, juce::sendNotification);
 }
 
-void CloseButton::mouseEnter (const juce::MouseEvent& e)
+void CloseButton::mouseEnter (const juce::MouseEvent& /*e*/)
 {
     isEntered = true;
 }
 
-void CloseButton::mouseExit (const juce::MouseEvent& e)
+void CloseButton::mouseExit (const juce::MouseEvent& /*e*/)
 {
     isEntered = false;
 }

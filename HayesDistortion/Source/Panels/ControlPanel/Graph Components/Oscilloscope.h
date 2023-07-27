@@ -1,14 +1,15 @@
 #pragma once
+
+#include <JuceHeader.h>
+
 #include "../../../HayesDistortionAudioProcessor.h"
 #include "GraphTemplate.h"
-#include <JuceHeader.h>
+
 
 class Oscilloscope : public GraphTemplate, juce::Timer
 {
 public:
     Oscilloscope (HayesDistortionAudioProcessor&);
-    ~Oscilloscope() override;
-
     void paint (juce::Graphics&) override;
     void timerCallback() override;
 

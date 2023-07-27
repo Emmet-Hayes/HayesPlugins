@@ -1,16 +1,18 @@
 #pragma once
 
 #include <JuceHeader.h>
+
 #include "../../GUI/CustomLookAndFeel.h"
 #include "../../HayesDistortionAudioProcessor.h"
 
+
 constexpr int NUM_COMPONENT_ARRAYS = 8;
 
-class BandPanel : public juce::Component,
-                  public juce::Slider::Listener,
-                  public juce::ComboBox::Listener,
-                  public juce::Timer,
-                  public juce::Button::Listener
+class BandPanel : public juce::Component
+                , public juce::Slider::Listener
+                , public juce::ComboBox::Listener
+                , public juce::Timer
+                , public juce::Button::Listener
 {
 public:
     BandPanel (HayesDistortionAudioProcessor&);
