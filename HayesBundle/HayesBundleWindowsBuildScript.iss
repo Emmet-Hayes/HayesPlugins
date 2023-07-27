@@ -7,7 +7,7 @@
 AppId={{82BFB9FC-E450-4741-8C5E-F0C3B0BC8FDC}}
 AppName=HayesBundle
 AppVersion=1.0.0
-DefaultDirName={commonpf64}\Common Files\VST3\HayesBundle\VST3
+DefaultDirName={commonpf64}\Common Files\VST3\
 DefaultGroupName=EmmetSoft
 OutputDir=userdocs:HayesInstallers
 OutputBaseFilename=HayesBundleInstaller
@@ -21,13 +21,13 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "..\HayesCompressor\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\HayesDelay\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\HayesEQ\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\HayesFDNReverb\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\HayesDistortion\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\HayesPitchShifter\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\HayesReverb\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\HayesTapeDelay\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\HayesCompressor\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}/HayesCompressor"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\HayesDelay\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}/HayesDelay"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\HayesEQ\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}/HayesEQ"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\HayesFDNReverb\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}/HayesFDNReverb"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\HayesDistortion\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}/HayesDistortion"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\HayesPitchShifter\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}/HayesPitchShifter"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\HayesReverb\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}/HayesReverb"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\HayesTapeDelay\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}/HayesTapeDelay"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 
