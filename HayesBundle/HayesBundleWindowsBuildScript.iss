@@ -25,7 +25,7 @@ Source: "..\HayesCompressor\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir
 Source: "..\HayesDelay\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\HayesEQ\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\HayesFDNReverb\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\HayesOverdrive\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\HayesDistortion\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\HayesPitchShifter\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\HayesReverb\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\HayesTapeDelay\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs

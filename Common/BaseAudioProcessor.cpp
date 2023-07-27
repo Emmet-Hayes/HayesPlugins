@@ -33,11 +33,11 @@ bool BaseAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) con
 }
 #endif
 
-void BaseAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
+void BaseAudioProcessor::prepareToPlay(double /*sampleRate*/, int /*samplesPerBlock*/)
 {
 }
 
-void BaseAudioProcessor::processBlock(juce::AudioBuffer<float>&, juce::MidiBuffer&)
+void BaseAudioProcessor::processBlock(juce::AudioBuffer<float>& /*buffer*/, juce::MidiBuffer& /*midiMessages*/)
 {
 }
 

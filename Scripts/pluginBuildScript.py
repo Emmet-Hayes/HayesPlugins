@@ -28,7 +28,7 @@ for plugin in plugins:
         
         if not args.skip_installers:
             os.chdir(scripts_dir)
-            subprocess.run([ "ISCC.exe", f"{plugin}WindowsBuildScript.iss", f"../../{output_dir}" ])
+            subprocess.run([ "ISCC.exe", f"{plugin}WindowsBuildScript.iss" ])
             os.chdir("../../")
 
     elif platform.system() == 'Darwin':
