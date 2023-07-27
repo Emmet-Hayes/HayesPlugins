@@ -5,12 +5,12 @@
 
 HayesDistortionAudioProcessorEditor::HayesDistortionAudioProcessorEditor(HayesDistortionAudioProcessor& p)
 :   BaseAudioProcessorEditor (p)
-,   presetBar    { p }
 ,   processor    { p }
-,   globalPanel  { processor.apvts }
+,   graphPanel   { p }
 ,   multiband    { p }
 ,   bandPanel    { p }
-,   graphPanel   { p }
+,   globalPanel  { processor.apvts }
+,   presetBar    { p }
 {
     // timer
     juce::Timer::startTimerHz (60);

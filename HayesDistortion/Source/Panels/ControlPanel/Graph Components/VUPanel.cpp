@@ -128,8 +128,8 @@ void VUPanel::resized()
     int vuMeterY = static_cast<int>(VU_METER_Y);
     int vuMeterWidth = static_cast<int>(VU_METER_WIDTH);
     int vuMeterHeight = static_cast<int>(VU_METER_HEIGHT);
-    vuMeterIn.setBounds(vuMeterX1, vuMeterY, vuMeterWidth, vuMeterWidth);
-    vuMeterOut.setBounds(vuMeterX2, vuMeterY, vuMeterWidth, vuMeterWidth);
+    vuMeterIn.setBounds(vuMeterX1, vuMeterY, vuMeterWidth, vuMeterHeight);
+    vuMeterOut.setBounds(vuMeterX2, vuMeterY, vuMeterWidth, vuMeterHeight);
 }
 
 void VUPanel::setFocusBandNum(int num)
