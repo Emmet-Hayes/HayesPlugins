@@ -110,6 +110,34 @@
 														<dict>
 															<key>BUNDLE_CAN_DOWNGRADE</key>
 															<false/>
+															<key>BUNDLE_POSTINSTALL_PATH</key>
+															<dict>
+																<key>PATH_TYPE</key>
+																<integer>0</integer>
+															</dict>
+															<key>BUNDLE_PREINSTALL_PATH</key>
+															<dict>
+																<key>PATH_TYPE</key>
+																<integer>0</integer>
+															</dict>
+															<key>CHILDREN</key>
+															<array/>
+															<key>GID</key>
+															<integer>0</integer>
+															<key>PATH</key>
+															<string>/Users/emmethayes/Library/Audio/Plug-Ins/Components/HayesDistortion.component</string>
+															<key>PATH_TYPE</key>
+															<integer>0</integer>
+															<key>PERMISSIONS</key>
+															<integer>493</integer>
+															<key>TYPE</key>
+															<integer>3</integer>
+															<key>UID</key>
+															<integer>0</integer>
+														</dict>
+														<dict>
+															<key>BUNDLE_CAN_DOWNGRADE</key>
+															<false/>
 															<key>CHILDREN</key>
 															<array/>
 															<key>GID</key>
@@ -134,24 +162,6 @@
 															<integer>0</integer>
 															<key>PATH</key>
 															<string>/Users/emmethayes/Library/Audio/Plug-Ins/Components/HayesFDNReverb.component</string>
-															<key>PATH_TYPE</key>
-															<integer>0</integer>
-															<key>PERMISSIONS</key>
-															<integer>493</integer>
-															<key>TYPE</key>
-															<integer>3</integer>
-															<key>UID</key>
-															<integer>0</integer>
-														</dict>
-														<dict>
-															<key>BUNDLE_CAN_DOWNGRADE</key>
-															<false/>
-															<key>CHILDREN</key>
-															<array/>
-															<key>GID</key>
-															<integer>0</integer>
-															<key>PATH</key>
-															<string>/Users/emmethayes/Library/Audio/Plug-Ins/Components/HayesOverdrive.component</string>
 															<key>PATH_TYPE</key>
 															<integer>0</integer>
 															<key>PERMISSIONS</key>
@@ -789,6 +799,34 @@
 														<dict>
 															<key>BUNDLE_CAN_DOWNGRADE</key>
 															<false/>
+															<key>BUNDLE_POSTINSTALL_PATH</key>
+															<dict>
+																<key>PATH_TYPE</key>
+																<integer>0</integer>
+															</dict>
+															<key>BUNDLE_PREINSTALL_PATH</key>
+															<dict>
+																<key>PATH_TYPE</key>
+																<integer>0</integer>
+															</dict>
+															<key>CHILDREN</key>
+															<array/>
+															<key>GID</key>
+															<integer>0</integer>
+															<key>PATH</key>
+															<string>/Users/emmethayes/Library/Audio/Plug-Ins/VST3/HayesDistortion.vst3</string>
+															<key>PATH_TYPE</key>
+															<integer>0</integer>
+															<key>PERMISSIONS</key>
+															<integer>493</integer>
+															<key>TYPE</key>
+															<integer>3</integer>
+															<key>UID</key>
+															<integer>0</integer>
+														</dict>
+														<dict>
+															<key>BUNDLE_CAN_DOWNGRADE</key>
+															<false/>
 															<key>CHILDREN</key>
 															<array/>
 															<key>GID</key>
@@ -813,24 +851,6 @@
 															<integer>0</integer>
 															<key>PATH</key>
 															<string>/Users/emmethayes/Library/Audio/Plug-Ins/VST3/HayesFDNReverb.vst3</string>
-															<key>PATH_TYPE</key>
-															<integer>0</integer>
-															<key>PERMISSIONS</key>
-															<integer>493</integer>
-															<key>TYPE</key>
-															<integer>3</integer>
-															<key>UID</key>
-															<integer>0</integer>
-														</dict>
-														<dict>
-															<key>BUNDLE_CAN_DOWNGRADE</key>
-															<false/>
-															<key>CHILDREN</key>
-															<array/>
-															<key>GID</key>
-															<integer>0</integer>
-															<key>PATH</key>
-															<string>/Users/emmethayes/Library/Audio/Plug-Ins/VST3/HayesOverdrive.vst3</string>
 															<key>PATH_TYPE</key>
 															<integer>0</integer>
 															<key>PERMISSIONS</key>
