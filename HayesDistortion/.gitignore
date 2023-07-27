@@ -1,3 +1,4 @@
-# folder
-Builds
-**/.DS_Store
+**/.DS_*
+**/Builds
+**/JuceLibraryCode
+!**/JuceLibraryCode/AppConfig.h

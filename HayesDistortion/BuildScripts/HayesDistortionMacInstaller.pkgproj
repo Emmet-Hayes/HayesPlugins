@@ -79,143 +79,7 @@
 															<key>GID</key>
 															<integer>0</integer>
 															<key>PATH</key>
-															<string>/Users/emmethayes/Library/Audio/Plug-Ins/Components/HayesCompressor.component</string>
-															<key>PATH_TYPE</key>
-															<integer>0</integer>
-															<key>PERMISSIONS</key>
-															<integer>493</integer>
-															<key>TYPE</key>
-															<integer>3</integer>
-															<key>UID</key>
-															<integer>0</integer>
-														</dict>
-														<dict>
-															<key>BUNDLE_CAN_DOWNGRADE</key>
-															<false/>
-															<key>CHILDREN</key>
-															<array/>
-															<key>GID</key>
-															<integer>0</integer>
-															<key>PATH</key>
-															<string>/Users/emmethayes/Library/Audio/Plug-Ins/Components/HayesDelay.component</string>
-															<key>PATH_TYPE</key>
-															<integer>0</integer>
-															<key>PERMISSIONS</key>
-															<integer>493</integer>
-															<key>TYPE</key>
-															<integer>3</integer>
-															<key>UID</key>
-															<integer>0</integer>
-														</dict>
-														<dict>
-															<key>BUNDLE_CAN_DOWNGRADE</key>
-															<false/>
-															<key>BUNDLE_POSTINSTALL_PATH</key>
-															<dict>
-																<key>PATH_TYPE</key>
-																<integer>0</integer>
-															</dict>
-															<key>BUNDLE_PREINSTALL_PATH</key>
-															<dict>
-																<key>PATH_TYPE</key>
-																<integer>0</integer>
-															</dict>
-															<key>CHILDREN</key>
-															<array/>
-															<key>GID</key>
-															<integer>0</integer>
-															<key>PATH</key>
 															<string>/Users/emmethayes/Library/Audio/Plug-Ins/Components/HayesDistortion.component</string>
-															<key>PATH_TYPE</key>
-															<integer>0</integer>
-															<key>PERMISSIONS</key>
-															<integer>493</integer>
-															<key>TYPE</key>
-															<integer>3</integer>
-															<key>UID</key>
-															<integer>0</integer>
-														</dict>
-														<dict>
-															<key>BUNDLE_CAN_DOWNGRADE</key>
-															<false/>
-															<key>CHILDREN</key>
-															<array/>
-															<key>GID</key>
-															<integer>0</integer>
-															<key>PATH</key>
-															<string>/Users/emmethayes/Library/Audio/Plug-Ins/Components/HayesEQ.component</string>
-															<key>PATH_TYPE</key>
-															<integer>0</integer>
-															<key>PERMISSIONS</key>
-															<integer>493</integer>
-															<key>TYPE</key>
-															<integer>3</integer>
-															<key>UID</key>
-															<integer>0</integer>
-														</dict>
-														<dict>
-															<key>BUNDLE_CAN_DOWNGRADE</key>
-															<false/>
-															<key>CHILDREN</key>
-															<array/>
-															<key>GID</key>
-															<integer>0</integer>
-															<key>PATH</key>
-															<string>/Users/emmethayes/Library/Audio/Plug-Ins/Components/HayesFDNReverb.component</string>
-															<key>PATH_TYPE</key>
-															<integer>0</integer>
-															<key>PERMISSIONS</key>
-															<integer>493</integer>
-															<key>TYPE</key>
-															<integer>3</integer>
-															<key>UID</key>
-															<integer>0</integer>
-														</dict>
-														<dict>
-															<key>BUNDLE_CAN_DOWNGRADE</key>
-															<false/>
-															<key>CHILDREN</key>
-															<array/>
-															<key>GID</key>
-															<integer>0</integer>
-															<key>PATH</key>
-															<string>/Users/emmethayes/Library/Audio/Plug-Ins/Components/HayesPitchShifter.component</string>
-															<key>PATH_TYPE</key>
-															<integer>0</integer>
-															<key>PERMISSIONS</key>
-															<integer>493</integer>
-															<key>TYPE</key>
-															<integer>3</integer>
-															<key>UID</key>
-															<integer>0</integer>
-														</dict>
-														<dict>
-															<key>BUNDLE_CAN_DOWNGRADE</key>
-															<false/>
-															<key>CHILDREN</key>
-															<array/>
-															<key>GID</key>
-															<integer>0</integer>
-															<key>PATH</key>
-															<string>/Users/emmethayes/Library/Audio/Plug-Ins/Components/HayesReverb.component</string>
-															<key>PATH_TYPE</key>
-															<integer>0</integer>
-															<key>PERMISSIONS</key>
-															<integer>493</integer>
-															<key>TYPE</key>
-															<integer>3</integer>
-															<key>UID</key>
-															<integer>0</integer>
-														</dict>
-														<dict>
-															<key>BUNDLE_CAN_DOWNGRADE</key>
-															<false/>
-															<key>CHILDREN</key>
-															<array/>
-															<key>GID</key>
-															<integer>0</integer>
-															<key>PATH</key>
-															<string>/Users/emmethayes/Library/Audio/Plug-Ins/Components/HayesTapeDelay.component</string>
 															<key>PATH_TYPE</key>
 															<integer>0</integer>
 															<key>PERMISSIONS</key>
@@ -670,7 +534,7 @@
 				<key>FOLLOW_SYMBOLIC_LINKS</key>
 				<false/>
 				<key>IDENTIFIER</key>
-				<string>com.EmmetSoft.pkg.HayesBundleMacInstaller.AU</string>
+				<string>com.EmmetSoft.pkg.HayesDistortionMacInstaller.AU</string>
 				<key>LOCATION</key>
 				<integer>0</integer>
 				<key>NAME</key>
@@ -768,143 +632,7 @@
 															<key>GID</key>
 															<integer>0</integer>
 															<key>PATH</key>
-															<string>/Users/emmethayes/Library/Audio/Plug-Ins/VST3/HayesCompressor.vst3</string>
-															<key>PATH_TYPE</key>
-															<integer>0</integer>
-															<key>PERMISSIONS</key>
-															<integer>493</integer>
-															<key>TYPE</key>
-															<integer>3</integer>
-															<key>UID</key>
-															<integer>0</integer>
-														</dict>
-														<dict>
-															<key>BUNDLE_CAN_DOWNGRADE</key>
-															<false/>
-															<key>CHILDREN</key>
-															<array/>
-															<key>GID</key>
-															<integer>0</integer>
-															<key>PATH</key>
-															<string>/Users/emmethayes/Library/Audio/Plug-Ins/VST3/HayesDelay.vst3</string>
-															<key>PATH_TYPE</key>
-															<integer>0</integer>
-															<key>PERMISSIONS</key>
-															<integer>493</integer>
-															<key>TYPE</key>
-															<integer>3</integer>
-															<key>UID</key>
-															<integer>0</integer>
-														</dict>
-														<dict>
-															<key>BUNDLE_CAN_DOWNGRADE</key>
-															<false/>
-															<key>BUNDLE_POSTINSTALL_PATH</key>
-															<dict>
-																<key>PATH_TYPE</key>
-																<integer>0</integer>
-															</dict>
-															<key>BUNDLE_PREINSTALL_PATH</key>
-															<dict>
-																<key>PATH_TYPE</key>
-																<integer>0</integer>
-															</dict>
-															<key>CHILDREN</key>
-															<array/>
-															<key>GID</key>
-															<integer>0</integer>
-															<key>PATH</key>
 															<string>/Users/emmethayes/Library/Audio/Plug-Ins/VST3/HayesDistortion.vst3</string>
-															<key>PATH_TYPE</key>
-															<integer>0</integer>
-															<key>PERMISSIONS</key>
-															<integer>493</integer>
-															<key>TYPE</key>
-															<integer>3</integer>
-															<key>UID</key>
-															<integer>0</integer>
-														</dict>
-														<dict>
-															<key>BUNDLE_CAN_DOWNGRADE</key>
-															<false/>
-															<key>CHILDREN</key>
-															<array/>
-															<key>GID</key>
-															<integer>0</integer>
-															<key>PATH</key>
-															<string>/Users/emmethayes/Library/Audio/Plug-Ins/VST3/HayesEQ.vst3</string>
-															<key>PATH_TYPE</key>
-															<integer>0</integer>
-															<key>PERMISSIONS</key>
-															<integer>493</integer>
-															<key>TYPE</key>
-															<integer>3</integer>
-															<key>UID</key>
-															<integer>0</integer>
-														</dict>
-														<dict>
-															<key>BUNDLE_CAN_DOWNGRADE</key>
-															<false/>
-															<key>CHILDREN</key>
-															<array/>
-															<key>GID</key>
-															<integer>0</integer>
-															<key>PATH</key>
-															<string>/Users/emmethayes/Library/Audio/Plug-Ins/VST3/HayesFDNReverb.vst3</string>
-															<key>PATH_TYPE</key>
-															<integer>0</integer>
-															<key>PERMISSIONS</key>
-															<integer>493</integer>
-															<key>TYPE</key>
-															<integer>3</integer>
-															<key>UID</key>
-															<integer>0</integer>
-														</dict>
-														<dict>
-															<key>BUNDLE_CAN_DOWNGRADE</key>
-															<false/>
-															<key>CHILDREN</key>
-															<array/>
-															<key>GID</key>
-															<integer>0</integer>
-															<key>PATH</key>
-															<string>/Users/emmethayes/Library/Audio/Plug-Ins/VST3/HayesPitchShifter.vst3</string>
-															<key>PATH_TYPE</key>
-															<integer>0</integer>
-															<key>PERMISSIONS</key>
-															<integer>493</integer>
-															<key>TYPE</key>
-															<integer>3</integer>
-															<key>UID</key>
-															<integer>0</integer>
-														</dict>
-														<dict>
-															<key>BUNDLE_CAN_DOWNGRADE</key>
-															<false/>
-															<key>CHILDREN</key>
-															<array/>
-															<key>GID</key>
-															<integer>0</integer>
-															<key>PATH</key>
-															<string>/Users/emmethayes/Library/Audio/Plug-Ins/VST3/HayesReverb.vst3</string>
-															<key>PATH_TYPE</key>
-															<integer>0</integer>
-															<key>PERMISSIONS</key>
-															<integer>493</integer>
-															<key>TYPE</key>
-															<integer>3</integer>
-															<key>UID</key>
-															<integer>0</integer>
-														</dict>
-														<dict>
-															<key>BUNDLE_CAN_DOWNGRADE</key>
-															<false/>
-															<key>CHILDREN</key>
-															<array/>
-															<key>GID</key>
-															<integer>0</integer>
-															<key>PATH</key>
-															<string>/Users/emmethayes/Library/Audio/Plug-Ins/VST3/HayesTapeDelay.vst3</string>
 															<key>PATH_TYPE</key>
 															<integer>0</integer>
 															<key>PERMISSIONS</key>
@@ -1374,7 +1102,7 @@
 				<key>FOLLOW_SYMBOLIC_LINKS</key>
 				<false/>
 				<key>IDENTIFIER</key>
-				<string>com.EmmetSoft.pkg.HayesBundleMacInstaller.VST3</string>
+				<string>com.EmmetSoft.pkg.HayesDistortionMacInstaller.VST3</string>
 				<key>LOCATION</key>
 				<integer>0</integer>
 				<key>NAME</key>
@@ -1404,22 +1132,6 @@
 		<dict>
 			<key>NOTES</key>
 			<data>
-			PCFET0NUWVBFIGh0bWwgUFVCTElDICItLy9XM0MvL0RURCBIVE1M
-			IDQuMDEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvVFIvaHRtbDQv
-			c3RyaWN0LmR0ZCI+CjxodG1sPgo8aGVhZD4KPG1ldGEgaHR0cC1l
-			cXVpdj0iQ29udGVudC1UeXBlIiBjb250ZW50PSJ0ZXh0L2h0bWw7
-			IGNoYXJzZXQ9VVRGLTgiPgo8bWV0YSBodHRwLWVxdWl2PSJDb250
-			ZW50LVN0eWxlLVR5cGUiIGNvbnRlbnQ9InRleHQvY3NzIj4KPHRp
-			dGxlPjwvdGl0bGU+CjxtZXRhIG5hbWU9IkdlbmVyYXRvciIgY29u
-			dGVudD0iQ29jb2EgSFRNTCBXcml0ZXIiPgo8bWV0YSBuYW1lPSJD
-			b2NvYVZlcnNpb24iIGNvbnRlbnQ9IjE2NzEuNiI+CjxzdHlsZSB0
-			eXBlPSJ0ZXh0L2NzcyI+CnAucDEge21hcmdpbjogMC4wcHggMC4w
-			cHggMC4wcHggMC4wcHg7IGxpbmUtaGVpZ2h0OiAxNC4wcHg7IGZv
-			bnQ6IDEyLjBweCBIZWx2ZXRpY2E7IGNvbG9yOiAjMDAwMDAwOyAt
-			d2Via2l0LXRleHQtc3Ryb2tlOiAjMDAwMDAwfQpzcGFuLnMxIHtm
-			b250LWtlcm5pbmc6IG5vbmV9Cjwvc3R5bGU+CjwvaGVhZD4KPGJv
-			ZHk+CjxwIGNsYXNzPSJwMSI+PHNwYW4gY2xhc3M9InMxIj5IZWxs
-			byBTaGFuZS48L3NwYW4+PC9wPgo8L2JvZHk+CjwvaHRtbD4K
 			</data>
 		</dict>
 		<key>PROJECT_PRESENTATION</key>
@@ -1520,7 +1232,7 @@
 						<key>LANGUAGE</key>
 						<string>English</string>
 						<key>VALUE</key>
-						<string>HayesBundleMacInstaller</string>
+						<string>HayesDistortionMacInstaller</string>
 					</dict>
 				</array>
 			</dict>
@@ -1541,7 +1253,7 @@
 			<key>BUILD_PATH</key>
 			<dict>
 				<key>PATH</key>
-				<string>../HayesInstallers/</string>
+				<string>../../HayesInstallers/</string>
 				<key>PATH_TYPE</key>
 				<integer>1</integer>
 			</dict>
@@ -1714,7 +1426,7 @@
 				</dict>
 			</array>
 			<key>NAME</key>
-			<string>HayesBundleMacInstaller</string>
+			<string>HayesDistortionMacInstaller</string>
 			<key>PAYLOAD_ONLY</key>
 			<false/>
 			<key>TREAT_MISSING_PRESENTATION_DOCUMENTS_AS_WARNING</key>

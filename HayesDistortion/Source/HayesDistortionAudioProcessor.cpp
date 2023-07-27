@@ -8,8 +8,8 @@ HayesDistortionAudioProcessor::HayesDistortionAudioProcessor()
 ,   VinR               { 500.f, 0.f }
 ,   R1L                { 80.0f }
 ,   R1R                { 80.0f }
-,   C1L                { 3.5e-5, getSampleRate() }
-,   C1R                { 3.5e-5, getSampleRate() }
+,   C1L                { 3.5e-5f, static_cast<float>(getSampleRate()) }
+,   C1R                { 3.5e-5f, static_cast<float>(getSampleRate()) }
 ,   RCL                { &R1L, &C1L }
 ,   RCR                { &R1R, &C1R }
 ,   rootL              { &VinL, &RCL }

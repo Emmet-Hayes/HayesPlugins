@@ -47,7 +47,7 @@
  #define JucePlugin_Desc                   "HayesDistortion"
 #endif
 #ifndef  JucePlugin_Manufacturer
- #define JucePlugin_Manufacturer           "Wings"
+ #define JucePlugin_Manufacturer           "EmmetSoft"
 #endif
 #ifndef  JucePlugin_ManufacturerWebsite
  #define JucePlugin_ManufacturerWebsite    "www.yourcompany.com"
@@ -113,7 +113,7 @@
  #define JucePlugin_CFBundleIdentifier     com.yourcompany.HayesDistortion
 #endif
 #ifndef  JucePlugin_AAXIdentifier
- #define JucePlugin_AAXIdentifier          com.WingsDSP.Fire
+ #define JucePlugin_AAXIdentifier          com.yourcompany.HayesDistortion
 #endif
 #ifndef  JucePlugin_AAXManufacturerCode
  #define JucePlugin_AAXManufacturerCode    JucePlugin_ManufacturerCode
@@ -137,7 +137,7 @@
  #define JucePlugin_IAASubType             JucePlugin_PluginCode
 #endif
 #ifndef  JucePlugin_IAAName
- #define JucePlugin_IAAName                "Wings: HayesDistortion"
+ #define JucePlugin_IAAName                "EmmetSoft: HayesDistortion"
 #endif
 #ifndef  JucePlugin_VSTNumMidiInputs
  #define JucePlugin_VSTNumMidiInputs       16
