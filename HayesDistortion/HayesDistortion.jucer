@@ -6,6 +6,10 @@
               addUsingNamespaceToJuceHeader="0" cppLanguageStandard="17" defines="JUCE_MODAL_LOOPS_PERMITTED=1">
   <MAINGROUP id="X9e8F0" name="HayesDistortion">
     <GROUP id="{96A1BD9C-E314-4B31-EAFB-6F46EC8CB8A0}" name="Common">
+      <GROUP id="{946AA9A4-B382-FDA5-9885-04E3AA0574AD}" name="Fonts">
+        <FILE id="BbXlEz" name="Juliafont-Regular.ttf" compile="0" resource="1"
+              file="../Common/Fonts/Juliafont-Regular.ttf"/>
+      </GROUP>
       <FILE id="O762Xh" name="PresetBar.cpp" compile="1" resource="0" file="../Common/PresetBar.cpp"/>
       <FILE id="QhMIhQ" name="PresetBar.h" compile="0" resource="0" file="../Common/PresetBar.h"/>
       <FILE id="ORUxn0" name="PresetComboBox.cpp" compile="1" resource="0"

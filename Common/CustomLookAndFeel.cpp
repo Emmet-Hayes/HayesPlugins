@@ -6,6 +6,19 @@ CustomLookAndFeel::CustomLookAndFeel()
     setColour(juce::ComboBox::textColourId, juce::Colours::white);
     setColour(juce::Slider::textBoxTextColourId, juce::Colours::white);
     setColour(juce::Slider::textBoxOutlineColourId, juce::Colours::white);
+    setColour(juce::TextButton::buttonColourId, juce::Colours::darkmagenta.withBrightness(0.2f));
+    setColour(juce::TextButton::buttonOnColourId, juce::Colours::hotpink.withBrightness(0.7f));
+    setColour(juce::TextButton::textColourOnId, juce::Colours::black);
+    setColour(juce::TextButton::textColourOffId, juce::Colours::white);
+
+    const void* fontData = BinaryData::JuliafontRegular_ttf;
+    unsigned int fontSize = BinaryData::JuliafontRegular_ttfSize;
+
+    juce::MemoryInputStream fontStream(fontData, fontSize, false);
+    juce::Typeface::Ptr typeface = juce::Typeface::createSystemTypefaceFor(fontStream.getData(), fontStream.getTotalLength());
+
+    customFont = typeface;
+    customFont.setHeight(11.f * windowScale);
 }
 
 void CustomLookAndFeel::drawCornerResizer (juce::Graphics& g, int w, int h, bool isMouseOver, bool isMouseDragging)
@@ -43,7 +56,8 @@ void CustomLookAndFeel::drawPopupMenuItem(juce::Graphics& g, const juce::Rectang
         g.fillAll(juce::Colours::silver);
 
     g.setColour(isHighlighted ? juce::Colours::black : juce::Colours::white);
-    g.setFont(juce::Font("Lucida Console", 13.0f * windowScale, juce::Font::bold));
+    customFont.setHeight(13.0f * windowScale);
+    g.setFont(customFont);
     g.drawText(text, area, juce::Justification::centred);
 }
     
@@ -112,7 +126,8 @@ juce::Label* CustomLookAndFeel::createSliderTextBox(juce::Slider& slider)
 
     // Don't exceed the maximum font size
     fontSize = juce::jmin(fontSize, maxFontSize);
-    l->setFont(juce::Font("Lucida Console", fontSize, juce::Font::bold));
+    customFont.setHeight(fontSize);
+    l->setFont(customFont);
     l->setJustificationType(juce::Justification::centred);
 
     return l;
@@ -120,15 +135,16 @@ juce::Label* CustomLookAndFeel::createSliderTextBox(juce::Slider& slider)
 
 juce::Font CustomLookAndFeel::getLabelFont(juce::Label& label)
 {
-    return juce::Font(juce::Font("Lucida Console", 13.f * windowScale, juce::Font::bold));
+    customFont.setHeight(13.0f * windowScale);
+    return customFont;
 }
 
-void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, 
-                                         const float rotaryStartAngle, const float rotaryEndAngle, juce::Slider& slider) 
+void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos,
+    const float rotaryStartAngle, const float rotaryEndAngle, juce::Slider& slider)
 {
-    double radius  = juce::jmin(width / 2, height / 2) - 4.0f;
-    double centreX = x + width * 0.5f;
-    double centreY = y + height * 0.5f;
+    double radius = static_cast<double>(juce::jmin(width / 2, height / 2) - 4);
+    double centreX = x + width * 0.5;
+    double centreY = y + height * 0.5;
     double rx = centreX - radius;
     double ry = centreY - radius;
     double rw = radius * 2.0f;
@@ -151,6 +167,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int wi
     g.fillPath(p);
 }
 
+
 void CustomLookAndFeel::drawComboBox(juce::Graphics& g, int /*w*/, int /*h*/, bool /*isDown*/, int /*bx*/, int /*by*/, int /*bw*/, int /*bh*/, juce::ComboBox& /*cb*/)
 {
     juce::Colour c(30, 8, 33);
@@ -170,7 +187,7 @@ juce::Font CustomLookAndFeel::getPopupMenuFont()
 
 juce::Font CustomLookAndFeel::getCommonMenuFont(float s) 
 {
-    return juce::Font("Lucida Console", 11.f * s, juce::Font::bold);
+    return customFont;
 }
 
 void CustomLookAndFeel::drawPopupMenuBackground(juce::Graphics& g, int width, int height) 

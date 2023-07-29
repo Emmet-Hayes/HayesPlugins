@@ -26,4 +26,7 @@ public:
 private:
     float windowScale = 1.0f;
     float rotaryOutlineBrightness = 1.0f;
+    int seed;
+
+    juce::Font customFont;
 };
