@@ -131,6 +131,8 @@ HayesDistortionAudioProcessorEditor::HayesDistortionAudioProcessorEditor(HayesDi
     getConstrainer()->setFixedAspectRatio (2); // set fixed resize rate
 
     setMultiband();
+    
+    image = juce::ImageCache::getFromMemory(BinaryData::bg_file_jpg, BinaryData::bg_file_jpgSize);
 }
 
 HayesDistortionAudioProcessorEditor::~HayesDistortionAudioProcessorEditor()
@@ -149,8 +151,7 @@ void HayesDistortionAudioProcessorEditor::paint (juce::Graphics& g)
     int part2 = part1 * 3;
 
     // background
-    g.setColour (COLOUR7);
-    g.fillRect (0.0f, getHeight() * 3 / 10.0f, static_cast<float> (getWidth()), getHeight() * 7 / 10.0f);
+    g.drawImage(image, 0, 0, 1000 * scale, 500 * scale, 0, 0, 1000, 500);
 
     auto frame = getLocalBounds();
     frame.setBounds (0, part1, getWidth(), part2);
@@ -197,7 +198,7 @@ void HayesDistortionAudioProcessorEditor::resized()
     processor.setSavedWidth (getWidth());
 
     // knobs
-    float scale = juce::jmin (getHeight() / INIT_HEIGHT, getWidth() / INIT_WIDTH);
+    scale = juce::jmin (getHeight() / INIT_HEIGHT, getWidth() / INIT_WIDTH);
     //float scaleMax = juce::jmax (getHeight() / INIT_HEIGHT, getWidth() / INIT_WIDTH);
 
     // top bar

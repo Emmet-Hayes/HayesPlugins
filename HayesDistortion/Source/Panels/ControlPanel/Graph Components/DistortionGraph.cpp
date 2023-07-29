@@ -119,7 +119,12 @@ void DistortionGraph::paint (juce::Graphics& g)
             p.lineTo (xPos, yPos);
         }
 
-        juce::ColourGradient grad (juce::Colours::violet.withBrightness (0.9f), frameRight.getX() + frameRight.getWidth() / 2, frameRight.getY() + frameRight.getHeight() / 2, juce::Colours::red.withBrightness (0.9f).withAlpha (0.0f), frameRight.getX(), static_cast<float>(frameRight.getY() + frameRight.getHeight() / 2), true);
+        juce::ColourGradient grad (juce::Colours::violet.withBrightness (0.9f), 
+                                   static_cast<float>(frameRight.getX() + frameRight.getWidth() / 2), 
+                                   static_cast<float>(frameRight.getY() + frameRight.getHeight() / 2), 
+                                   juce::Colours::red.withBrightness (0.9f).withAlpha (0.0f), 
+                                   static_cast<float>(frameRight.getX()), 
+                                   static_cast<float>(frameRight.getY() + frameRight.getHeight() / 2), true);
         g.setGradientFill (grad);
         g.strokePath (p, juce::PathStrokeType (2.0f));
     }

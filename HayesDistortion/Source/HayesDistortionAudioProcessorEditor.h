@@ -3,7 +3,7 @@
 #include <JuceHeader.h>
 
 #include "../../Common/BaseAudioProcessorEditor.h"
-#include "GUI/CustomLookAndFeel.h"
+#include "GUI/DriveLookAndFeel.h"
 #include "GUI/InterfaceDefines.h"
 #include "Panels/ControlPanel/Graph Components/DistortionGraph.h"
 #include "Panels/ControlPanel/Graph Components/Oscilloscope.h"
@@ -99,11 +99,14 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> modeAttachment4;
 
 
+    juce::Image image;
     PresetBar presetBar; 
 
     // create own knob style
     CustomLookAndFeel otherLookAndFeel;
     CustomLookAndFeel zoomLookAndFeel;
+
+    float scale { 1.0f };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (HayesDistortionAudioProcessorEditor)
 };

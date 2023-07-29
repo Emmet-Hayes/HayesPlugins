@@ -3,7 +3,7 @@
 #include <JuceHeader.h>
 
 #include "../../../HayesDistortionAudioProcessor.h"
-#include "../../../GUI/CustomLookAndFeel.h"
+#include "../../../GUI/DriveLookAndFeel.h"
 #include "../../../DSP/ClippingFunctions.h"
 #include "GraphTemplate.h"
 

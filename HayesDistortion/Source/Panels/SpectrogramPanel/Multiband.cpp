@@ -625,7 +625,7 @@ void Multiband::setMasks (juce::Graphics& g, int index, int lineNumLimit, int px
     // set focus mask
     if (lineNum > lineNumLimit && focusIndex == index)
     {
-        juce::ColourGradient grad (COLOUR5.withAlpha (0.2f), 0, 0, COLOUR1.withAlpha (0.2f), getLocalBounds().getWidth(), 0, false);
+        juce::ColourGradient grad (COLOUR5.withAlpha (0.2f), 0.f, 0.f, COLOUR1.withAlpha (0.2f), static_cast<float>(getLocalBounds().getWidth()), 0.f, false);
         g.setGradientFill (grad);
         g.fillRect (px, py, pwidth, pheight);
     }

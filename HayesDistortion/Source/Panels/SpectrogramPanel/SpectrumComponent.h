@@ -2,7 +2,7 @@
 
 #include <JuceHeader.h>
 
-#include "../../GUI/CustomLookAndFeel.h"
+#include "../../GUI/DriveLookAndFeel.h"
 
 
 class SpectrumComponent : public juce::Component

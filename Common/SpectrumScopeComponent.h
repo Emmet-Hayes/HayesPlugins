@@ -74,38 +74,40 @@ public:
 
 		for (int i = 1; i < numVerticalLines; ++i)
 		{
-			float x = jmap<float>(i, 0, numVerticalLines, spectrumRect.getX(), spectrumRect.getRight());
+			float x = jmap<float>(static_cast<float>(i), 0.0f, static_cast<float>(numVerticalLines), spectrumRect.getX(), spectrumRect.getRight());
 			g.drawLine(x, spectrumRect.getY(), x, spectrumRect.getBottom());
-			g.drawText(xLabels[i - 1], x - (5 * scaleW), spectrumRect.getBottom() - (5 * scaleH), 30 * scaleW, 20 * scaleH, juce::Justification::left);
+			g.drawText(xLabels[i - 1], 
+				       static_cast<int>(x - (5 * scaleW)), 
+				       static_cast<int>(spectrumRect.getBottom() - (5 * scaleH)), 
+				       static_cast<int>(30 * scaleW), 
+				       static_cast<int>(20 * scaleH), juce::Justification::left);
 		}
 
 		for (int i = 1; i < numHorizontalLines; ++i)
 		{
-			float y = jmap<float>(i, 0, numHorizontalLines, spectrumRect.getY(), spectrumRect.getBottom());
+			float y = jmap<float>(static_cast<float>(i), 0.0f, static_cast<float>(numHorizontalLines), spectrumRect.getY(), spectrumRect.getBottom());
 			g.drawLine(spectrumRect.getX(), y, spectrumRect.getRight(), y);
-			g.drawText(ampLabels[i - 1], 0, y - (10 * scaleH), 30 * scaleW, 20 * scaleH, juce::Justification::left);
+			g.drawText(ampLabels[i - 1], 
+				       0, 
+				       static_cast<int>(y - (10 * scaleH)), 
+				       static_cast<int>(30 * scaleW), 
+				       static_cast<int>(20 * scaleH), juce::Justification::left);
 		}
 
-		g.setColour (juce::Colours::aquamarine);
-
-        juce::ColourGradient grad (juce::Colours::pink.withAlpha(0.8f), 0, 0, juce::Colours::blue.withAlpha(0.8f), 0, getLocalBounds().getHeight(), false);
-
-        g.setGradientFill(grad);
-
-		// 8 probes for changes in amplitude
-		for (int i = 0; i < 8; ++i)
+		// 8 probes for changes in amplitude, this is more efficient than scanning the whole buffer for updates.
+		for (int j = 0; j < 8; ++j)
 		{
-			if (spectrumData.data()[i * (spectrumData.size() / 8)] > 0.1f ||
-				spectrumData.data()[i * (spectrumData.size() / 8)] < -10.1f)
+			if (spectrumData.data()[j * (spectrumData.size() / 8)] > 0.1f ||
+				spectrumData.data()[j * (spectrumData.size() / 8)] < -10.1f)
 			{
 				for (size_t i = 0; i < prevFrames.size(); ++i)
 				{
 					float opacity = 0.1f + 0.9f * (i / (float)prevFrames.size());
 					
 					g.setColour(juce::Colours::hotpink.withAlpha(opacity));
-					juce::ColourGradient grad (juce::Colours::pink.withAlpha(opacity), 0, 0, juce::Colours::blue.withAlpha(opacity), 0, getLocalBounds().getHeight(), false);
+					juce::ColourGradient grad (juce::Colours::pink.withAlpha(opacity), 0.0f, 0.0f, 
+						                       juce::Colours::blue.withAlpha(opacity), 0.0f, static_cast<float>(getLocalBounds().getHeight()), false);
                     g.setGradientFill(grad);
-
 
 					plot(prevFrames[i].data(), prevFrames[i].size() / 4, g, spectrumRect);
 				}
@@ -177,10 +179,7 @@ private:
 		for (size_t i = 1; i < numSamples; ++i)
 		{
 			SampleType freq = jmap(SampleType(i), SampleType(0), SampleType(numSamples), minFreq, maxFreq);
-			SampleType prevFreq = jmap(SampleType(i - 1), SampleType(0), SampleType(numSamples), minFreq, maxFreq);
-
 			SampleType xPos = (log10(freq) - log10(minFreq)) * logScaleFactor;
-			SampleType prevXPos = (log10(prevFreq) - log10(minFreq)) * logScaleFactor;
 
 			// add each point to the Path
 			plotPath.lineTo(left + xPos, center - gain * data[i]);

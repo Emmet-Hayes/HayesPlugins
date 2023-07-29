@@ -6,6 +6,11 @@
               addUsingNamespaceToJuceHeader="0" cppLanguageStandard="17" defines="JUCE_MODAL_LOOPS_PERMITTED=1">
   <MAINGROUP id="X9e8F0" name="HayesDistortion">
     <GROUP id="{96A1BD9C-E314-4B31-EAFB-6F46EC8CB8A0}" name="Common">
+      <FILE id="vDxVsT" name="CentredLabel.h" compile="0" resource="0" file="../Common/CentredLabel.h"/>
+      <FILE id="erIRMV" name="CustomLookAndFeel.cpp" compile="1" resource="0"
+            file="../Common/CustomLookAndFeel.cpp"/>
+      <FILE id="tXGMMH" name="CustomLookAndFeel.h" compile="0" resource="0"
+            file="../Common/CustomLookAndFeel.h"/>
       <GROUP id="{946AA9A4-B382-FDA5-9885-04E3AA0574AD}" name="Fonts">
         <FILE id="BbXlEz" name="Juliafont-Regular.ttf" compile="0" resource="1"
               file="../Common/Fonts/Juliafont-Regular.ttf"/>
@@ -91,11 +96,10 @@
         <FILE id="A4Ogfw" name="AudioHelpers.h" compile="0" resource="0" file="Source/Utility/AudioHelpers.h"/>
       </GROUP>
       <GROUP id="{A397A229-19FD-F110-6940-6CC5C037D4D0}" name="GUI">
-        <FILE id="iEjJhI" name="CentredLabel.h" compile="0" resource="0" file="Source/GUI/CentredLabel.h"/>
-        <FILE id="Llu5p3" name="CustomLookAndFeel.cpp" compile="1" resource="0"
-              file="Source/GUI/CustomLookAndFeel.cpp"/>
-        <FILE id="HKQBut" name="CustomLookAndFeel.h" compile="0" resource="0"
-              file="Source/GUI/CustomLookAndFeel.h"/>
+        <FILE id="Llu5p3" name="DriveLookAndFeel.cpp" compile="1" resource="0"
+              file="Source/GUI/DriveLookAndFeel.cpp"/>
+        <FILE id="HKQBut" name="DriveLookAndFeel.h" compile="0" resource="0"
+              file="Source/GUI/DriveLookAndFeel.h"/>
         <FILE id="rznrv4" name="InterfaceDefines.h" compile="0" resource="0"
               file="Source/GUI/InterfaceDefines.h"/>
       </GROUP>
@@ -119,7 +123,11 @@
       <FILE id="O1QEz8" name="HayesDistortionAudioProcessorEditor.h" compile="0"
             resource="0" file="Source/HayesDistortionAudioProcessorEditor.h"/>
     </GROUP>
-    <GROUP id="{4D5C8DFF-C673-563C-6FBC-4675C99EB0D9}" name="Resource"/>
+    <GROUP id="{4D5C8DFF-C673-563C-6FBC-4675C99EB0D9}" name="Resources">
+      <GROUP id="{B0DFA85D-12B3-F66D-546E-C84213EC876F}" name="Images">
+        <FILE id="ee7Of5" name="bg_file.jpg" compile="0" resource="1" file="Resources/Images/bg_file.jpg"/>
+      </GROUP>
+    </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX">

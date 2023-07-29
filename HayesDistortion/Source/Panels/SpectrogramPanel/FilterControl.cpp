@@ -193,7 +193,7 @@ void FilterControl::updateResponseCurve()
             mag *= highcutQ.coefficients->getMagnitudeForFrequency (freq, sampleRate);
         }
         
-        mags[i] = juce::Decibels::gainToDecibels(mag);
+        mags[i] = static_cast<float>(juce::Decibels::gainToDecibels(mag));
     }
     
     responseCurve.clear();
@@ -211,7 +211,7 @@ void FilterControl::updateResponseCurve()
     responseCurve.startNewSubPath (startPoint);
     
     for (size_t i = 0; i < mags.size(); ++i)
-        responseCurve.lineTo (0 + i, map (mags[i]));
+        responseCurve.lineTo (static_cast<float>(0 + i), static_cast<float>(map(static_cast<double>(mags[i]))));
     
     responseCurve.lineTo (endPoint);
     

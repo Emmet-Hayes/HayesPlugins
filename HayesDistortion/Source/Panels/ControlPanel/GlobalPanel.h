@@ -2,7 +2,7 @@
 
 #include <JuceHeader.h>
 
-#include "../../GUI/CustomLookAndFeel.h"
+#include "../../GUI/DriveLookAndFeel.h"
 
 
 class GlobalPanel : public juce::Component,

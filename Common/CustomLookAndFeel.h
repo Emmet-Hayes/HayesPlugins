@@ -20,11 +20,15 @@ public:
 	void drawPopupMenuBackground(juce::Graphics&, int, int) override;
     void drawRotarySlider(juce::Graphics&, int, int, int, int, float, const float,
 		                  const float, juce::Slider&) override;
+    juce::Font getTextButtonFont(juce::TextButton&, int buttonHeight) override;
+
     void setWindowScale(const float& newScale) { windowScale = newScale; }
     juce::Font getCommonMenuFont(float);
 
-private:
+protected:
     float windowScale = 1.0f;
+
+private:
     float rotaryOutlineBrightness = 1.0f;
     int seed;
 

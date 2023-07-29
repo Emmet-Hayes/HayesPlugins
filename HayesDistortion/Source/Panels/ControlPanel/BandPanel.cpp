@@ -67,7 +67,7 @@ BandPanel::BandPanel(HayesDistortionAudioProcessor& p)
     for (int i = 0; i < MAX_NUM_BANDS; ++i)
     {
         initRotarySlider(mixKnobs[i], COLOUR1);
-        initRotarySlider(compRatioKnobs[0], COMP_COLOUR);
+        initRotarySlider(compRatioKnobs[i], COMP_COLOUR);
     }
 
     addAndMakeVisible (CompRatioLabel);
@@ -362,7 +362,7 @@ void BandPanel::linkValue (juce::Slider& xSlider, juce::Slider& driveSlider, juc
 
 }
 
-void BandPanel::comboBoxChanged (juce::ComboBox* combobox)
+void BandPanel::comboBoxChanged (juce::ComboBox* /*combobox*/)
 {
 }
 
@@ -526,9 +526,9 @@ void BandPanel::setFocusBandNum (int num)
     focusBandNum = num;
 }
 
-void BandPanel::setScale (float scale)
+void BandPanel::setScale (float pscale)
 {
-    this->scale = scale;
+    scale = pscale;
 }
 
 void BandPanel::setVisibility (juce::Array<juce::Component*>& array, bool isVisible)

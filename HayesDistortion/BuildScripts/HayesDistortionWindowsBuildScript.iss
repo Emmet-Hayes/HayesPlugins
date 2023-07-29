@@ -7,7 +7,7 @@
 AppId={{93951FDE-7122-4745-90CE-EBB71DD44D23}}
 AppName=HayesDistortion
 AppVersion=1.0.0
-DefaultDirName={pf64}\Common Files\VST3\HayesDistortion\VST3
+DefaultDirName={commonpf64}\Common Files\VST3\HayesDistortion\VST3
 DefaultGroupName=EmmetSoft
 OutputDir=userdocs:HayesPlugins\HayesInstallers
 OutputBaseFilename=HayesDistortionInstaller

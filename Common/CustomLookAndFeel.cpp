@@ -21,7 +21,7 @@ CustomLookAndFeel::CustomLookAndFeel()
     customFont.setHeight(11.f * windowScale);
 }
 
-void CustomLookAndFeel::drawCornerResizer (juce::Graphics& g, int w, int h, bool isMouseOver, bool isMouseDragging)
+void CustomLookAndFeel::drawCornerResizer(juce::Graphics& g, int w, int h, bool isMouseOver, bool isMouseDragging)
 {
     juce::ignoreUnused (isMouseDragging);
 
@@ -47,10 +47,10 @@ void CustomLookAndFeel::drawCornerResizer (juce::Graphics& g, int w, int h, bool
 }
 
 void CustomLookAndFeel::drawPopupMenuItem(juce::Graphics& g, const juce::Rectangle<int>& area,
-                       bool isSeparator, bool isActive, bool isHighlighted,
-                       bool isTicked, bool hasSubMenu, const juce::String& text,
-                       const juce::String& shortcutKeyText, const juce::Drawable* icon,
-                       const juce::Colour* textColourToUse)
+                       bool /*isSeparator*/, bool /*isActive*/, bool isHighlighted,
+                       bool /*isTicked*/, bool /*hasSubMenu*/, const juce::String& text,
+                       const juce::String& /*shortcutKeyText*/, const juce::Drawable* /*icon*/,
+                       const juce::Colour* /*textColourToUse*/)
 {
     if (isHighlighted)
         g.fillAll(juce::Colours::silver);
@@ -72,7 +72,7 @@ void CustomLookAndFeel::drawLabel(juce::Graphics& g, juce::Label& label)
         
         // Dynamically adjust font size based on label bounds
         juce::String labelText = label.getText();
-        float width = font.getStringWidth(labelText);
+        int width = font.getStringWidth(labelText);
         while (width > label.getWidth() && font.getHeight() > 1) {
             font.setHeight(font.getHeight() - 1.0f);
             width = font.getStringWidth(labelText);
@@ -118,7 +118,7 @@ juce::Label* CustomLookAndFeel::createSliderTextBox(juce::Slider& slider)
 
     // Dynamically adjust font size based on label bounds
     juce::String testString = "0.000"; // change this to your worst case string
-    float width = l->getFont().getStringWidth(testString);
+    int width = l->getFont().getStringWidth(testString);
     while (width > l->getBounds().getWidth() && fontSize > 1) {
         fontSize -= 0.5f;
         width = l->getFont().withHeight(fontSize).getStringWidth(testString);
@@ -133,22 +133,22 @@ juce::Label* CustomLookAndFeel::createSliderTextBox(juce::Slider& slider)
     return l;
 }
 
-juce::Font CustomLookAndFeel::getLabelFont(juce::Label& label)
+juce::Font CustomLookAndFeel::getLabelFont(juce::Label& /*label*/)
 {
     customFont.setHeight(13.0f * windowScale);
     return customFont;
 }
 
 void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos,
-    const float rotaryStartAngle, const float rotaryEndAngle, juce::Slider& slider)
+    const float rotaryStartAngle, const float rotaryEndAngle, juce::Slider& /*slider*/)
 {
-    double radius = static_cast<double>(juce::jmin(width / 2, height / 2) - 4);
-    double centreX = x + width * 0.5;
-    double centreY = y + height * 0.5;
-    double rx = centreX - radius;
-    double ry = centreY - radius;
-    double rw = radius * 2.0f;
-    double angle = static_cast<double>(rotaryStartAngle) + sliderPos * static_cast<double>(rotaryEndAngle - rotaryStartAngle);
+    float radius = static_cast<float>(juce::jmin(width / 2, height / 2) - 4);
+    float centreX = x + width * 0.5f;
+    float centreY = y + height * 0.5f;
+    float rx = centreX - radius;
+    float ry = centreY - radius;
+    float rw = radius * 2.0f;
+    float angle = rotaryStartAngle + sliderPos * (rotaryEndAngle - rotaryStartAngle);
 
     g.setColour(juce::Colours::whitesmoke);
     g.setOpacity(0.33f);
@@ -156,15 +156,22 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int wi
 
     g.setColour(juce::Colours::bisque);
     g.setOpacity(1.0f);
-    g.drawEllipse(rx, ry, rw, rw, 2.0f);
+    g.drawEllipse(rx, ry, rw, rw, 1.0f);
 
     juce::Path p;
-    double pointerLength = radius * 0.5f;
-    double pointerThickness = 5.0f;
+    float pointerLength = radius * 0.9f;
+    float pointerThickness = 2.0f;
     p.addRectangle(-pointerThickness * 0.5f, -radius, pointerThickness, pointerLength);
     p.applyTransform(juce::AffineTransform::rotation(angle).translated(centreX, centreY)); //animate
     g.setColour(juce::Colours::seashell);
     g.fillPath(p);
+}
+
+
+
+juce::Font CustomLookAndFeel::getTextButtonFont(juce::TextButton&, int)
+{
+    return getCommonMenuFont(windowScale);
 }
 
 
@@ -175,7 +182,7 @@ void CustomLookAndFeel::drawComboBox(juce::Graphics& g, int /*w*/, int /*h*/, bo
     g.fillAll();
 }
 
-juce::Font CustomLookAndFeel::getComboBoxFont(juce::ComboBox & c)
+juce::Font CustomLookAndFeel::getComboBoxFont(juce::ComboBox & /*c*/)
 {
     return getCommonMenuFont(windowScale);
 }
@@ -187,10 +194,11 @@ juce::Font CustomLookAndFeel::getPopupMenuFont()
 
 juce::Font CustomLookAndFeel::getCommonMenuFont(float s) 
 {
+    customFont.setHeight(13.0f * s);
     return customFont;
 }
 
-void CustomLookAndFeel::drawPopupMenuBackground(juce::Graphics& g, int width, int height) 
+void CustomLookAndFeel::drawPopupMenuBackground(juce::Graphics& g, int /*width*/, int /*height*/)
 {
     juce::Colour c(30, 8, 33);
     g.setColour(c);
