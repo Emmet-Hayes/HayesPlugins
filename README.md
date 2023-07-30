@@ -7,6 +7,26 @@ Here is a Short Synth Part, played with no audio effects:
 https://github.com/Emmet-Hayes/HayesPlugins/assets/45521313/fae7fa09-6efc-450e-8578-c77e06f7bff4
 
 
+### HayesPitchShifter
+A free, open-source pitch shifter audio plug-in that provides up to one octave up or down, and uses a phase vocoder to achieve the shift. 
+It can be run in interval mode, which snaps to equal temperament intervals, or simply tune the signal by some percentage between 50% and 200%.
+
+![alt text](https://github.com/Emmet-Hayes/HayesPitchShifter/raw/master/Resources/Images/PitchShifterGUI.png)
+
+Here is the same synth part, ran through the HayesPitchShifter:
+https://github.com/Emmet-Hayes/HayesPlugins/assets/45521313/f8ed9ab9-98b8-42cf-8678-8b22c71d450e
+
+
+### HayesFDNReverb
+A free, open-source feedback-delay network reverb with 9 all-pass diffusers, 8 delay lines, and some light filtering.
+This is a commonly-used technique to create perfect-sounding reverbs, although they can sometimes be tricky to get to sound realistic.
+
+![alt text](https://github.com/Emmet-Hayes/HayesFDNReverb/raw/master/Resources/Images/FDNReverbGUI.png)
+
+Here is the same synth part, ran through the HayesFDNReverb:
+https://github.com/Emmet-Hayes/HayesPlugins/assets/45521313/6d4f8b51-c120-4830-972c-a5b6a2129ae3
+
+
 ### HayesCompressor
 A free, open-source Compressor audio plug-in.
 It provides both input and output gain, a meter to visualize gain reduction, as well as attack, release, threshold, ratio, and knee controls that are very useful in shaping the response of the compressor.
@@ -38,16 +58,6 @@ Here is the same synth part, ran through the HayesEQ:
 https://github.com/Emmet-Hayes/HayesPlugins/assets/45521313/fb7e4d1b-44ab-4555-b6e7-35479f7b3edd
 
 
-### HayesFDNReverb
-A free, open-source feedback-delay network reverb with 9 all-pass diffusers, 8 delay lines, and some light filtering.
-This is a commonly-used technique to create perfect-sounding reverbs, although they can sometimes be tricky to get to sound realistic.
-
-![alt text](https://github.com/Emmet-Hayes/HayesFDNReverb/raw/master/Resources/Images/FDNReverbGUI.png)
-
-Here is the same synth part, ran through the HayesFDNReverb:
-https://github.com/Emmet-Hayes/HayesPlugins/assets/45521313/6d4f8b51-c120-4830-972c-a5b6a2129ae3
-
-
 ### HayesDistortion
 A free, open-source audio plugin that can apply various operations to distort the incoming signal.
 Users can select specific bands of frequencies to distort at varying amounts, as well as control the overall
@@ -58,16 +68,6 @@ character of the result with a global EQ built-in.
 Here is the same synth part, ran through the HayesDistortion:
 https://github.com/Emmet-Hayes/HayesPlugins/assets/45521313/2a93c011-38cd-4090-9c1b-458d8b142672
 
-
-
-### HayesPitchShifter
-A free, open-source pitch shifter audio plug-in that provides up to one octave up or down, and uses a phase vocoder to achieve the shift. 
-It can be run in interval mode, which snaps to equal temperament intervals, or simply tune the signal by some percentage between 50% and 200%.
-
-![alt text](https://github.com/Emmet-Hayes/HayesPitchShifter/raw/master/Resources/Images/PitchShifterGUI.png)
-
-Here is the same synth part, ran through the HayesPitchShifter:
-https://github.com/Emmet-Hayes/HayesPlugins/assets/45521313/f8ed9ab9-98b8-42cf-8678-8b22c71d450e
 
 
 ### HayesReverb
