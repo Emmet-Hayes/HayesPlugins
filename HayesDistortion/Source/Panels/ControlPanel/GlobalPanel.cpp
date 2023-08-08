@@ -439,9 +439,9 @@ void GlobalPanel::resized()
     filterModeArea.removeFromBottom (getHeight() / 15);
 
     filterModeArea.setX(static_cast<int>(filterModeArea.getX() + filterModeArea.getWidth() / 1.3));
-
-    lowcutSlopeMode.setBounds(filterModeArea);
-    highcutSlopeMode.setBounds(filterModeArea);
+    juce::Rectangle<int> temp = filterModeArea;
+    lowcutSlopeMode.setBounds(filterModeArea.withY(temp.getY() + (8 * scale)));
+    highcutSlopeMode.setBounds(filterModeArea.withY(temp.getY() + (8 * scale)));
 
     filterHighPassButton.setBounds(filterTypeAreaTop);
     filterPeakButton.setBounds(filterTypeAreaMid);

@@ -40,6 +40,7 @@ private:
     float margin;
     float size = 15.0f;
     float width = 5.0f;
+
     // set vertical lines leftmost and rightmost percentage of the whole width
     const float limitLeft = 0.1f;
     const float limitRight = 1.0f - limitLeft;
@@ -57,6 +58,12 @@ private:
     std::vector<juce::String> paramsArray2 = { MODE_NAME2, LINKED_NAME2, SAFE_NAME2, DRIVE_NAME2, COMP_RATIO_NAME2, COMP_THRESH_NAME2, WIDTH_NAME2, OUTPUT_NAME2, MIX_NAME2, BIAS_NAME2, REC_NAME2, COMP_BYPASS_NAME2, WIDTH_BYPASS_NAME2 };
     std::vector<juce::String> paramsArray3 = { MODE_NAME3, LINKED_NAME3, SAFE_NAME3, DRIVE_NAME3, COMP_RATIO_NAME3, COMP_THRESH_NAME3, WIDTH_NAME3, OUTPUT_NAME3, MIX_NAME3, BIAS_NAME3, REC_NAME3, COMP_BYPASS_NAME3, WIDTH_BYPASS_NAME3 };
     std::vector<juce::String> paramsArray4 = { MODE_NAME4, LINKED_NAME4, SAFE_NAME4, DRIVE_NAME4, COMP_RATIO_NAME4, COMP_THRESH_NAME4, WIDTH_NAME4, OUTPUT_NAME4, MIX_NAME4, BIAS_NAME4, REC_NAME4, COMP_BYPASS_NAME4, WIDTH_BYPASS_NAME4 };
+    
+    std::unique_ptr<FreqDividerGroup> freqDividerGroup[3];
+    std::unique_ptr<SoloButton> soloButton[4];
+    std::unique_ptr<EnableButton> enableButton[4];
+    std::unique_ptr<CloseButton> closeButton[4];
+
     bool isParamInArray (juce::String paramName, std::vector<juce::String> paramArray);
     void setParametersToAFromB (int toIndex, int fromIndex);
     void initParameters (int bandindex);
@@ -72,11 +79,6 @@ private:
     bool shouldSetBlackMask (int index);
     int countLines();
     void setMasks (juce::Graphics& g, int index, int lineNumLimit, int x, int y, int width, int height, int mouseX, int mouseY);
-
-    std::unique_ptr<FreqDividerGroup> freqDividerGroup[3];
-    std::unique_ptr<SoloButton> soloButton[4];
-    std::unique_ptr<EnableButton> enableButton[4];
-    std::unique_ptr<CloseButton> closeButton[4];
 
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> multiEnableAttachment1, multiEnableAttachment2, multiEnableAttachment3, multiEnableAttachment4;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> multiSoloAttachment1, multiSoloAttachment2, multiSoloAttachment3, multiSoloAttachment4;

@@ -39,17 +39,20 @@ private:
 
     void buttonClicked (juce::Button* clickedButton) override;
     void mouseDown (const juce::MouseEvent& e) override;
+    void sliderValueChanged(juce::Slider* slider) override;
+    void comboBoxChanged(juce::ComboBox* combobox) override;
+
+    void setMenu(juce::ComboBox* combobox);
+    void setLinearSlider(juce::Slider& slider);
+    void setDistortionGraph(juce::String modeId, juce::String driveId, juce::String recId, juce::String mixId, juce::String biasId, juce::String safeId);
+    void setFourComponentsVisibility(juce::Component& component1, juce::Component& component2, juce::Component& component3, juce::Component& component4, int bandNum);
+
 
     GraphPanel graphPanel { processor };
-
     Multiband multiband { processor };
-
     BandPanel bandPanel { processor };
-
     GlobalPanel globalPanel;
-
     FilterControl filterControl { processor, globalPanel };
-
     SpectrumComponent spectrum;
 
     // Labels
@@ -69,19 +72,6 @@ private:
         windowButtons = 1003,
     };
 
-    void setMenu (juce::ComboBox* combobox);
-
-    void setLinearSlider (juce::Slider& slider);
-
-    void setDistortionGraph (juce::String modeId, juce::String driveId, juce::String recId, juce::String mixId, juce::String biasId, juce::String safeId);
-
-    void setFourComponentsVisibility (juce::Component& component1, juce::Component& component2, juce::Component& component3, juce::Component& component4, int bandNum);
-
-    // override listener functions
-
-    void sliderValueChanged (juce::Slider* slider) override;
-    // combobox changed and set knob enable/disable
-    void comboBoxChanged (juce::ComboBox* combobox) override;
 
     // Button attachment
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment>
@@ -100,10 +90,10 @@ private:
 
 
     juce::Image image;
-    PresetBar presetBar; 
+    PresetBar presetBar;
 
     // create own knob style
-    CustomLookAndFeel otherLookAndFeel;
+    CustomLookAndFeel customLookAndFeel;
     CustomLookAndFeel zoomLookAndFeel;
 
     float scale { 1.0f };

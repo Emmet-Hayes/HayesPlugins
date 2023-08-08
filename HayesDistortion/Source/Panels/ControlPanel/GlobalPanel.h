@@ -15,11 +15,11 @@ public:
     GlobalPanel (juce::AudioProcessorValueTreeState& apvts);
     ~GlobalPanel() override;
 
-    void paint (juce::Graphics&) override;
+    void paint(juce::Graphics&) override;
     void resized() override;
     void timerCallback() override;
 
-    void setScale (float scale);
+    void setScale(float scale);
     juce::Slider& getLowcutFreqKnob();
     juce::Slider& getPeakFreqKnob();
     juce::Slider& getHighcutFreqKnob();
@@ -30,17 +30,16 @@ public:
     void setToggleButtonState (juce::String toggleButton);
 
 private:
-    void sliderValueChanged (juce::Slider* slider) override;
-    void comboBoxChanged (juce::ComboBox* combobox) override;
-    void buttonClicked (juce::Button* clickedButton) override;
-    void setRotarySlider (juce::Slider& slider, juce::Colour colour);
-    void setRoundButton (juce::TextButton& button, juce::String paramId, juce::String buttonName);
-    void setBypassState (int index, bool state);
-    void setVisibility (juce::Array<juce::Component*>& array, bool isVisible);
+    void sliderValueChanged(juce::Slider* slider) override;
+    void comboBoxChanged(juce::ComboBox* combobox) override;
+    void buttonClicked(juce::Button* clickedButton) override;
+    void setRotarySlider(juce::Slider& slider, juce::Colour colour);
+    void setRoundButton(juce::TextButton& button, juce::String paramId, juce::String buttonName);
+    void setBypassState(int index, bool state);
+    void setVisibility(juce::Array<juce::Component*>& array, bool isVisible);
 
     enum RadioButtonIds
     {
-        
         filterStateButtons  = 1001, // filter state: off, pre, post
         filterModeButtons   = 1002, // filter mode: low, band, high
         switchButtonsGlobal = 1005  // switches global
@@ -88,7 +87,6 @@ private:
         highcutSlopeLabel,
         limiterThreshLabel,
         limiterReleaseLabel,
-    
         postFilterPanelLabel,
         downSamplePanelLabel,
         limiterPanelLabel;

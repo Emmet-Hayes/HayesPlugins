@@ -6,6 +6,7 @@
               addUsingNamespaceToJuceHeader="0" cppLanguageStandard="17" defines="JUCE_MODAL_LOOPS_PERMITTED=1">
   <MAINGROUP id="X9e8F0" name="HayesDistortion">
     <GROUP id="{96A1BD9C-E314-4B31-EAFB-6F46EC8CB8A0}" name="Common">
+      <FILE id="lNAOhX" name="AudioHelpers.h" compile="0" resource="0" file="../Common/AudioHelpers.h"/>
       <FILE id="vDxVsT" name="CentredLabel.h" compile="0" resource="0" file="../Common/CentredLabel.h"/>
       <FILE id="erIRMV" name="CustomLookAndFeel.cpp" compile="1" resource="0"
             file="../Common/CustomLookAndFeel.cpp"/>
@@ -91,9 +92,6 @@
           <FILE id="zk1lM4" name="GlobalPanel.cpp" compile="1" resource="0" file="Source/Panels/ControlPanel/GlobalPanel.cpp"/>
           <FILE id="gY3gqe" name="GlobalPanel.h" compile="0" resource="0" file="Source/Panels/ControlPanel/GlobalPanel.h"/>
         </GROUP>
-      </GROUP>
-      <GROUP id="{0204F696-B0DF-CD89-2550-E45618BFEF7E}" name="Utility">
-        <FILE id="A4Ogfw" name="AudioHelpers.h" compile="0" resource="0" file="Source/Utility/AudioHelpers.h"/>
       </GROUP>
       <GROUP id="{A397A229-19FD-F110-6940-6CC5C037D4D0}" name="GUI">
         <FILE id="Llu5p3" name="DriveLookAndFeel.cpp" compile="1" resource="0"

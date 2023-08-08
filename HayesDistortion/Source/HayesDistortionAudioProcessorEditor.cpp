@@ -39,7 +39,7 @@ HayesDistortionAudioProcessorEditor::HayesDistortionAudioProcessorEditor(HayesDi
     spectrum.setInterceptsMouseClicks (false, false);
     spectrum.prepareToPaintSpectrum (processor.getNumBins(), processor.getFFTData(), static_cast<float>(processor.getSampleRate() / processor.getFFTSize()));
 
-    setLookAndFeel (&otherLookAndFeel);
+    setLookAndFeel (&customLookAndFeel);
 
     // Window Left Button
     addAndMakeVisible (windowLeftButton);
@@ -52,7 +52,7 @@ HayesDistortionAudioProcessorEditor::HayesDistortionAudioProcessorEditor(HayesDi
     windowLeftButton.setColour (juce::ComboBox::outlineColourId, COLOUR1.withAlpha (0.0f));
     windowLeftButton.setColour (juce::TextButton::textColourOnId, COLOUR1);
     windowLeftButton.setColour (juce::TextButton::textColourOffId, juce::Colours::darkgrey);
-    windowLeftButton.setLookAndFeel (&otherLookAndFeel);
+    windowLeftButton.setLookAndFeel (&customLookAndFeel);
     windowLeftButton.addListener (this);
 
     // Window Right Button
@@ -66,7 +66,7 @@ HayesDistortionAudioProcessorEditor::HayesDistortionAudioProcessorEditor(HayesDi
     windowRightButton.setColour (juce::ComboBox::outlineColourId, COLOUR1.withAlpha (0.0f));
     windowRightButton.setColour (juce::TextButton::textColourOnId, COLOUR1);
     windowRightButton.setColour (juce::TextButton::textColourOffId, juce::Colours::darkgrey);
-    windowRightButton.setLookAndFeel (&otherLookAndFeel);
+    windowRightButton.setLookAndFeel (&customLookAndFeel);
     windowRightButton.addListener (this);
 
     if (windowLeftButton.getToggleState())
@@ -100,7 +100,7 @@ HayesDistortionAudioProcessorEditor::HayesDistortionAudioProcessorEditor(HayesDi
     zoomButton.setColour (juce::ComboBox::outlineColourId, COLOUR5.withAlpha (0.5f));
     zoomButton.setColour (juce::TextButton::textColourOnId, COLOUR1);
     zoomButton.setColour (juce::TextButton::textColourOffId, COLOUR1.withAlpha (0.5f));
-    zoomButton.setLookAndFeel (&zoomLookAndFeel);
+    zoomButton.setLookAndFeel (&customLookAndFeel);
 
     // use global lookandfeel
     getLookAndFeel().setColour (juce::ComboBox::textColourId, KNOB_SUBFONT_COLOUR);
@@ -120,7 +120,7 @@ HayesDistortionAudioProcessorEditor::HayesDistortionAudioProcessorEditor(HayesDi
     modeAttachment3 = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment> (processor.apvts, MODE_ID3, distortionMode3);
     modeAttachment4 = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment> (processor.apvts, MODE_ID4, distortionMode4);
 
-    presetBar.setLookAndFeel(&otherLookAndFeel);
+    presetBar.setLookAndFeel(&customLookAndFeel);
     addAndMakeVisible(presetBar);
 
     // set resize
@@ -266,7 +266,7 @@ void HayesDistortionAudioProcessorEditor::resized()
     zoomButton.setBounds (getWidth() - 30, multiband.getY() + multiband.getHeight() - 30, getHeight() / 25, getHeight() / 25);
 
     // set look and feel scale
-    otherLookAndFeel.setWindowScale(scale);
+    customLookAndFeel.setWindowScale(scale);
     bandPanel.setScale (scale);
     globalPanel.setScale (scale);
     multiband.setScale (scale);

@@ -3,7 +3,7 @@
 #include <JuceHeader.h>
 
 #include "../../HayesDistortionAudioProcessor.h"
-#include "../../Utility/AudioHelpers.h"
+#include "../Source/Utility/AudioHelpers.h"
 #include "../ControlPanel/GlobalPanel.h"
 #include "DraggableButton.h"
 
