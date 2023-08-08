@@ -41,7 +41,7 @@ private:
 
 template <typename SampleType>
 class SpectrumScopeComponent : public juce::Component
-		             , private Timer
+		                     , private Timer
 {
 public:
 	SpectrumScopeComponent(AudioBufferQueue<SampleType>& queueToUse, CustomLookAndFeel& laf)
@@ -130,7 +130,7 @@ private:
 		                             juce::dsp::WindowingFunction<SampleType>::hann };
 	std::array<SampleType, 2 * AudioBufferQueue<SampleType>::bufferSize> spectrumData;
 	const char* xLabels[9] { "50", "100", "200", "400", "800", "1.6k", "3.2k", "6.4k", "13k"};
-	const char* ampLabels[7] { " 18", " 12", "  6", "  0", " -6", "-12", "-18" };
+	const char* ampLabels[7] { " 15", " 10", "  5", "  0", " -5", "-10", "-15" };
 	float scaleW = 1.0f;
 	float scaleH = 1.0f;
 
