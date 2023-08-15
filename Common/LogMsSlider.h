@@ -14,10 +14,8 @@ public:
             return juce::String(value, 1) + " ms";
         else if (value >= 10)
             return juce::String(value, 2) + " ms";
-        else if (value >= 1)
-            return juce::String(value, 3) + " ms";
         else
-            return juce::String(value, 4) + " ms";
+            return juce::String(value, 3) + " ms";
     }
 };
 

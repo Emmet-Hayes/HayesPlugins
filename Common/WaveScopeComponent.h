@@ -1,46 +1,14 @@
 #pragma once
 #include <cmath>
+#include "AudioBufferQueue.h"
+#include "NoteToColor.h"
 
 constexpr int NUM_PREV_FRAMES = 4;
 
 template <typename SampleType>
-class AudioBufferQueue
-{
-public:
-	static constexpr size_t order = 10;
-	static constexpr size_t bufferSize = 1U << order;
-	static constexpr size_t numBuffers = 5;
-
-	void push(const SampleType* dataToPush, size_t numSamples)
-	{
-		jassert(numSamples <= bufferSize);
-		int start1, size1, start2, size2;
-		abstractFifo.prepareToWrite(1, start1, size1, start2, size2);
-		jassert(size1 <= 1);
-		jassert(size2 == 0);
-		if (size1 > 0)
-			FloatVectorOperations::copy(buffers[(size_t)start1].data(), dataToPush, (int)jmin(bufferSize, numSamples));
-		abstractFifo.finishedWrite(size1);
-	}
-
-	void pop(SampleType* outputBuffer)
-	{
-		int start1, size1, start2, size2;
-		abstractFifo.prepareToRead(1, start1, size1, start2, size2);
-		jassert(size1 <= 1);
-		jassert(size2 == 0);
-		if (size1 > 0) FloatVectorOperations::copy(outputBuffer, buffers[(size_t)start1].data(), (int)bufferSize);
-		abstractFifo.finishedRead(size1);
-	}
-
-private:
-	AbstractFifo abstractFifo{ numBuffers };
-	std::array<std::array<SampleType, bufferSize>, numBuffers> buffers;
-};
-
-template <typename SampleType>
-class WaveScopeComponent : public juce::Component
-	                 , private Timer
+class WaveScopeComponent : public NoteColorListener
+	                     , public juce::Component
+	                     , private Timer
 {
 public:
 	WaveScopeComponent(AudioBufferQueue<SampleType>& queueToUse)
@@ -48,6 +16,11 @@ public:
 	{
 		buffer.fill(SampleType(0));
 		setFramesPerSecond(60);
+	}
+
+	void noteColorChanged(NoteColors newColor) override
+	{
+		currentNoteColor = newColor;
 	}
 
 	void setFramesPerSecond(int framesPerSecond)
@@ -73,7 +46,7 @@ public:
 		for (size_t i = 0; i < prevFrames.size(); ++i)
 		{
 			float opacity = 0.1f + 0.9f * (i / (float)prevFrames.size());
-			g.setColour(juce::Colours::hotpink.withAlpha(opacity));
+			g.setColour(noteToColorMap[currentNoteColor].withAlpha(opacity));
 			auto scopeRect = juce::Rectangle<SampleType>{ SampleType(0), SampleType(0), w, h };
 			plot(prevFrames[i].data(), prevFrames[i].size(), g, scopeRect, SampleType(1), h / 2);
 		}
@@ -82,6 +55,7 @@ public:
 	void resized() override {}
 
 private:
+	NoteColors currentNoteColor = NoteColors::WHITE;
 	AudioBufferQueue<SampleType>& audioBufferQueue;
 	std::array<SampleType, AudioBufferQueue<SampleType>::bufferSize> buffer;
 	std::array<std::array<SampleType, AudioBufferQueue<SampleType>::bufferSize>, NUM_PREV_FRAMES> prevFrames;
@@ -132,6 +106,17 @@ public:
     :   audioBufferQueue(queueToUse)
 	{}
 
+	void addListener(NoteColorListener* listener)
+	{
+		listeners.push_back(listener);
+	}
+
+	void removeAllListeners()
+	{
+		for (int i = 0; i < listeners.size(); ++i)
+			listeners.pop_back();
+	}
+
 	void process(const SampleType* data, size_t numSamples)
 	{
 		size_t index = 0;	 
@@ -166,7 +151,48 @@ public:
 		}
 	}
 
+	// overload with color based on frequency
+	void process(const SampleType* data, size_t numSamples, float minFrequency)
+	{
+		size_t index = 0;
+
+		if (state == State::waitingForTrigger)
+		{
+			while (index++ < numSamples)
+			{
+				auto currentSample = *data++;
+				if (fabs(currentSample) >= triggerLevel && prevSample < triggerLevel)
+				{
+					numCollected = 0;
+					state = State::collecting;
+					break;
+				}
+				prevSample = currentSample;
+			}
+		}
+
+		if (state == State::collecting)
+		{
+			while (index++ < numSamples)
+			{
+				buffer[numCollected++] = *data++;
+				if (numCollected == buffer.size())
+				{
+					audioBufferQueue.push(buffer.data(), buffer.size());
+					state = State::waitingForTrigger;
+					prevSample = SampleType(100);
+					break;
+				}
+			}
+		}
+
+		for (NoteColorListener* listener : listeners)
+			if (listener != nullptr)
+				listener->noteColorChanged(frequencyToColor(minFrequency));
+	}
+
 private:
+	std::vector<NoteColorListener*> listeners;
 	AudioBufferQueue<SampleType>& audioBufferQueue;
 	std::array<SampleType, AudioBufferQueue<SampleType>::bufferSize> buffer;
 	size_t numCollected;

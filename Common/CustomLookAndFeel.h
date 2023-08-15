@@ -18,7 +18,7 @@ public:
     juce::Font getComboBoxFont(juce::ComboBox&) override;
 	juce::Font getPopupMenuFont() override;
 	void drawPopupMenuBackground(juce::Graphics&, int, int) override;
-    void drawRotarySlider(juce::Graphics&, int, int, int, int, float, const float,
+    virtual void drawRotarySlider(juce::Graphics&, int, int, int, int, float, const float,
 		                  const float, juce::Slider&) override;
     juce::Font getTextButtonFont(juce::TextButton&, int buttonHeight) override;
 

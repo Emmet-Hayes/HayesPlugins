@@ -1,46 +1,14 @@
 #pragma once
 #include <cmath>
+#include "AudioBufferQueue.h"
 #include "CustomLookAndFeel.h"
+#include "NoteToColor.h"
 
-constexpr int NUM_PREV_FRAMES = 2;
-
-template <typename SampleType>
-class AudioBufferQueue 
-{
-public:
-	static constexpr size_t order = 8;
-	static constexpr size_t bufferSize = 1U << order;
-	static constexpr size_t numBuffers = 5;
-
-	void push(const SampleType* dataToPush, size_t numSamples)
-	{
-		jassert(numSamples <= bufferSize);
-		int start1, size1, start2, size2;
-		abstractFifo.prepareToWrite(1, start1, size1, start2, size2);
-		jassert(size1 <= 1);
-		jassert(size2 == 0);
-		if (size1 > 0)
-			FloatVectorOperations::copy(buffers[(size_t)start1].data(), dataToPush, (int)jmin(bufferSize, numSamples));
-		abstractFifo.finishedWrite(size1);
-	}
-
-	void pop(SampleType* outputBuffer) 
-	{
-		int start1, size1, start2, size2;
-		abstractFifo.prepareToRead(1, start1, size1, start2, size2);
-		jassert(size1 <= 1);
-		jassert(size2 == 0);
-		if (size1 > 0) FloatVectorOperations::copy(outputBuffer, buffers[(size_t)start1].data(), (int)bufferSize);
-		abstractFifo.finishedRead(size1);
-	}
-
-private:
-	AbstractFifo abstractFifo{ numBuffers };
-	std::array<std::array<SampleType, bufferSize>, numBuffers> buffers;
-};
+constexpr int NUM_PREV_FRAMES_SPECTRUM = 2;
 
 template <typename SampleType>
-class SpectrumScopeComponent : public juce::Component
+class SpectrumScopeComponent : public NoteColorListener
+	                         , public juce::Component
 		                     , private Timer
 {
 public:
@@ -50,6 +18,11 @@ public:
 	{
 		buffer.fill(SampleType(0));
 		setFramesPerSecond(60);
+	}
+
+	void noteColorChanged(NoteColors newColor) override
+	{
+		currentNoteColor = newColor;
 	}
 
 	void setFramesPerSecond(int framesPerSecond) 
@@ -103,10 +76,8 @@ public:
 				for (size_t i = 0; i < prevFrames.size(); ++i)
 				{
 					float opacity = 0.1f + 0.9f * (i / (float)prevFrames.size());
-					
-					g.setColour(juce::Colours::hotpink.withAlpha(opacity));
-					juce::ColourGradient grad (juce::Colours::pink.withAlpha(opacity), 0.0f, 0.0f, 
-						                       juce::Colours::blue.withAlpha(opacity), 0.0f, static_cast<float>(getLocalBounds().getHeight()), false);
+					juce::ColourGradient grad (noteToColorMap[currentNoteColor].withAlpha(opacity), 0.0f, 0.0f,
+						                       juce::Colours::pink.withAlpha(opacity), 0.0f, static_cast<float>(getLocalBounds().getHeight()), false);
                     g.setGradientFill(grad);
 
 					plot(prevFrames[i].data(), prevFrames[i].size() / 4, g, spectrumRect);
@@ -120,16 +91,17 @@ public:
 	void resized() override {}
 
 private:
+	NoteColors currentNoteColor = NoteColors::WHITE;
 	CustomLookAndFeel& lookAndFeel;
 	AudioBufferQueue<SampleType>& audioBufferQueue;
 	std::array<SampleType, AudioBufferQueue<SampleType>::bufferSize> buffer;
-	std::array<std::array<SampleType, 2 * AudioBufferQueue<SampleType>::bufferSize>, NUM_PREV_FRAMES> prevFrames;
+	std::array<std::array<SampleType, 2 * AudioBufferQueue<SampleType>::bufferSize>, NUM_PREV_FRAMES_SPECTRUM> prevFrames;
 	int currentFrame = 0;
 	juce::dsp::FFT fft{ AudioBufferQueue<SampleType>::order };
 	juce::dsp::WindowingFunction<SampleType> windowFun{ (size_t)fft.getSize(),
 		                             juce::dsp::WindowingFunction<SampleType>::hann };
 	std::array<SampleType, 2 * AudioBufferQueue<SampleType>::bufferSize> spectrumData;
-	const char* xLabels[9] { "50", "100", "200", "400", "800", "1.6k", "3.2k", "6.4k", "13k"};
+	const char* xLabels[9] { "46", "92", "184", "368", "736", "1.5k", "3k", "6k", "12k"};
 	const char* ampLabels[7] { " 15", " 10", "  5", "  0", " -5", "-10", "-15" };
 	float scaleW = 1.0f;
 	float scaleH = 1.0f;
@@ -148,7 +120,7 @@ private:
 		
 
 		prevFrames[currentFrame++] = spectrumData;
-		currentFrame %= NUM_PREV_FRAMES;
+		currentFrame %= NUM_PREV_FRAMES_SPECTRUM;
 
 		repaint();
 	}
@@ -205,6 +177,17 @@ public:
 	:   audioBufferQueue(queueToUse)
 	{}
 
+	void addListener(NoteColorListener* listener)
+	{
+		listeners.push_back(listener);
+	}
+
+	void removeAllListeners()
+	{
+		for (int i = 0; i < listeners.size(); ++i)
+			listeners.pop_back();
+	}
+
 	void process(const SampleType* data, size_t numSamples) 
 	{
 		size_t index = 0;
@@ -240,7 +223,48 @@ public:
 		}
 	}
 
+	// overload that takes into account color processing
+	void process(const SampleType* data, size_t numSamples, float minFrequency)
+	{
+		size_t index = 0;
+
+		if (state == State::waitingForTrigger)
+		{
+			while (index++ < numSamples)
+			{
+				auto currentSample = *data++;
+				if (fabs(currentSample) >= triggerLevel && prevSample < triggerLevel)
+				{
+					numCollected = 0;
+					state = State::collecting;
+					break;
+				}
+				prevSample = currentSample;
+			}
+		}
+
+		if (state == State::collecting)
+		{
+			while (index++ < numSamples)
+			{
+				buffer[numCollected++] = *data++;
+				if (numCollected == buffer.size())
+				{
+					audioBufferQueue.push(buffer.data(), buffer.size());
+					state = State::waitingForTrigger;
+					prevSample = SampleType(100);
+					break;
+				}
+			}
+		}
+
+		for (NoteColorListener* listener : listeners)
+			if (listener != nullptr)
+				listener->noteColorChanged(frequencyToColor(minFrequency));
+	}
+
 private:
+	std::vector<NoteColorListener*> listeners;
 	AudioBufferQueue<SampleType>& audioBufferQueue;
 	std::array<SampleType, AudioBufferQueue<SampleType>::bufferSize> buffer;
 	size_t numCollected;
