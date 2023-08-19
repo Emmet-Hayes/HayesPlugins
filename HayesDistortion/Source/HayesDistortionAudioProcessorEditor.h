@@ -32,6 +32,10 @@ public:
     void setMultiband();
 
 private:
+    // create own knob style
+    CustomLookAndFeel customLookAndFeel;
+    CustomLookAndFeel zoomLookAndFeel;
+
     HayesDistortionAudioProcessor& processor;
     
     int focusIndex = 0;
@@ -91,10 +95,6 @@ private:
 
     juce::Image image;
     PresetBar presetBar;
-
-    // create own knob style
-    CustomLookAndFeel customLookAndFeel;
-    CustomLookAndFeel zoomLookAndFeel;
 
     float scale { 1.0f };
 
