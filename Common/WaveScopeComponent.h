@@ -35,9 +35,10 @@ public:
 		auto h = (SampleType)area.getHeight();
 		auto w = (SampleType)area.getWidth();
 
-		g.setColour(juce::Colours::darkturquoise.withBrightness(0.2f));
-		g.setOpacity(0.7f);
-		g.fillRoundedRectangle({ 0, 0, w, h }, 20);
+		//g.setColour(juce::Colours::darkturquoise.withBrightness(0.2f));
+		//g.setOpacity(0.7f);
+		//g.fillRoundedRectangle({ 0, 0, w, h }, 20);
+		g.fillAll(juce::Colours::black);
 
 		g.setColour(juce::Colours::white);
 		g.setOpacity(1.0f);

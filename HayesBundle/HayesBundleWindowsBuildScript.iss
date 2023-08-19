@@ -29,5 +29,6 @@ Source: "..\HayesDistortion\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir
 Source: "..\HayesPitchShifter\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}/HayesPitchShifter"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\HayesReverb\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}/HayesReverb"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\HayesTapeDelay\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}/HayesTapeDelay"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\BatSynth\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}/BatSynth"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 

@@ -16,7 +16,7 @@ public:
 
 static std::unordered_map<NoteColors, juce::Colour> noteToColorMap 
 {
-	{ NoteColors::BLACK, juce::Colour::fromRGB(40, 0, 40) },
+	{ NoteColors::BLACK, juce::Colour::fromRGB(80, 0, 80) },
 	{ NoteColors::BLUE, juce::Colour::fromRGB(0, 0, 255) },
 	{ NoteColors::PURPLE, juce::Colour::fromRGB(128, 0, 255) },
 	{ NoteColors::WHITE, juce::Colour::fromRGB(255, 255, 255) },
