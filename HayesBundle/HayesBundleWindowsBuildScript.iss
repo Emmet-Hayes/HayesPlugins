@@ -21,6 +21,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
+Source: "..\BatSynth\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}/BatSynth"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\HayesCompressor\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}/HayesCompressor"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\HayesDelay\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}/HayesDelay"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\HayesEQ\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}/HayesEQ"; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -29,6 +30,7 @@ Source: "..\HayesDistortion\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir
 Source: "..\HayesPitchShifter\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}/HayesPitchShifter"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\HayesReverb\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}/HayesReverb"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\HayesTapeDelay\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}/HayesTapeDelay"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\BatSynth\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}/BatSynth"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\HayesVisualizer\Builds\VisualStudio2019\x64\Release\VST3\*"; DestDir: "{app}/HayesVisualizer"; Flags: ignoreversion recursesubdirs createallsubdirs
+
 
 
