@@ -23,9 +23,13 @@ private:
     HayesVisualizerAudioProcessor& processor;
 
     std::unique_ptr<OpenGLComponent> openGLComponent;
+    juce::Label errorComponent;
     
     int defaultWidth = 800;
     int defaultHeight = 600;
+    
+    bool isOpenGLAvailable = false;
+    int tryInitializeOpenGL = 0;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (HayesVisualizerAudioProcessorEditor)
 };
