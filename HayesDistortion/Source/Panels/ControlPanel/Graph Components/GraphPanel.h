@@ -20,17 +20,17 @@ public:
     void setFocusBandNum (int num);
 
     Oscilloscope* getOscilloscope();
-    VUPanel* getVuPanel();
+    //VUPanel* getVuPanel();
     DistortionGraph* getDistortionGraph();
-    WidthGraph* getWidthGraph();
+    //WidthGraph* getWidthGraph();
 
 private:
     HayesDistortionAudioProcessor& processor;
 
     Oscilloscope oscilloscope { processor };
-    VUPanel vuPanel { processor };
+    //VUPanel vuPanel { processor };
     DistortionGraph distortionGraph { processor };
-    WidthGraph widthGraph { processor };
+    //WidthGraph widthGraph { processor };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GraphPanel)
 };

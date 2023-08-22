@@ -4,9 +4,7 @@
 GraphPanel::GraphPanel (HayesDistortionAudioProcessor& p) : processor (p)
 {
     addAndMakeVisible (oscilloscope);
-    addAndMakeVisible (vuPanel);
     addAndMakeVisible (distortionGraph);
-    addAndMakeVisible (widthGraph);
     setInterceptsMouseClicks (false, true);
 }
 
@@ -16,18 +14,13 @@ void GraphPanel::paint (juce::Graphics& /*g*/)
     {
         if (! oscilloscope.getZoomState())
         {
-            oscilloscope.setBounds(0, 0, getWidth() / 2, getHeight() / 2);
-            vuPanel.setVisible(true);
+            oscilloscope.setBounds(0, 0, getWidth() / 2, getHeight());
             distortionGraph.setVisible(true);
-            widthGraph.setVisible(true);
         }
         else
         {
-            // zoom in
             oscilloscope.setBounds(0, 0, getWidth(), getHeight());
-            vuPanel.setVisible(false);
             distortionGraph.setVisible(false);
-            widthGraph.setVisible(false);
         }
     }
 
@@ -35,59 +28,13 @@ void GraphPanel::paint (juce::Graphics& /*g*/)
     {
         if (! distortionGraph.getZoomState())
         {
-            // zoom out
-            distortionGraph.setBounds(getWidth() / 2, 0, getWidth() / 2, getHeight() / 2);
+            distortionGraph.setBounds(getWidth() / 2, 0, getWidth() / 2, getHeight());
             oscilloscope.setVisible(true);
-            vuPanel.setVisible(true);
-            widthGraph.setVisible(true);
         }
         else
         {
-            // zoom in
             distortionGraph.setBounds(0, 0, getWidth(), getHeight());
             oscilloscope.setVisible(false);
-            vuPanel.setVisible(false);
-            widthGraph.setVisible(false);
-        }
-    }
-
-    if (vuPanel.isVisible())
-    {
-        if (! vuPanel.getZoomState())
-        {
-            // zoom out
-            vuPanel.setBounds(0, getHeight() / 2, getWidth() / 2, getHeight() / 2);
-            oscilloscope.setVisible(true);
-            distortionGraph.setVisible(true);
-            widthGraph.setVisible(true);
-        }
-        else
-        {
-            // zoom in
-            vuPanel.setBounds(0, 0, getWidth(), getHeight());
-            oscilloscope.setVisible(false);
-            distortionGraph.setVisible(false);
-            widthGraph.setVisible(false);
-        }
-    }
-
-    if (widthGraph.isVisible())
-    {
-        if (! widthGraph.getZoomState())
-        {
-            // zoom out
-            widthGraph.setBounds(getWidth() / 2, getHeight() / 2, getWidth() / 2, getHeight() / 2);
-            oscilloscope.setVisible(true);
-            distortionGraph.setVisible(true);
-            vuPanel.setVisible(true);
-        }
-        else
-        {
-            // zoom in
-            widthGraph.setBounds(0, 0, getWidth(), getHeight());
-            oscilloscope.setVisible(false);
-            distortionGraph.setVisible(false);
-            vuPanel.setVisible(false);
         }
     }
 }
@@ -106,22 +53,12 @@ Oscilloscope* GraphPanel::getOscilloscope()
     return &oscilloscope;
 }
 
-VUPanel* GraphPanel::getVuPanel()
-{
-    return &vuPanel;
-}
-
 DistortionGraph* GraphPanel::getDistortionGraph()
 {
     return &distortionGraph;
 }
 
-WidthGraph* GraphPanel::getWidthGraph()
-{
-    return &widthGraph;
-}
-
 void GraphPanel::setFocusBandNum (int num)
 {
-    vuPanel.setFocusBandNum (num);
+    //vuPanel.setFocusBandNum (num);
 }

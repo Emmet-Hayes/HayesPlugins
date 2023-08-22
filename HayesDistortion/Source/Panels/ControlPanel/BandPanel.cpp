@@ -269,10 +269,10 @@ void BandPanel::resized()
     bandKnobArea.removeFromBottom (getHeight() / 5);
 
     juce::Rectangle<int> switchArea = bandKnobArea.removeFromLeft (getWidth() / 20);
-    oscSwitch.setBounds (switchArea.removeFromTop (bandKnobArea.getHeight() / 4));
-    shapeSwitch.setBounds (switchArea.removeFromTop (bandKnobArea.getHeight() / 4));
-    compressorSwitch.setBounds (switchArea.removeFromTop (bandKnobArea.getHeight() / 4));
-    widthSwitch.setBounds (switchArea.removeFromTop (bandKnobArea.getHeight() / 4));
+    oscSwitch.setBounds (switchArea.removeFromTop (bandKnobArea.getHeight() / 2));
+    shapeSwitch.setBounds (switchArea.removeFromTop (bandKnobArea.getHeight() / 2));
+    //compressorSwitch.setBounds (switchArea.removeFromTop (bandKnobArea.getHeight() / 4));
+    //widthSwitch.setBounds (switchArea.removeFromTop (bandKnobArea.getHeight() / 4));
 
     juce::Rectangle<int> bigDriveArea = getLocalBounds().removeFromLeft (getWidth() / 5 * 3).reduced (getHeight() / 10);
     if (oscSwitch.getToggleState())
@@ -447,7 +447,7 @@ void BandPanel::buttonClicked (juce::Button* clickedButton)
 void BandPanel::initListenerKnob (juce::Slider& slider)
 {
     addAndMakeVisible (slider);
-    slider.setSliderStyle (juce::Slider::RotaryHorizontalVerticalDrag);
+    slider.setSliderStyle (juce::Slider::Rotary);
     slider.setTextBoxStyle (juce::Slider::TextBoxAbove, false, TEXTBOX_WIDTH, TEXTBOX_HEIGHT);
     slider.addListener (this);
 }
@@ -455,7 +455,7 @@ void BandPanel::initListenerKnob (juce::Slider& slider)
 void BandPanel::initRotarySlider (juce::Slider& slider, juce::Colour colour)
 {
     addAndMakeVisible (slider);
-    slider.setSliderStyle (juce::Slider::RotaryHorizontalVerticalDrag);
+    slider.setSliderStyle (juce::Slider::Rotary);
     slider.setTextBoxStyle (juce::Slider::TextBoxAbove, false, TEXTBOX_WIDTH, TEXTBOX_HEIGHT);
     slider.setColour (juce::Slider::rotarySliderFillColourId, colour);
 }

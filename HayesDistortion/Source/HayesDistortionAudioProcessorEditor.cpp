@@ -214,11 +214,11 @@ void HayesDistortionAudioProcessorEditor::resized()
         filterControl.setBounds (spectrumArea);
 
         // left and right window buttons
-        int windowHeight = getHeight() / 20;
-        juce::Rectangle<int> leftWindowButtonArea = area.removeFromTop (windowHeight);
-        juce::Rectangle<int> rightWindowButtonArea = leftWindowButtonArea.removeFromRight (getWidth() / 2);
-        windowLeftButton.setBounds (leftWindowButtonArea);
-        windowRightButton.setBounds (rightWindowButtonArea);
+        //int windowHeight = getHeight() / 20;
+        //juce::Rectangle<int> leftWindowButtonArea = area.removeFromTop (windowHeight);
+        //juce::Rectangle<int> rightWindowButtonArea = leftWindowButtonArea.removeFromRight (getWidth() / 2);
+        //windowLeftButton.setBounds (leftWindowButtonArea);
+       // windowRightButton.setBounds (rightWindowButtonArea);
 
         area.removeFromLeft (getWidth() / 20);
         area.removeFromRight (getWidth() / 20);
@@ -506,10 +506,6 @@ void HayesDistortionAudioProcessorEditor::mouseDown (const juce::MouseEvent& e)
         bandPanel.setSwitch (0, true);
     if (e.eventComponent == graphPanel.getDistortionGraph())
         bandPanel.setSwitch (1, true);
-    if (e.eventComponent == graphPanel.getVuPanel())
-        bandPanel.setSwitch (2, true);
-    if (e.eventComponent == graphPanel.getWidthGraph())
-        bandPanel.setSwitch (3, true);
     if (e.eventComponent == &multiband)
         updateWhenChangingFocus();
 }
