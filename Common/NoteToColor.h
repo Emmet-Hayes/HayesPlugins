@@ -12,6 +12,7 @@ class NoteColorListener
 {
 public:
     virtual void noteColorChanged(NoteColors newColor) = 0;
+    virtual ~NoteColorListener() {}
 };
 
 static std::unordered_map<NoteColors, juce::Colour> noteToColorMap 

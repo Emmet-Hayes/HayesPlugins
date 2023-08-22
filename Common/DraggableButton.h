@@ -14,6 +14,7 @@ public:
     void mouseEnter(const juce::MouseEvent& e) override;
     void mouseExit(const juce::MouseEvent& e) override;
     void setState(const bool state);
+    bool getState() const { return mState; }
 
 private:
     juce::Colour getColour();

@@ -13,8 +13,8 @@ class SpectrumScopeComponent : public NoteColorListener
 {
 public:
 	SpectrumScopeComponent(AudioBufferQueue<SampleType>& queueToUse, CustomLookAndFeel& laf)
-	:   audioBufferQueue(queueToUse)
-    ,   lookAndFeel(laf)
+    :   lookAndFeel { laf }
+    ,   audioBufferQueue { queueToUse }
 	{
 		buffer.fill(SampleType(0));
 		setFramesPerSecond(60);
