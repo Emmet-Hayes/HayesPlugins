@@ -91,7 +91,7 @@ inline std::unique_ptr<juce::InputStream> createAssetInputStream (const char* re
     auto assetsDir = File::getSpecialLocation (File::currentExecutableFile)
                           .getParentDirectory().getChildFile ("Assets");
    #elif JUCE_MAC
-    auto assetsDir = File::getSpecialLocation (File::currentExecutableFile)
+    auto assetsDir = juce::File::getSpecialLocation (juce::File::currentExecutableFile)
                           .getParentDirectory().getParentDirectory().getChildFile ("Resources").getChildFile ("Assets");
 
     if (! assetsDir.exists())
