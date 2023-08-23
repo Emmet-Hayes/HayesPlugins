@@ -255,7 +255,7 @@ void HayesDistortionAudioProcessorEditor::resized()
         controlLeftKnobRightArea.removeFromBottom (controlLeftKnobRightArea.getHeight() / 5);
     }
     // Zoom button
-    zoomButton.setBounds (getWidth() - 30, multiband.getY() + multiband.getHeight() - 30, getHeight() / 25, getHeight() / 25);
+    zoomButton.setBounds (getWidth() - (scale * (30)), multiband.getY() + multiband.getHeight() - (scale * (30)), getHeight() / 25, getHeight() / 25);
 
     // set look and feel scale
     customLookAndFeel.setWindowScale(scale);
@@ -409,13 +409,6 @@ void HayesDistortionAudioProcessorEditor::setMenu (juce::ComboBox* combobox)
 
     combobox->setJustificationType (juce::Justification::centred);
     combobox->addListener (this);
-}
-
-void HayesDistortionAudioProcessorEditor::setLinearSlider (juce::Slider& slider)
-{
-    addAndMakeVisible (slider);
-    slider.setSliderStyle (juce::Slider::LinearVertical);
-    slider.setTextBoxStyle (juce::Slider::TextBoxAbove, false, TEXTBOX_WIDTH, TEXTBOX_HEIGHT);
 }
 
 void HayesDistortionAudioProcessorEditor::setDistortionGraph (juce::String modeId, juce::String driveId, juce::String recId, juce::String mixId, juce::String biasId, juce::String safeId)
