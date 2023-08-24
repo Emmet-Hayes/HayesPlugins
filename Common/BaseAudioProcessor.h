@@ -25,11 +25,11 @@ public:
     virtual void prepareToPlay(double sampleRate, int samplesPerBlock) override;
     virtual void processBlock(juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
     virtual juce::AudioProcessorEditor* createEditor() override;
-    
-    void getStateInformation (juce::MemoryBlock& destData) override;
-    void setStateInformation (const void* data, int sizeInBytes) override;
-  
+
     virtual juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout() = 0;
   
+    void setStateInformation(const void* data, int sizeInBytes) override;
+    void getStateInformation(juce::MemoryBlock& destData) override;
+    
     juce::AudioProcessorValueTreeState apvts;
 };

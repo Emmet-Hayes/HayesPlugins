@@ -48,15 +48,16 @@ juce::AudioProcessorEditor* BaseAudioProcessor::createEditor()
 
 void BaseAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
 {
-    if (auto xml = apvts.state.createXml())
-        copyXmlToBinary(*xml, destData);
+    juce::MemoryOutputStream mos (destData, true);
+    apvts.state.writeToStream (mos);
 }
 
 
 void BaseAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
 {
-    if (auto xml = getXmlFromBinary(data, sizeInBytes))
-        if (xml->hasTagName(apvts.state.getType()))
-            apvts.state = juce::ValueTree::fromXml(*xml);
-}
+    auto tree = juce::ValueTree::readFromData (data,
+                                               static_cast<size_t> (sizeInBytes));
 
+    if (tree.isValid())
+        apvts.replaceState (tree);
+}
