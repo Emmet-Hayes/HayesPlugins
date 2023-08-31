@@ -1,6 +1,5 @@
 #include "HayesDistortionAudioProcessor.h"
 #include "HayesDistortionAudioProcessorEditor.h"
-#include "Panels/ControlPanel/Graph Components/VUMeter.h"
 
 
 HayesDistortionAudioProcessorEditor::HayesDistortionAudioProcessorEditor(HayesDistortionAudioProcessor& p)
@@ -9,131 +8,16 @@ HayesDistortionAudioProcessorEditor::HayesDistortionAudioProcessorEditor(HayesDi
 ,   graphPanel   { p }
 ,   multiband    { p }
 ,   bandPanel    { p }
-,   globalPanel  { processor.apvts }
 ,   presetBar    { p }
 {
-    // timer
-    juce::Timer::startTimerHz (60);
-
-    // Graph
-    addAndMakeVisible (graphPanel);
-    graphPanel.addMouseListener (this, true);
-
-    addAndMakeVisible (bandPanel);
-    addAndMakeVisible (globalPanel);
-
-    // Spectrum
-    addAndMakeVisible(spectrum);
-    addAndMakeVisible(multiband);
-    multiband.addMouseListener(this, false);
-    updateWhenChangingFocus();
-    addAndMakeVisible(filterControl);
-
-    for (int i = 0; i < 4; i++)
-    {
-        multiband.getEnableButton (i).addListener (this);
-        bandPanel.getCompButton (i).addListener (this);
-        bandPanel.getWidthButton (i).addListener (this);
-    }
-
-    spectrum.setInterceptsMouseClicks (false, false);
-    spectrum.prepareToPaintSpectrum (processor.getNumBins(), processor.getFFTData(), static_cast<float>(processor.getSampleRate() / processor.getFFTSize()));
-
-    setLookAndFeel (&customLookAndFeel);
-
-    // Window Left Button
-    addAndMakeVisible (windowLeftButton);
-    windowLeftButton.setClickingTogglesState (true);
-    windowLeftButton.setRadioGroupId (windowButtons);
-    windowLeftButton.setButtonText ("Band Effect");
-    windowLeftButton.setToggleState (true, juce::NotificationType::dontSendNotification);
-    windowLeftButton.setColour (juce::TextButton::buttonColourId, COLOUR6.withAlpha (0.5f));
-    windowLeftButton.setColour (juce::TextButton::buttonOnColourId, COLOUR7);
-    windowLeftButton.setColour (juce::ComboBox::outlineColourId, COLOUR1.withAlpha (0.0f));
-    windowLeftButton.setColour (juce::TextButton::textColourOnId, COLOUR1);
-    windowLeftButton.setColour (juce::TextButton::textColourOffId, juce::Colours::darkgrey);
-    windowLeftButton.addListener (this);
-
-    // Window Right Button
-    addAndMakeVisible (windowRightButton);
-    windowRightButton.setClickingTogglesState (true);
-    windowRightButton.setRadioGroupId (windowButtons);
-    windowRightButton.setButtonText ("Global Effect");
-    windowRightButton.setToggleState (false, juce::NotificationType::dontSendNotification);
-    windowRightButton.setColour (juce::TextButton::buttonColourId, COLOUR6.withAlpha (0.5f));
-    windowRightButton.setColour (juce::TextButton::buttonOnColourId, COLOUR7);
-    windowRightButton.setColour (juce::ComboBox::outlineColourId, COLOUR1.withAlpha (0.0f));
-    windowRightButton.setColour (juce::TextButton::textColourOnId, COLOUR1);
-    windowRightButton.setColour (juce::TextButton::textColourOffId, juce::Colours::darkgrey);
-    windowRightButton.addListener (this);
-
-    if (windowLeftButton.getToggleState())
-    {
-        multiband.setVisible (true);
-        bandPanel.setVisible (true);
-        filterControl.setVisible (false);
-        globalPanel.setVisible (false);
-    }
-
-    if (windowRightButton.getToggleState())
-    {
-        multiband.setVisible (false);
-        bandPanel.setVisible (false);
-        filterControl.setVisible (true);
-        globalPanel.setVisible (true);
-    }
-
-    setMenu (&distortionMode1);
-    setMenu (&distortionMode2);
-    setMenu (&distortionMode3);
-    setMenu (&distortionMode4);
-
-    // zoom button
-    addAndMakeVisible (zoomButton);
-    zoomButton.setClickingTogglesState (false);
-    //    zoomButton.setButtonText("Z");
-    zoomButton.addListener (this);
-    zoomButton.setColour (juce::TextButton::buttonColourId, COLOUR5.withAlpha (0.5f));
-    zoomButton.setColour (juce::TextButton::buttonOnColourId, COLOUR5.withAlpha (0.5f));
-    zoomButton.setColour (juce::ComboBox::outlineColourId, COLOUR5.withAlpha (0.5f));
-    zoomButton.setColour (juce::TextButton::textColourOnId, COLOUR1);
-    zoomButton.setColour (juce::TextButton::textColourOffId, COLOUR1.withAlpha (0.5f));
-
-    // use global lookandfeel
-    getLookAndFeel().setColour (juce::ComboBox::textColourId, KNOB_SUBFONT_COLOUR);
-    getLookAndFeel().setColour (juce::ComboBox::arrowColourId, KNOB_SUBFONT_COLOUR);
-    getLookAndFeel().setColour (juce::ComboBox::buttonColourId, COLOUR1);
-    getLookAndFeel().setColour (juce::ComboBox::outlineColourId, COLOUR6);
-    getLookAndFeel().setColour (juce::ComboBox::focusedOutlineColourId, COLOUR1);
-    getLookAndFeel().setColour (juce::ComboBox::backgroundColourId, COLOUR6);
-    getLookAndFeel().setColour (juce::PopupMenu::textColourId, KNOB_SUBFONT_COLOUR);
-    getLookAndFeel().setColour (juce::PopupMenu::highlightedBackgroundColourId, COLOUR5);
-    getLookAndFeel().setColour (juce::PopupMenu::highlightedTextColourId, COLOUR1);
-    getLookAndFeel().setColour (juce::PopupMenu::headerTextColourId, KNOB_SUBFONT_COLOUR);
-    getLookAndFeel().setColour (juce::PopupMenu::backgroundColourId, juce::Colours::transparentWhite);
-
-    modeAttachment1 = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment> (processor.apvts, MODE_ID1, distortionMode1);
-    modeAttachment2 = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment> (processor.apvts, MODE_ID2, distortionMode2);
-    modeAttachment3 = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment> (processor.apvts, MODE_ID3, distortionMode3);
-    modeAttachment4 = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment> (processor.apvts, MODE_ID4, distortionMode4);
-
-    addAndMakeVisible(presetBar);
-
-    // set resize
-    setResizable (true, true);
-    setSize (processor.getSavedWidth(), processor.getSavedHeight());
-    // resize limit
-    setResizeLimits (static_cast<int>(INIT_WIDTH), static_cast<int>(INIT_HEIGHT), 2000, 1000); // set resize limits
-    getConstrainer()->setFixedAspectRatio (2); // set fixed resize rate
-
-    setMultiband();
-    
-    image = juce::ImageCache::getFromMemory(BinaryData::bg_file_jpg, BinaryData::bg_file_jpgSize);
+    startTimerHz (60);
+    setLookAndFeel(&customLookAndFeel);
+    addAllGUIComponents();
 }
 
 HayesDistortionAudioProcessorEditor::~HayesDistortionAudioProcessorEditor()
 {
-    setLookAndFeel (nullptr);
+    setLookAndFeel(nullptr);
     stopTimer();
 }
 
@@ -169,19 +53,6 @@ void HayesDistortionAudioProcessorEditor::paint (juce::Graphics& g)
     }
 
     setFourComponentsVisibility (distortionMode1, distortionMode2, distortionMode3, distortionMode4, tfocusIndex);
-
-    bool left = windowLeftButton.getToggleState();
-    bool right = windowRightButton.getToggleState();
-
-    if (left)
-    { // if you select the left window, you will see audio wave and distortion function graphs.
-        bandPanel.setFocusBandNum(tfocusIndex);
-        graphPanel.setFocusBandNum(tfocusIndex);
-    }
-    else if (right)
-    {
-        graphPanel.setFocusBandNum (-1); // -1 means global
-    }
 }
 
 void HayesDistortionAudioProcessorEditor::resized()
@@ -189,9 +60,7 @@ void HayesDistortionAudioProcessorEditor::resized()
     processor.setSavedHeight (getHeight());
     processor.setSavedWidth (getWidth());
 
-    // knobs
     scale = juce::jmin (getHeight() / INIT_HEIGHT, getWidth() / INIT_WIDTH);
-    //float scaleMax = juce::jmax (getHeight() / INIT_HEIGHT, getWidth() / INIT_WIDTH);
 
     // top bar
     juce::Rectangle<int> area (getLocalBounds());
@@ -204,21 +73,12 @@ void HayesDistortionAudioProcessorEditor::resized()
         juce::Rectangle<int> spectrumArea = area;
         spectrum.setBounds (spectrumArea);
         multiband.setBounds (spectrumArea);
-        filterControl.setBounds (spectrumArea);
     }
     else
     {
         juce::Rectangle<int> spectrumArea = area.removeFromBottom(static_cast<int>(SPEC_HEIGHT));
         spectrum.setBounds (spectrumArea);
         multiband.setBounds (spectrumArea);
-        filterControl.setBounds (spectrumArea);
-
-        // left and right window buttons
-        //int windowHeight = getHeight() / 20;
-        //juce::Rectangle<int> leftWindowButtonArea = area.removeFromTop (windowHeight);
-        //juce::Rectangle<int> rightWindowButtonArea = leftWindowButtonArea.removeFromRight (getWidth() / 2);
-        //windowLeftButton.setBounds (leftWindowButtonArea);
-       // windowRightButton.setBounds (rightWindowButtonArea);
 
         area.removeFromLeft (getWidth() / 20);
         area.removeFromRight (getWidth() / 20);
@@ -243,7 +103,6 @@ void HayesDistortionAudioProcessorEditor::resized()
 
         controlArea.removeFromLeft (getWidth() / 7 * 2);
         bandPanel.setBounds (controlArea);
-        globalPanel.setBounds (controlAreaMid);
 
         juce::Rectangle<int> controlLeftKnobLeftArea = controlAreaMid.removeFromLeft (getWidth() / 7 * 2);
         juce::Rectangle<int> controlLeftKnobRightArea = controlLeftKnobLeftArea.removeFromRight (getWidth() / 7);
@@ -260,7 +119,6 @@ void HayesDistortionAudioProcessorEditor::resized()
     // set look and feel scale
     customLookAndFeel.setWindowScale(scale);
     bandPanel.setScale (scale);
-    globalPanel.setScale (scale);
     multiband.setScale (scale);
 }
 
@@ -282,6 +140,7 @@ void HayesDistortionAudioProcessorEditor::timerCallback()
         memmove (tempFFTData, processor.getFFTData(), sizeof (tempFFTData));
         // doing process, fifo data to fft data
         processor.processFFT (tempFFTData);
+
         // prepare to paint the spectrum
         spectrum.prepareToPaintSpectrum (processor.getNumBins(), tempFFTData, static_cast<float>(processor.getSampleRate() / processor.getFFTSize()));
 
@@ -289,7 +148,6 @@ void HayesDistortionAudioProcessorEditor::timerCallback()
         spectrum.repaint();
         multiband.repaint();
         bandPanel.repaint();
-        globalPanel.repaint();
         repaint();
     }
 }
@@ -304,57 +162,24 @@ void HayesDistortionAudioProcessorEditor::buttonClicked (juce::Button* clickedBu
     {
         if (zoomButton.getToggleState())
         {
-            windowLeftButton.setVisible (true);
-            windowRightButton.setVisible (true);
-            if (windowLeftButton.getToggleState())
-            {
-                multiband.setVisible (true);
-                bandPanel.setVisible (true);
-                filterControl.setVisible (false);
-                globalPanel.setVisible (false);
-            }
-            else
-            {
-                multiband.setVisible (false);
-                bandPanel.setVisible (false);
-                filterControl.setVisible (true);
-                globalPanel.setVisible (true);
-            }
+            multiband.setVisible (true);
+            bandPanel.setVisible (true);
             graphPanel.setVisible (true);
             zoomButton.setToggleState (false, juce::NotificationType::dontSendNotification);
         }
         else
         {
-            windowLeftButton.setVisible (false);
-            windowRightButton.setVisible (false);
             distortionMode1.setVisible (false);
             distortionMode2.setVisible (false);
             distortionMode3.setVisible (false);
             distortionMode4.setVisible (false);
             graphPanel.setVisible (false);
             bandPanel.setVisible (false);
-            globalPanel.setVisible (false);
             zoomButton.setToggleState (true, juce::NotificationType::dontSendNotification);
         }
         resized();
     }
-    if (clickedButton == &windowLeftButton)
-    {
-        if (windowLeftButton.getToggleState())
-        {
-            multiband.setVisible (true);
-            bandPanel.setVisible (true);
-            filterControl.setVisible (false);
-            globalPanel.setVisible (false);
-        }
-        else
-        {
-            multiband.setVisible (false);
-            bandPanel.setVisible (false);
-            filterControl.setVisible (true);
-            globalPanel.setVisible (true);
-        }
-    }
+
     for (int i = 0; i < 4; i++)
     {
         // bypass button for each band
@@ -436,10 +261,7 @@ void HayesDistortionAudioProcessorEditor::setDistortionGraph (juce::String modeI
     float rec = static_cast<float> (*processor.apvts.getRawParameterValue (recId));
     float mix = static_cast<float> (*processor.apvts.getRawParameterValue (mixId));
     float bias = static_cast<float> (*processor.apvts.getRawParameterValue (biasId));
-    float rateDivide = static_cast<float> (*processor.apvts.getRawParameterValue (DOWNSAMPLE_ID));
-
-    if (! *processor.apvts.getRawParameterValue (DOWNSAMPLE_BYPASS_ID))
-        rateDivide = 1;
+    float rateDivide = 1;
 
     graphPanel.setDistortionState (mode, rec, mix, bias, drive, rateDivide);
 }
@@ -503,20 +325,83 @@ void HayesDistortionAudioProcessorEditor::mouseDown (const juce::MouseEvent& e)
         updateWhenChangingFocus();
 }
 
+void HayesDistortionAudioProcessorEditor::addAllGUIComponents()
+{
+    addAndMakeVisible(graphPanel);
+    graphPanel.addMouseListener(this, true);
+
+    addAndMakeVisible(bandPanel);
+    addAndMakeVisible(spectrum);
+    addAndMakeVisible(multiband);
+    multiband.addMouseListener(this, false);
+    updateWhenChangingFocus();
+
+    for (int i = 0; i < 4; i++)
+    {
+        multiband.getEnableButton(i).addListener(this);
+        bandPanel.getCompButton(i).addListener(this);
+        bandPanel.getWidthButton(i).addListener(this);
+    }
+
+    spectrum.setInterceptsMouseClicks(false, false);
+    spectrum.prepareToPaintSpectrum(processor.getNumBins(), processor.getFFTData(), static_cast<float>(processor.getSampleRate() / processor.getFFTSize()));
+
+    multiband.setVisible(true);
+    bandPanel.setVisible(true);
+
+    setMenu(&distortionMode1);
+    setMenu(&distortionMode2);
+    setMenu(&distortionMode3);
+    setMenu(&distortionMode4);
+
+    // zoom button
+    addAndMakeVisible(zoomButton);
+    zoomButton.setClickingTogglesState(false);
+    //    zoomButton.setButtonText("Z");
+    zoomButton.addListener(this);
+    zoomButton.setColour(juce::TextButton::buttonColourId, COLOUR5.withAlpha(0.5f));
+    zoomButton.setColour(juce::TextButton::buttonOnColourId, COLOUR5.withAlpha(0.5f));
+    zoomButton.setColour(juce::ComboBox::outlineColourId, COLOUR5.withAlpha(0.5f));
+    zoomButton.setColour(juce::TextButton::textColourOnId, COLOUR1);
+    zoomButton.setColour(juce::TextButton::textColourOffId, COLOUR1.withAlpha(0.5f));
+
+    // use global lookandfeel
+    getLookAndFeel().setColour(juce::ComboBox::textColourId, KNOB_SUBFONT_COLOUR);
+    getLookAndFeel().setColour(juce::ComboBox::arrowColourId, KNOB_SUBFONT_COLOUR);
+    getLookAndFeel().setColour(juce::ComboBox::buttonColourId, COLOUR1);
+    getLookAndFeel().setColour(juce::ComboBox::outlineColourId, COLOUR6);
+    getLookAndFeel().setColour(juce::ComboBox::focusedOutlineColourId, COLOUR1);
+    getLookAndFeel().setColour(juce::ComboBox::backgroundColourId, COLOUR6);
+    getLookAndFeel().setColour(juce::PopupMenu::textColourId, KNOB_SUBFONT_COLOUR);
+    getLookAndFeel().setColour(juce::PopupMenu::highlightedBackgroundColourId, COLOUR5);
+    getLookAndFeel().setColour(juce::PopupMenu::highlightedTextColourId, COLOUR1);
+    getLookAndFeel().setColour(juce::PopupMenu::headerTextColourId, KNOB_SUBFONT_COLOUR);
+    getLookAndFeel().setColour(juce::PopupMenu::backgroundColourId, juce::Colours::transparentWhite);
+
+    modeAttachment1 = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(processor.apvts, MODE_ID1, distortionMode1);
+    modeAttachment2 = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(processor.apvts, MODE_ID2, distortionMode2);
+    modeAttachment3 = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(processor.apvts, MODE_ID3, distortionMode3);
+    modeAttachment4 = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(processor.apvts, MODE_ID4, distortionMode4);
+
+    addAndMakeVisible(presetBar);
+
+    // set resize
+    setResizable(true, true);
+    setSize(processor.getSavedWidth(), processor.getSavedHeight());
+    // resize limit
+    setResizeLimits(static_cast<int>(INIT_WIDTH), static_cast<int>(INIT_HEIGHT), 2000, 1000); // set resize limits
+    getConstrainer()->setFixedAspectRatio(2); // set fixed resize rate
+
+    setMultiband();
+
+    image = juce::ImageCache::getFromMemory(BinaryData::bg_file_jpg, BinaryData::bg_file_jpgSize);
+}
+
 void HayesDistortionAudioProcessorEditor::updateWhenChangingFocus()
 {
     focusIndex = multiband.getFocusIndex();    
-    bool left = windowLeftButton.getToggleState();
-    bool right = windowRightButton.getToggleState();
-    if (left)
-    { // if you select the left window, you will see audio wave and distortion function graphs.
-        bandPanel.setFocusBandNum(focusIndex);
-        graphPanel.setFocusBandNum(focusIndex);
-    }
-    else if (right)
-    {
-        graphPanel.setFocusBandNum(-1); // -1 means global
-    }
+    bandPanel.setFocusBandNum(focusIndex);
+    graphPanel.setFocusBandNum(focusIndex);
     bandPanel.updateWhenChangingFocus();
     repaint();
 }

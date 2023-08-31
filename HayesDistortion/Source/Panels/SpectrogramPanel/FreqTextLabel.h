@@ -3,7 +3,7 @@
 #include <JuceHeader.h>
 
 #include "../../GUI/DriveLookAndFeel.h"
-#include "VerticalLine.h"
+#include "../../Common/VerticalLine.h"
 #include "SpectrumComponent.h"
 
 

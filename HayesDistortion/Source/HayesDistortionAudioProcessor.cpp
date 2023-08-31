@@ -274,7 +274,7 @@ void HayesDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
 
         if (multibandEnables[0])
         {
-            processOneBand (mBuffers[0], context1, MODE_ID1, DRIVE_ID1, SAFE_ID1, EXTREME_ID1, BIAS_ID1, REC_ID1, overdrives[0], OUTPUT_ID1, gainProcessors[0], COMP_THRESH_ID1, COMP_RATIO_ID1, compressorProcessors[0], totalNumInputChannels, recSmoothers[0], outputSmoothers[0], MIX_ID1, dryWetMixer1, WIDTH_ID1, widthProcessors[0], dcFilters[0], WIDTH_BYPASS_ID1, COMP_BYPASS_ID1);
+            processOneBand (mBuffers[0], context1, MODE_ID1, DRIVE_ID1, SAFE_ID1, EXTREME_ID1, BIAS_ID1, REC_ID1, overdrives[0], OUTPUT_ID1, gainProcessors[0], totalNumInputChannels, recSmoothers[0], outputSmoothers[0], MIX_ID1, dryWetMixer1, dcFilters[0]);
         }
 
         setLeftRightMeterRMSValues (mBuffers[0], mOutputLeftSmoothedBands[0], mOutputRightSmoothedBands[0]);
@@ -299,9 +299,7 @@ void HayesDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
         setLeftRightMeterRMSValues (mBuffers[1], mInputLeftSmoothedBands[1], mInputRightSmoothedBands[1]);
 
         if (multibandEnables[1])
-        {
-            processOneBand (mBuffers[1], context2, MODE_ID2, DRIVE_ID2, SAFE_ID2, EXTREME_ID2, BIAS_ID2, REC_ID2, overdrives[1], OUTPUT_ID2, gainProcessors[1], COMP_THRESH_ID2, COMP_RATIO_ID2, compressorProcessors[1], totalNumInputChannels, recSmoothers[2], outputSmoothers[2], MIX_ID2, dryWetMixer2, WIDTH_ID2, widthProcessors[2], dcFilters[2], WIDTH_BYPASS_ID2, COMP_BYPASS_ID2);
-        }
+            processOneBand (mBuffers[1], context2, MODE_ID2, DRIVE_ID2, SAFE_ID2, EXTREME_ID2, BIAS_ID2, REC_ID2, overdrives[1], OUTPUT_ID2, gainProcessors[1], totalNumInputChannels, recSmoothers[2], outputSmoothers[2], MIX_ID2, dryWetMixer2, dcFilters[2]);
 
         setLeftRightMeterRMSValues (mBuffers[1], mOutputLeftSmoothedBands[1], mOutputRightSmoothedBands[1]);
     }
@@ -326,7 +324,7 @@ void HayesDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
 
         if (multibandEnables[2])
         {
-            processOneBand (mBuffers[2], context3, MODE_ID3, DRIVE_ID3, SAFE_ID3, EXTREME_ID3, BIAS_ID3, REC_ID3, overdrives[2], OUTPUT_ID3, gainProcessors[2], COMP_THRESH_ID3, COMP_RATIO_ID3, compressorProcessors[2], totalNumInputChannels, recSmoothers[2], outputSmoothers[2], MIX_ID3, dryWetMixer3, WIDTH_ID3, widthProcessors[2], dcFilters[2], WIDTH_BYPASS_ID3, COMP_BYPASS_ID3);
+            processOneBand (mBuffers[2], context3, MODE_ID3, DRIVE_ID3, SAFE_ID3, EXTREME_ID3, BIAS_ID3, REC_ID3, overdrives[2], OUTPUT_ID3, gainProcessors[2], totalNumInputChannels, recSmoothers[2], outputSmoothers[2], MIX_ID3, dryWetMixer3, dcFilters[2]);
         }
 
         setLeftRightMeterRMSValues (mBuffers[2], mOutputLeftSmoothedBands[2], mOutputRightSmoothedBands[2]);
@@ -346,7 +344,7 @@ void HayesDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
 
         if (multibandEnables[3])
         {
-            processOneBand (mBuffers[3], context4, MODE_ID4, DRIVE_ID4, SAFE_ID4, EXTREME_ID4, BIAS_ID4, REC_ID4, overdrives[3], OUTPUT_ID4, gainProcessors[3], COMP_THRESH_ID4, COMP_RATIO_ID4, compressorProcessors[3], totalNumInputChannels, recSmoothers[3], outputSmoothers[3], MIX_ID4, dryWetMixer4, WIDTH_ID4, widthProcessors[3], dcFilters[3], WIDTH_BYPASS_ID4, COMP_BYPASS_ID4);
+            processOneBand (mBuffers[3], context4, MODE_ID4, DRIVE_ID4, SAFE_ID4, EXTREME_ID4, BIAS_ID4, REC_ID4, overdrives[3], OUTPUT_ID4, gainProcessors[3], totalNumInputChannels, recSmoothers[3], outputSmoothers[3], MIX_ID4, dryWetMixer4, dcFilters[3]);
         }
 
         setLeftRightMeterRMSValues (mBuffers[3], mOutputLeftSmoothedBands[3], mOutputRightSmoothedBands[3]);
@@ -397,25 +395,6 @@ void HayesDistortionAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
         buffer.addFrom (rightChannelId, 0, mBuffers[3], rightChannelId, 0, numSamples);
     }
 
-    // downsample
-    if (*apvts.getRawParameterValue (DOWNSAMPLE_BYPASS_ID))
-    {
-        int rateDivide = static_cast<int> (*apvts.getRawParameterValue (DOWNSAMPLE_ID));
-        for (int channel = 0; channel < totalNumInputChannels; ++channel)
-        {
-            auto* channelData = buffer.getWritePointer (channel);
-            for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
-            {
-                //int rateDivide = (distortionProcessor.controls.drive - 1) / 63.f * 99.f + 1; //range(1,100)
-                if (rateDivide > 1)
-                {
-                    if (sample % rateDivide != 0)
-                        channelData[sample] = channelData[sample - sample % rateDivide];
-                }
-            }
-        }
-    }
-
     if (*apvts.getRawParameterValue (FILTER_BYPASS_ID))
     {
         updateFilter();
@@ -454,14 +433,11 @@ juce::AudioProcessorEditor* HayesDistortionAudioProcessor::createEditor()
     return new HayesDistortionAudioProcessorEditor (*this);
 }
 
-//==============================================================================
-// This creates new instances of the plugin..
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new HayesDistortionAudioProcessor();
 }
 
-// Filter selection
 void updateCoefficients (CoefficientsPtr& old, const CoefficientsPtr& replacements)
 {
     *old = *replacements;
@@ -597,7 +573,6 @@ void HayesDistortionAudioProcessor::setHistoryArray(int bandIndex)
 
         for (int sample = 0; sample < bufferSamples; ++sample)
         {
-            // mDelay is delayed clean signal
             if (sample % 10 == 0)
             {
                 if (channel == 0)
@@ -736,7 +711,12 @@ bool HayesDistortionAudioProcessor::getSoloStateFromIndex (int index)
     return false;
 }
 
-void HayesDistortionAudioProcessor::processOneBand (juce::AudioBuffer<float>& bandBuffer, juce::dsp::ProcessContextReplacing<float> context, juce::String modeID, juce::String driveID, juce::String safeID, juce::String extremeID, juce::String biasID, juce::String recID, juce::dsp::ProcessorChain<GainProcessor, BiasProcessor, DriveProcessor, juce::dsp::WaveShaper<float, std::function<float (float)>>, BiasProcessor>& overdrive, juce::String outputID, GainProcessor& gainProcessor, juce::String threshID, juce::String ratioID, CompressorProcessor& compressorProcessor, int totalNumInputChannels, juce::SmoothedValue<float>& recSmoother, juce::SmoothedValue<float>& /*outputSmoother*/, juce::String mixID, juce::dsp::DryWetMixer<float>& dryWetMixer, juce::String widthID, WidthProcessor widthProcessor, DCFilter& dcFilter, juce::String widthBypassID, juce::String compBypassID)
+void HayesDistortionAudioProcessor::processOneBand (juce::AudioBuffer<float>& bandBuffer, juce::dsp::ProcessContextReplacing<float> context, juce::String modeID, 
+                                                    juce::String driveID, juce::String safeID, juce::String extremeID, juce::String biasID, juce::String recID, 
+                                                    juce::dsp::ProcessorChain<GainProcessor, BiasProcessor, DriveProcessor, juce::dsp::WaveShaper<float, std::function<float (float)>>, BiasProcessor>& overdrive, 
+                                                    juce::String outputID, GainProcessor& gainProcessor, int totalNumInputChannels, juce::SmoothedValue<float>& recSmoother, 
+                                                    juce::SmoothedValue<float>& /*outputSmoother*/, juce::String mixID, juce::dsp::DryWetMixer<float>& dryWetMixer, 
+                                                    DCFilter& dcFilter)
 {
     juce::AudioBuffer<float> dryBuffer;
     dryBuffer.makeCopyOf (bandBuffer);
@@ -746,21 +726,6 @@ void HayesDistortionAudioProcessor::processOneBand (juce::AudioBuffer<float>& ba
 
     // normalize wave center position
     normalize (modeID, bandBuffer, totalNumInputChannels, recSmoother, outputSmoothers[0]);
-
-    // width process
-    if (*apvts.getRawParameterValue (widthBypassID) && totalNumInputChannels == 2)
-    {
-        float* channeldataL;
-        float* channeldataR;
-        float width = *apvts.getRawParameterValue (widthID);
-        channeldataL = bandBuffer.getWritePointer (0);
-        channeldataR = bandBuffer.getWritePointer (1);
-        widthProcessor.process (channeldataL, channeldataR, width, bandBuffer.getNumSamples());
-    }
-
-    // compressor process
-    if (*apvts.getRawParameterValue (compBypassID))
-        processCompressor (context, threshID, ratioID, compressorProcessor);
 
     // gain process
     processGain (context, outputID, gainProcessor);
@@ -927,14 +892,8 @@ void HayesDistortionAudioProcessor::mixDryWet (juce::AudioBuffer<float>& dryBuff
     auto wetBlock = juce::dsp::AudioBlock<float> (wetBuffer);
     dryWetMixer.setMixingRule (juce::dsp::DryWetMixingRule::linear);
     dryWetMixer.pushDrySamples (dryBlock);
-    if (*apvts.getRawParameterValue (HQ_ID))
-    {
-        dryWetMixer.setWetLatency (latency);
-    }
-    else
-    {
-        dryWetMixer.setWetLatency (0);
-    }
+
+    dryWetMixer.setWetLatency (0);
     dryWetMixer.setWetMixProportion (mixValue);
     dryWetMixer.mixWetSamples (wetBlock);
 }
@@ -1177,7 +1136,6 @@ juce::AudioProcessorValueTreeState::ParameterLayout HayesDistortionAudioProcesso
     using PBool = juce::AudioParameterBool;
     using PInt = juce::AudioParameterInt;
     using PFloat = juce::AudioParameterFloat;
-    parameters.push_back (std::make_unique<PBool> (juce::ParameterID { HQ_ID, versionNum }, HQ_NAME, false));
 
     parameters.push_back (std::make_unique<PInt> (juce::ParameterID { MODE_ID1, versionNum }, MODE_NAME1, 0, 11, 0));
     parameters.push_back (std::make_unique<PInt> (juce::ParameterID { MODE_ID2, versionNum }, MODE_NAME2, 0, 11, 0));
@@ -1203,21 +1161,6 @@ juce::AudioProcessorValueTreeState::ParameterLayout HayesDistortionAudioProcesso
     parameters.push_back (std::make_unique<PFloat> (juce::ParameterID { DRIVE_ID2, versionNum }, DRIVE_NAME2, juce::NormalisableRange<float> (0.0f, 100.0f, 0.01f), 0.0f));
     parameters.push_back (std::make_unique<PFloat> (juce::ParameterID { DRIVE_ID3, versionNum }, DRIVE_NAME3, juce::NormalisableRange<float> (0.0f, 100.0f, 0.01f), 0.0f));
     parameters.push_back (std::make_unique<PFloat> (juce::ParameterID { DRIVE_ID4, versionNum }, DRIVE_NAME4, juce::NormalisableRange<float> (0.0f, 100.0f, 0.01f), 0.0f));
-
-    parameters.push_back (std::make_unique<PFloat> (juce::ParameterID { COMP_RATIO_ID1, versionNum }, COMP_RATIO_NAME1, juce::NormalisableRange<float> (1.0f, 20.0f, 0.1f), 1.0f));
-    parameters.push_back (std::make_unique<PFloat> (juce::ParameterID { COMP_RATIO_ID2, versionNum }, COMP_RATIO_NAME2, juce::NormalisableRange<float> (1.0f, 20.0f, 0.1f), 1.0f));
-    parameters.push_back (std::make_unique<PFloat> (juce::ParameterID { COMP_RATIO_ID3, versionNum }, COMP_RATIO_NAME3, juce::NormalisableRange<float> (1.0f, 20.0f, 0.1f), 1.0f));
-    parameters.push_back (std::make_unique<PFloat> (juce::ParameterID { COMP_RATIO_ID4, versionNum }, COMP_RATIO_NAME4, juce::NormalisableRange<float> (1.0f, 20.0f, 0.1f), 1.0f));
-
-    parameters.push_back (std::make_unique<PFloat> (juce::ParameterID { COMP_THRESH_ID1, versionNum }, COMP_THRESH_NAME1, juce::NormalisableRange<float> (-48.0f, 0.0f, 0.1f), 0.0f));
-    parameters.push_back (std::make_unique<PFloat> (juce::ParameterID { COMP_THRESH_ID2, versionNum }, COMP_THRESH_NAME2, juce::NormalisableRange<float> (-48.0f, 0.0f, 0.1f), 0.0f));
-    parameters.push_back (std::make_unique<PFloat> (juce::ParameterID { COMP_THRESH_ID3, versionNum }, COMP_THRESH_NAME3, juce::NormalisableRange<float> (-48.0f, 0.0f, 0.1f), 0.0f));
-    parameters.push_back (std::make_unique<PFloat> (juce::ParameterID { COMP_THRESH_ID4, versionNum }, COMP_THRESH_NAME4, juce::NormalisableRange<float> (-48.0f, 0.0f, 0.1f), 0.0f));
-
-    parameters.push_back (std::make_unique<PFloat> (juce::ParameterID { WIDTH_ID1, versionNum }, WIDTH_NAME1, juce::NormalisableRange<float> (0.0f, 1.0f, 0.01f), 0.5f));
-    parameters.push_back (std::make_unique<PFloat> (juce::ParameterID { WIDTH_ID2, versionNum }, WIDTH_NAME2, juce::NormalisableRange<float> (0.0f, 1.0f, 0.01f), 0.5f));
-    parameters.push_back (std::make_unique<PFloat> (juce::ParameterID { WIDTH_ID3, versionNum }, WIDTH_NAME3, juce::NormalisableRange<float> (0.0f, 1.0f, 0.01f), 0.5f));
-    parameters.push_back (std::make_unique<PFloat> (juce::ParameterID { WIDTH_ID4, versionNum }, WIDTH_NAME4, juce::NormalisableRange<float> (0.0f, 1.0f, 0.01f), 0.5f));
 
     parameters.push_back (std::make_unique<PFloat> (juce::ParameterID { OUTPUT_ID1, versionNum }, OUTPUT_NAME1, juce::NormalisableRange<float> (-48.0f, 6.0f, 0.1f), 0.0f));
     parameters.push_back (std::make_unique<PFloat> (juce::ParameterID { OUTPUT_ID2, versionNum }, OUTPUT_NAME2, juce::NormalisableRange<float> (-48.0f, 6.0f, 0.1f), 0.0f));
@@ -1269,7 +1212,6 @@ juce::AudioProcessorValueTreeState::ParameterLayout HayesDistortionAudioProcesso
     parameters.push_back (std::make_unique<PBool> (juce::ParameterID { BAND_ID, versionNum }, BAND_NAME, false));
     parameters.push_back (std::make_unique<PBool> (juce::ParameterID { HIGH_ID, versionNum }, HIGH_NAME, true));
     
-    parameters.push_back (std::make_unique<PFloat> (juce::ParameterID { DOWNSAMPLE_ID, versionNum }, DOWNSAMPLE_NAME, juce::NormalisableRange<float> (1.0f, 64.0f, 0.01f), 1.0f));
     parameters.push_back (std::make_unique<PFloat> (juce::ParameterID { LIMITER_THRESH_ID, versionNum }, LIMITER_THRESH_NAME, juce::NormalisableRange<float> (-24.0f, 0.0f, 0.1f), 0.0f));
     juce::NormalisableRange<float> limiterReleaseRange (0.01f, 3000.0f, 0.01f);
     limiterReleaseRange.setSkewForCentre (6.0f);

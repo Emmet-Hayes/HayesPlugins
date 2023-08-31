@@ -15,9 +15,6 @@
 #define DRIVE_ID4           "drive4"
 #define DRIVE_NAME4         "Drive4"
 
-#define HQ_ID               "hq"
-#define HQ_NAME             "Hq"
-
 #define MODE_ID1            "mode1"
 #define MODE_NAME1          "Mode1"
 #define MODE_ID2            "mode2"
@@ -53,33 +50,6 @@
 #define EXTREME_NAME3       "Extreme3"
 #define EXTREME_ID4         "extreme4"
 #define EXTREME_NAME4       "Extreme4"
-
-#define COMP_RATIO_ID1      "compRatio1"
-#define COMP_RATIO_NAME1    "CompRatio1"
-#define COMP_RATIO_ID2      "compRatio2"
-#define COMP_RATIO_NAME2    "CompRatio2"
-#define COMP_RATIO_ID3      "compRatio3"
-#define COMP_RATIO_NAME3    "CompRatio3"
-#define COMP_RATIO_ID4      "compRatio4"
-#define COMP_RATIO_NAME4    "CompRatio4"
-
-#define COMP_THRESH_ID1     "compThresh1"
-#define COMP_THRESH_NAME1   "CompThresh1"
-#define COMP_THRESH_ID2     "compThresh2"
-#define COMP_THRESH_NAME2   "CompThresh2"
-#define COMP_THRESH_ID3     "compThresh3"
-#define COMP_THRESH_NAME3   "CompThresh3"
-#define COMP_THRESH_ID4     "compThresh4"
-#define COMP_THRESH_NAME4   "CompThresh4"
-
-#define WIDTH_ID1           "width1"
-#define WIDTH_NAME1         "Width1"
-#define WIDTH_ID2           "width2"
-#define WIDTH_NAME2         "Width2"
-#define WIDTH_ID3           "width3"
-#define WIDTH_NAME3         "Width3"
-#define WIDTH_ID4           "width4"
-#define WIDTH_NAME4         "Width4"
 
 #define OUTPUT_ID1          "output1"
 #define OUTPUT_NAME1        "Output1"
@@ -120,9 +90,6 @@
 #define REC_NAME3           "Rec3"
 #define REC_ID4             "rec4"
 #define REC_NAME4           "Rec4"
-
-#define DOWNSAMPLE_ID       "downSample"
-#define DOWNSAMPLE_NAME     "DownSample"
 
 // filter
 #define LOWCUT_FREQ_ID      "lowcutFreq"

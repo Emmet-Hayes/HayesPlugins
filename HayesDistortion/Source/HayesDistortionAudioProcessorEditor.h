@@ -7,12 +7,8 @@
 #include "GUI/InterfaceDefines.h"
 #include "Panels/ControlPanel/Graph Components/DistortionGraph.h"
 #include "Panels/ControlPanel/Graph Components/Oscilloscope.h"
-#include "Panels/ControlPanel/Graph Components/VUPanel.h"
-#include "Panels/ControlPanel/Graph Components/WidthGraph.h"
 #include "Panels/ControlPanel/Graph Components/GraphPanel.h"
 #include "Panels/ControlPanel/BandPanel.h"
-#include "Panels/ControlPanel/GlobalPanel.h"
-#include "Panels/SpectrogramPanel/FilterControl.h"
 #include "Panels/SpectrogramPanel/Multiband.h"
 
 
@@ -32,17 +28,10 @@ public:
     void setMultiband();
 
 private:
-    // create own knob style
-    CustomLookAndFeel customLookAndFeel;
-    CustomLookAndFeel zoomLookAndFeel;
-
-    HayesDistortionAudioProcessor& processor;
-    
-    int focusIndex = 0;
+    void addAllGUIComponents();
     void updateWhenChangingFocus();
-
-    void buttonClicked (juce::Button* clickedButton) override;
-    void mouseDown (const juce::MouseEvent& e) override;
+    void buttonClicked(juce::Button* clickedButton) override;
+    void mouseDown(const juce::MouseEvent& e) override;
     void sliderValueChanged(juce::Slider* slider) override;
     void comboBoxChanged(juce::ComboBox* combobox) override;
 
@@ -51,21 +40,19 @@ private:
     void setFourComponentsVisibility(juce::Component& component1, juce::Component& component2, juce::Component& component3, juce::Component& component4, int bandNum);
 
 
+    CustomLookAndFeel customLookAndFeel;
+
+    HayesDistortionAudioProcessor& processor;
+    
+    int focusIndex { 0 };
+
     GraphPanel graphPanel { processor };
     Multiband multiband { processor };
     BandPanel bandPanel { processor };
-    GlobalPanel globalPanel;
-    FilterControl filterControl { processor, globalPanel };
     SpectrumComponent spectrum;
 
-    // Labels
-    juce::Label hqLabel;
 
-    // Buttons
     juce::TextButton
-        hqButton,
-        windowLeftButton,
-        windowRightButton,
         zoomButton;
 
     // group toggle buttons
@@ -76,11 +63,6 @@ private:
     };
 
 
-    // Button attachment
-    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment>
-        hqAttachment;
-
-    // ComboBox attachment
     juce::ComboBox distortionMode1;
     juce::ComboBox distortionMode2;
     juce::ComboBox distortionMode3;

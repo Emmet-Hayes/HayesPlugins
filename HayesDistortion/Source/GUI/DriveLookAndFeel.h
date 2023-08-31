@@ -6,10 +6,6 @@
 #include "InterfaceDefines.h"
 
 
-#ifndef JUCE_MAC
- constexpr double M_PI = 3.1415926;
-#endif
-
 inline void drawInnerShadow(juce::Graphics& g, juce::Path target) {
     // resets the Clip Region when the function returns
     juce::Graphics::ScopedSaveState saveState(g);
