@@ -1,7 +1,8 @@
 #pragma once
-#include <JuceHeader.h>
+
 #include "BaseAudioProcessor.h"
 #include "PresetComboBox.h"
+
 
 class PresetBar : public juce::Component
                 , public juce::Button::Listener
@@ -16,9 +17,9 @@ public:
     void addPresetButtonClicked();
     void presetChanged();
 
-    juce::TextButton nextButton{ ">" };
-    juce::TextButton prevButton{ "<" };
-    juce::TextButton addPresetButton{ "+" };
+    juce::TextButton nextButton      { ">" };
+    juce::TextButton prevButton      { "<" };
+    juce::TextButton addPresetButton { "+" };
     PresetComboBox presetBox;
 
     void addPreset(const std::string& name);

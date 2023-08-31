@@ -26,21 +26,15 @@ void PresetComboBox::savePreset()
     {
         juce::File file(chooser.getResult());
 
-        // Save the current processor state to the chosen file
         auto state = processor.apvts.copyState();
         if (state.isValid())
         {
-            // Create the file if it doesn't exist
             file.create();
 
-            // Create a FileOutputStream for the preset file
             std::unique_ptr<juce::FileOutputStream> outStream(file.createOutputStream());
 
             if (outStream != nullptr)
-            {
-                // Write the state ValueTree into the file
                 state.writeToStream(*outStream);
-            }
         }
     }
 }
@@ -53,13 +47,10 @@ void PresetComboBox::loadPreset()
     {
         juce::File file(chooser.getResult());
 
-        // Load the state from the chosen file into the processor
-        // Create a FileInputStream for the preset file
         std::unique_ptr<juce::FileInputStream> inStream(file.createInputStream());
 
         if (inStream != nullptr)
         {
-            // Read the ValueTree state from the file
             juce::ValueTree state = juce::ValueTree::readFromStream(*inStream);
 
             processor.apvts.replaceState(state);

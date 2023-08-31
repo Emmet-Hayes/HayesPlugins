@@ -1,6 +1,7 @@
 #pragma once
-#include <JuceHeader.h>
+
 #include "BaseAudioProcessor.h"
+
 
 class PresetBar;
 
