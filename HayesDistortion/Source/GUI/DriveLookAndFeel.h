@@ -16,8 +16,6 @@ inline void drawInnerShadow(juce::Graphics& g, juce::Path target) {
     shadowPath.addRectangle(target.getBounds().expanded(10));
     shadowPath.setUsingNonZeroWinding(false);
 
-    // reduce clip region to avoid the shadow
-    // being drawn outside of the shape to cast the shadow on
     g.reduceClipRegion(target);
 
     juce::DropShadow ds(COLOUR7, 5, { 0, 1 });
@@ -45,43 +43,4 @@ public:
 private:
     float x1 { 0 }, y1 { 0 }, x2 { 0 }, y2 { 0 };
     float changePos { 0 }; // use this to change drive knob gradient
-};
-
-
-class HighPassButtonLnf : public CustomLookAndFeel
-{
-public:
-    void drawButtonBackground(juce::Graphics& g,
-        juce::Button& button,
-        const juce::Colour& backgroundColour,
-        bool shouldDrawButtonAsHighlighted,
-        bool shouldDrawButtonAsDown) override;
-
-    juce::Font getTextButtonFont(juce::TextButton&, int buttonHeight) override;
-};
-
-
-class LowPassButtonLnf : public CustomLookAndFeel
-{
-public:
-    void drawButtonBackground(juce::Graphics& g,
-        juce::Button& button,
-        const juce::Colour& backgroundColour,
-        bool shouldDrawButtonAsHighlighted,
-        bool shouldDrawButtonAsDown) override;
-
-    juce::Font getTextButtonFont(juce::TextButton&, int buttonHeight) override;
-};
-
-
-class BandPassButtonLnf : public CustomLookAndFeel
-{
-public:
-    void drawButtonBackground(juce::Graphics& g,
-        juce::Button& button,
-        const juce::Colour& backgroundColour,
-        bool shouldDrawButtonAsHighlighted,
-        bool shouldDrawButtonAsDown) override;
-
-    juce::Font getTextButtonFont(juce::TextButton&, int buttonHeight) override;
 };
