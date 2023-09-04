@@ -1,6 +1,8 @@
 #pragma once
+
 #include <unordered_map>
 #include <JuceHeader.h>
+
 
 enum class NoteColors 
 {

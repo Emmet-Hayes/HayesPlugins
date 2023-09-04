@@ -3,6 +3,7 @@
 #include "Utilities.h"
 #include "WavefrontObjParser.h"
 
+
 struct OpenGLUtils
 {
     struct Vertex
@@ -798,10 +799,10 @@ struct OpenGLUtils
                 "       t += tt * 0.45;\n"
                 "   }\n"
                 "   vec3 ip = pos + dir * t;\n"
-                "   col = vec3(t * 0.1);\n"
+                "   col = vec3(t * 0.2);\n"
                 "   col = sqrt(col) * palette(synthNoteColor);\n"
                 "   gl_FragColor = vec4(0.05*t+abs(dir) * col + max(0.0, map(ip - 0.1) - tt), 1.0);\n"
-                "    gl_FragColor.a = 1.0 / (t * t * t * t);\n"
+                "    gl_FragColor.a = 1.0 / (t * t * t * t * t);\n"
                 "}\n"
             },
             {
@@ -877,9 +878,9 @@ struct OpenGLUtils
                 "\n"
                 "	float freqs[4];\n"
                 "	freqs[0] = palette(synthNoteColor).x;\n"
-                "	freqs[1] = palette(synthNoteColor + 10).x;\n"
-                "	freqs[2] = palette(synthNoteColor + 20).x;\n"
-                "	freqs[3] = palette(synthNoteColor + 30).x;\n"
+                "	freqs[1] = palette(synthNoteColor + 1).x;\n"
+                "	freqs[2] = palette(synthNoteColor + 2).x;\n"
+                "	freqs[3] = palette(synthNoteColor + 3).x;\n"
                 "\n"
                 "	float t = field(p,freqs[2]);\n"
                 "	float v = (1. - exp((abs(uv.x) - 1.) * 6.)) * (1. - exp((abs(uv.y) - 1.) * 6.));\n"

@@ -1,9 +1,11 @@
 #pragma once
+
 #include "../../Common/CentredLabel.h"
 
 #ifndef JUCE_MAC
 constexpr double M_PI = 3.1415926;
 #endif
+
 
 class CustomLookAndFeel : public juce::LookAndFeel_V4
 {

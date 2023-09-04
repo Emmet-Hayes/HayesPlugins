@@ -1,5 +1,6 @@
 #include "BatSynthLookAndFeel.h"
 
+
 void BatSynthLookAndFeel::setGainColorIntensity(float value) 
 {
     rotaryOutlineBrightness = value;

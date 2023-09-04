@@ -1,8 +1,11 @@
 #pragma once
+
 #include <cmath>
+
 #include "AudioBufferQueue.h"
 #include "CustomLookAndFeel.h"
 #include "NoteToColor.h"
+
 
 constexpr int NUM_PREV_FRAMES_SPECTRUM = 2;
 

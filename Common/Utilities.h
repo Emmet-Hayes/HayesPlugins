@@ -1,5 +1,7 @@
 #pragma once
+
 #include <JuceHeader.h>
+
 
 template<typename FloatType>
 static inline juce::NormalisableRange<FloatType> makeLogarithmicRange(FloatType min, FloatType max)

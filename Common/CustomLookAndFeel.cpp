@@ -1,5 +1,6 @@
 #include "CustomLookAndFeel.h"
 
+
 CustomLookAndFeel::CustomLookAndFeel() 
 {
     setColour(juce::Slider::thumbColourId, juce::Colours::darkmagenta);

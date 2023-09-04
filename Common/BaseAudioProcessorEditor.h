@@ -1,6 +1,8 @@
 #pragma once
+
 #include <JuceHeader.h>
 #include "BaseAudioProcessor.h"
+
 
 class BaseAudioProcessorEditor : public juce::AudioProcessorEditor
 {

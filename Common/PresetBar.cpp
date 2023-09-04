@@ -1,6 +1,7 @@
 #include "PresetBar.h"
 #include "PresetComboBox.h"
 
+
 PresetBar::PresetBar(BaseAudioProcessor& p)
 :   presetBox { p , this }
 ,   currentPresetName { "Default" }

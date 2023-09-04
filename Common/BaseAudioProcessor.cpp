@@ -1,6 +1,7 @@
 #include "BaseAudioProcessor.h"
 #include "BaseAudioProcessorEditor.h"
 
+
 BaseAudioProcessor::BaseAudioProcessor(juce::AudioProcessorValueTreeState::ParameterLayout layout)
 :   juce::AudioProcessor()
 ,   apvts {*this, nullptr, "PARAMETERS", std::move(layout) }

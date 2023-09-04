@@ -1,5 +1,6 @@
 #include "NoteToColor.h"
 
+
 NoteColors frequencyToColor(float freq) 
 {
     while (freq > 440.f)

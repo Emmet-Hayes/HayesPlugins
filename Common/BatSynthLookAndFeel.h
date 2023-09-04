@@ -1,6 +1,9 @@
 #pragma once
+
 #include "CustomLookAndFeel.h"
 #include "NoteToColor.h"
+
+
 class BatSynthLookAndFeel : public CustomLookAndFeel
 {
 public:

@@ -1,5 +1,6 @@
 #pragma once
 
+
 template <typename SampleType>
 class AudioBufferQueue
 {

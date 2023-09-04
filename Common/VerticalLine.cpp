@@ -1,16 +1,15 @@
 #include "VerticalLine.h"
-#include "../HayesDistortion/Source/Panels/SpectrogramPanel/Multiband.h"
 
 
 void VerticalLine::paint (juce::Graphics& g)
 {
     // draw line that will be added next
-    g.setColour (COLOUR1);
+    g.setColour (juce::Colour(244, 63, 208));
     g.fillRect (getWidth() / 10.f * 4.f, 0.f, getWidth() / 10.f * 2.f, static_cast<float> (getHeight()));
 
     if (isMouseOverOrDragging())
     {
-        g.setColour (COLOUR1.withAlpha (0.2f));
+        g.setColour (juce::Colour(244, 63, 208).withAlpha (0.2f));
         g.fillAll();
     }
 }
@@ -88,7 +87,6 @@ void VerticalLine::moveToX (int lineNum, float newXPercent, float margin, std::u
     float leftLimit;
     float rightLimit;
 
-    //    int index = leftIndex + 1;
     leftLimit = (index + 1) * margin;
     rightLimit = 1 - (lineNum - index) * margin;
 
