@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../../HayesDistortionAudioProcessor.h"
+
 #include "DistortionGraph.h"
 #include "Oscilloscope.h"
 

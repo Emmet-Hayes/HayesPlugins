@@ -5,6 +5,7 @@
 #include "../../Common/SoloButton.h"
 #include "../../Common/EnableButton.h"
 #include "../../Common/CloseButton.h"
+
 #include "SpectrumComponent.h"
 #include "FreqDividerGroup.h"
 

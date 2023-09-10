@@ -1,8 +1,7 @@
 #pragma once
 
-#include <JuceHeader.h>
-
 #include "../../Common/CustomLookAndFeel.h"
+
 #include "InterfaceDefines.h"
 
 

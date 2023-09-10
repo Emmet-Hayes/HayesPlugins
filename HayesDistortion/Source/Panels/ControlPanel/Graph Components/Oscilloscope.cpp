@@ -1,5 +1,4 @@
 #include "Oscilloscope.h"
-#include <JuceHeader.h>
 
 
 Oscilloscope::Oscilloscope (HayesDistortionAudioProcessor& p) : processor (p)

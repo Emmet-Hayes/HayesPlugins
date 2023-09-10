@@ -3,7 +3,6 @@
 
 void GraphTemplate::paint (juce::Graphics& g)
 {
-    // draw outline
     g.setColour (COLOUR6);
     g.drawRect (getLocalBounds(), 1);
 }

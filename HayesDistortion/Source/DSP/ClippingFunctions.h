@@ -1,7 +1,8 @@
 #pragma once
 
+#include <cmath>
+
 #include <JuceHeader.h>
-#include <math.h>
 
 
 namespace waveshaping

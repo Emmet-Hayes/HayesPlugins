@@ -1,11 +1,9 @@
 #pragma once
 
-#include <JuceHeader.h>
-
 #include "../../Common/VerticalLine.h"
 #include "../../HayesDistortionAudioProcessor.h"
-#include "FreqTextLabel.h"
 
+#include "FreqTextLabel.h"
 
 
 class FreqDividerGroup : public juce::ToggleButton

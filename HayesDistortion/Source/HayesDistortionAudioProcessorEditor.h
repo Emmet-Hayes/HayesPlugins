@@ -1,8 +1,7 @@
 #pragma once
 
-#include <JuceHeader.h>
-
 #include "../../Common/BaseAudioProcessorEditor.h"
+
 #include "GUI/DriveLookAndFeel.h"
 #include "GUI/InterfaceDefines.h"
 #include "Panels/ControlPanel/Graph Components/DistortionGraph.h"

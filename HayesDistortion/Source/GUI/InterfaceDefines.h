@@ -2,6 +2,7 @@
 
 #include "../../JuceLibraryCode/JucePluginDefines.h"
 
+
 #define VERSION             JucePlugin_VersionString
 #define GITHUB_LINK         "https://github.com/Emmet-Hayes/HayesDistortion"
 

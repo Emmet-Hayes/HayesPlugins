@@ -1,9 +1,8 @@
 #pragma once
 
-#include <JuceHeader.h>
-
 #include "../../GUI/DriveLookAndFeel.h"
 #include "../../Common/VerticalLine.h"
+
 #include "SpectrumComponent.h"
 
 

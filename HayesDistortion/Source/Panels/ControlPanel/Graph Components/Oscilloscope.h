@@ -1,8 +1,7 @@
 #pragma once
 
-#include <JuceHeader.h>
-
 #include "../../../HayesDistortionAudioProcessor.h"
+
 #include "GraphTemplate.h"
 
 

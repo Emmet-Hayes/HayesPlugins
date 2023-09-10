@@ -1,5 +1,6 @@
 #include "WidthProcessor.h"
 
+
 void WidthProcessor::process(float* channeldataL, float* channeldataR, float width, int numSamples)
 {
     // width

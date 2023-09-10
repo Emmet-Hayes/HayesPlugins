@@ -1,5 +1,7 @@
 #pragma once
+
 #include <JuceHeader.h>
+
 
 static inline float dBToNormalizedGain(float inValue)
 {

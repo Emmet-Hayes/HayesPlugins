@@ -1,7 +1,5 @@
 #pragma once
 
-#include <JuceHeader.h>
-
 #include "../../GUI/DriveLookAndFeel.h"
 
 
