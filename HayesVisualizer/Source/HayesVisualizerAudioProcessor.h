@@ -1,6 +1,7 @@
 #pragma once
-#include <JuceHeader.h>
+
 #include "../../Common/BaseAudioProcessor.h"
+
 
 class HayesVisualizerAudioProcessor  : public BaseAudioProcessor
 {

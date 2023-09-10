@@ -1,6 +1,7 @@
 #include "HayesVisualizerAudioProcessor.h"
 #include "HayesVisualizerAudioProcessorEditor.h"
 
+
 HayesVisualizerAudioProcessor::HayesVisualizerAudioProcessor()
 :   BaseAudioProcessor { createParameterLayout() }
 {

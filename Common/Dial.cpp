@@ -1,6 +1,7 @@
 #include "Dial.h"
 #include "CustomColours.h"
 
+
 Dial::TextBox::TextBox()
 {
     setEditable(true);

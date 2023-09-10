@@ -1,6 +1,7 @@
 #include "HayesVisualizerAudioProcessor.h"
 #include "HayesVisualizerAudioProcessorEditor.h"
 
+
 HayesVisualizerAudioProcessorEditor::HayesVisualizerAudioProcessorEditor (HayesVisualizerAudioProcessor& p)
 :   BaseAudioProcessorEditor (p)
 ,   processor (p)

@@ -1,9 +1,7 @@
 #pragma once
-#include <JuceHeader.h>
+
 #include "ModSlider.h"
 
-using SliderAttachment = std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>;
-using ButtonAttachment = std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment>;
 
 class LabeledSlider : public juce::Component
 {
@@ -56,6 +54,10 @@ public:
 private:
     ModSlider slider;
     juce::Label sliderLabel;
+
+    using SliderAttachment = std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>;
+    using ButtonAttachment = std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment>;
+
     SliderAttachment sAttachment;
     ButtonAttachment bAttachment;
 };

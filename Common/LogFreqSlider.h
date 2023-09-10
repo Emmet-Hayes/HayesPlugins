@@ -1,5 +1,7 @@
 #pragma once
+
 #include <JuceHeader.h>
+
 
 class LogFreqSlider : public juce::Slider
 {

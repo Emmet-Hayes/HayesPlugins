@@ -1,7 +1,5 @@
 #pragma once
 
-#include <JuceHeader.h>
-
 #include "CustomLookAndFeel.h"
 #include "VerticalLine.h"
 

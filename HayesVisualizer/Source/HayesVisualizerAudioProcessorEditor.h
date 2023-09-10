@@ -1,10 +1,11 @@
 #pragma once
 
-#include <JuceHeader.h>
-#include "HayesVisualizerAudioProcessor.h"
 #include "../../Common/BaseAudioProcessorEditor.h"
 #include "../../Common/CustomLookAndFeel.h"
 #include "../../Common/OpenGLComponent.h"
+
+#include "HayesVisualizerAudioProcessor.h"
+
 
 class HayesVisualizerAudioProcessorEditor  : public BaseAudioProcessorEditor
                                            , public juce::Timer

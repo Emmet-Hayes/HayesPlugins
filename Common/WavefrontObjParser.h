@@ -1,7 +1,8 @@
 #pragma once
 
-#include <JuceHeader.h>
 #include <map>
+
+#include <JuceHeader.h>
 
 
 class WavefrontObjFile
