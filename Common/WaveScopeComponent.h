@@ -6,7 +6,7 @@
 #include "NoteToColor.h"
 
 
-constexpr int NUM_PREV_FRAMES = 4;
+constexpr int NUM_PREV_FRAMES = 2;
 
 template <typename SampleType>
 class WaveScopeComponent : public NoteColorListener
@@ -15,9 +15,9 @@ class WaveScopeComponent : public NoteColorListener
 {
 public:
 	WaveScopeComponent(AudioBufferQueue<SampleType>& queueToUse)
-		: audioBufferQueue(queueToUse)
+	:   audioBufferQueue(queueToUse)
 	{
-		buffer.fill(SampleType(0));
+		resizeInternalBuffersFromQueue();
 		setFramesPerSecond(60);
 	}
 
@@ -34,23 +34,44 @@ public:
 
 	void paint(Graphics& g) override
 	{
-		auto area = getLocalBounds();
-		auto h = (SampleType)area.getHeight();
-		auto w = (SampleType)area.getWidth();
+		auto area = getLocalBounds().toFloat();
+		auto h = area.getHeight();
+		auto w = area.getWidth();
 
 		g.fillAll(juce::Colours::black);
 
-		g.setColour(juce::Colours::white);
-		g.setOpacity(1.0f);
+		const auto numFrames = (int)prevFrames.size();
+		if (numFrames == 0 || w <= 0.0f || h <= 0.0f)
+			return;
 
-		
-		for (size_t i = 0; i < prevFrames.size(); ++i)
+		for (int i = 0; i < numFrames; ++i)
 		{
-			float opacity = 0.1f + 0.9f * (i / (float)prevFrames.size());
+			const float t = (float)i / (float)numFrames;
+			const float opacity = 0.1f + 0.9f * t;
+
 			g.setColour(noteToColorMap[currentNoteColor].withAlpha(opacity));
-			auto scopeRect = juce::Rectangle<SampleType>{ SampleType(0), SampleType(0), w, h };
-			plot(prevFrames[i].data(), prevFrames[i].size(), g, scopeRect, SampleType(1), h / 2);
+
+			juce::Rectangle<SampleType> scopeRect { SampleType(0), SampleType(0),
+				                                    (SampleType)w, (SampleType)h };
+
+			plot(prevFrames[i].data(), prevFrames[i].size(), g,
+				 scopeRect, SampleType(1), (SampleType)(h / 2.0f));
 		}
+	}
+
+	void resizeInternalBuffersFromQueue()
+	{
+		const int size = audioBufferQueue.getBufferSize();
+		if (size == 0)
+			return;
+
+		buffer.assign(size, SampleType(0));
+		scopeData.assign(size, SampleType(0));
+
+		prevFrames.clear();
+		prevFrames.resize(NUM_PREV_FRAMES);
+		for (auto& frame : prevFrames)
+			frame.assign(size, SampleType(0));
 	}
 
 	void resized() override {}
@@ -58,44 +79,76 @@ public:
 private:
 	NoteColors currentNoteColor = NoteColors::WHITE;
 	AudioBufferQueue<SampleType>& audioBufferQueue;
-	std::array<SampleType, AudioBufferQueue<SampleType>::bufferSize> buffer;
-	std::array<std::array<SampleType, AudioBufferQueue<SampleType>::bufferSize>, NUM_PREV_FRAMES> prevFrames;
-	juce::dsp::FFT fft{ AudioBufferQueue<SampleType>::order };
-	juce::dsp::WindowingFunction<SampleType> windowFun{ (size_t)fft.getSize(), juce::dsp::WindowingFunction<SampleType>::hann };
-	std::array<SampleType, AudioBufferQueue<SampleType>::bufferSize> scopeData;
+	std::vector<SampleType> buffer;
+	std::vector<std::vector<SampleType>> prevFrames;
+	std::vector<SampleType> scopeData;
 	int currentFrame = 0;
 
 	void timerCallback() override
 	{
-		audioBufferQueue.pop(buffer.data());
+		while (audioBufferQueue.pop(buffer.data())) {}
+
 		FloatVectorOperations::copy(scopeData.data(), buffer.data(), (int)buffer.size());
-		prevFrames[currentFrame++] = scopeData;
-		currentFrame %= NUM_PREV_FRAMES;
+		prevFrames[(size_t) currentFrame] = scopeData;
+		currentFrame = (currentFrame + 1) % NUM_PREV_FRAMES;
+
 		repaint();
 	}
 
-	static void plot(const SampleType* data, size_t numSamples, Graphics& g, juce::Rectangle<SampleType> rect,
-		SampleType scale = SampleType(0.7), SampleType offset = SampleType(0))
-	{
-		auto w = rect.getWidth();
-		auto h = rect.getHeight();
-		auto right = rect.getRight();
-		auto center = rect.getBottom() - offset;
-		auto gain = h * scale;
-		for (size_t i = 1; i < numSamples; ++i)
-		{
-			auto yPosStart = center - gain * data[i - 1];
-			auto yPosEnd = center - gain * data[i];
 
-			// Check if both y positions are within the rectangle's bounds
-			if (yPosStart >= rect.getY() && yPosStart <= rect.getBottom() &&
-				yPosEnd >= rect.getY() && yPosEnd <= rect.getBottom())
+
+	static void plot(const SampleType* data,
+		size_t numSamples,
+		Graphics& g,
+		juce::Rectangle<SampleType> rect,
+		SampleType scale = SampleType(0.7),
+		SampleType offset = SampleType(0))
+	{
+		if (numSamples < 2)
+			return;
+
+		const auto w = (int)rect.getWidth();
+		const auto h = rect.getHeight();
+		if (w <= 0 || h <= SampleType(0))
+			return;
+
+		const auto left = rect.getX();
+		const auto right = rect.getRight();
+
+		const auto center = rect.getBottom() - offset;
+		const auto gain = h * scale;
+
+		const double samplesPerPixel = static_cast<double> (numSamples) / static_cast<double> (w);
+
+		juce::Path path;
+		bool started = false;
+
+		for (int x = 0; x < w; ++x)
+		{
+			// Map pixel x to sample index
+			size_t sampleIndex = static_cast<size_t>(std::floor(x * samplesPerPixel));
+			if (sampleIndex >= numSamples)
+				sampleIndex = numSamples - 1;
+
+			const auto sample = data[sampleIndex];
+			const auto y = center - gain * sample;
+			const auto xPos = left + static_cast<SampleType>(x);
+
+			if (!started)
 			{
-				g.drawLine({ jmap(SampleType(i - 1), SampleType(0), SampleType(numSamples - 1), SampleType(right - w),
-					SampleType(right)), yPosStart, jmap(SampleType(i), SampleType(0),
-					SampleType(numSamples - 1), SampleType(right - w), SampleType(right)), yPosEnd });
+				path.startNewSubPath(xPos, y);
+				started = true;
+			}
+			else
+			{
+				path.lineTo(xPos, y);
 			}
 		}
+
+		if (!path.isEmpty())
+			g.strokePath(path, juce::PathStrokeType(2.0f,
+				juce::PathStrokeType::curved,
+				juce::PathStrokeType::rounded));
 	}
 };
 
@@ -105,7 +158,21 @@ class WaveScopeDataCollector
 public:
 	WaveScopeDataCollector (AudioBufferQueue<SampleType>& queueToUse)
     :   audioBufferQueue(queueToUse)
-	{}
+	{
+		resizeInternalBufferFromQueue();
+	}
+
+	void resizeInternalBufferFromQueue()
+	{
+		const auto size = audioBufferQueue.getBufferSize();
+		if (size == 0)
+			return;
+
+		buffer.assign(size, SampleType(0));
+		numCollected = 0;
+		prevSample = SampleType(100);
+		state = State::waitingForTrigger;
+	}
 
 	void addListener(NoteColorListener* listener)
 	{
@@ -120,41 +187,6 @@ public:
 
 	void process(const SampleType* data, size_t numSamples)
 	{
-		size_t index = 0;	 
-		if (state == State::waitingForTrigger)
-		{
-			while (index++ < numSamples)
-			{
-				auto currentSample = *data++;
-				if (fabs(currentSample) >= triggerLevel && prevSample < triggerLevel)
-				{
-					numCollected = 0;
-					state = State::collecting;
-					break;
-				}
-				prevSample = currentSample;
-			}
-		}
-
-		if (state == State::collecting)
-		{
-			while (index++ < numSamples)
-			{
-				buffer[numCollected++] = *data++;
-				if (numCollected == buffer.size())
-				{
-					audioBufferQueue.push(buffer.data(), buffer.size());
-					state = State::waitingForTrigger;
-					prevSample = SampleType(100);
-					break;
-				}
-			}
-		}
-	}
-
-	// overload with color based on frequency
-	void process(const SampleType* data, size_t numSamples, float minFrequency)
-	{
 		size_t index = 0;
 
 		if (state == State::waitingForTrigger)
@@ -162,7 +194,7 @@ public:
 			while (index++ < numSamples)
 			{
 				auto currentSample = *data++;
-				if (fabs(currentSample) >= triggerLevel && prevSample < triggerLevel)
+				if (std::fabs(currentSample) >= triggerLevel && prevSample < triggerLevel)
 				{
 					numCollected = 0;
 					state = State::collecting;
@@ -174,20 +206,26 @@ public:
 
 		if (state == State::collecting)
 		{
-			while (index++ < numSamples)
+			while (index++ < numSamples && numCollected < buffer.size())
 			{
 				buffer[numCollected++] = *data++;
 				if (numCollected == buffer.size())
 				{
-					audioBufferQueue.push(buffer.data(), buffer.size());
+					// ok to ignore the bool return — drop if queue is full
+					(void)audioBufferQueue.push(buffer.data(), buffer.size());
 					state = State::waitingForTrigger;
 					prevSample = SampleType(100);
 					break;
 				}
 			}
 		}
+	}
 
-		for (NoteColorListener* listener : listeners)
+	void process(const SampleType* data, size_t numSamples, float minFrequency)
+	{
+		process(data, numSamples);
+
+		for (auto* listener : listeners)
 			if (listener != nullptr)
 				listener->noteColorChanged(frequencyToColor(minFrequency));
 	}
@@ -195,9 +233,9 @@ public:
 private:
 	std::vector<NoteColorListener*> listeners;
 	AudioBufferQueue<SampleType>& audioBufferQueue;
-	std::array<SampleType, AudioBufferQueue<SampleType>::bufferSize> buffer;
-	size_t numCollected;
+	std::vector<SampleType> buffer;
+	size_t numCollected = 0;
 	SampleType prevSample = SampleType(100);
 	static constexpr auto triggerLevel = SampleType(0.01);
-	enum class State { waitingForTrigger, collecting } state{ State::waitingForTrigger };
+	enum class State { waitingForTrigger, collecting } state { State::waitingForTrigger };
 };
