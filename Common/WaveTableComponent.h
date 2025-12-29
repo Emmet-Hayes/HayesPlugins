@@ -4,7 +4,11 @@
 #include <functional>
 #include <juce_gui_basics/juce_gui_basics.h>
 
-class WaveTableComponent : public juce::Component
+#include "NoteToColor.h"
+
+
+class WaveTableComponent : public NoteColorListener,
+                           public juce::Component
 {
 public:
 
@@ -70,10 +74,9 @@ public:
             }
         }
 
-        g.setColour(juce::Colours::white);
+        g.setColour(noteToColorMap[currentNoteColor].withAlpha(0.8f));
         g.strokePath(p,
-            juce::PathStrokeType(
-                2.0f,
+            juce::PathStrokeType(2.0f,
                 juce::PathStrokeType::curved,
                 juce::PathStrokeType::rounded));
     }
@@ -90,7 +93,13 @@ public:
         applyPoint(e.position);
     }
 
+    void noteColorChanged(NoteColors newColor) override
+    {
+        currentNoteColor = newColor;
+    }
+
 private:
+    NoteColors currentNoteColor = NoteColors::WHITE;
     size_t tableSize;
     std::vector<float> waveform;
     int lastIndex = -1;
